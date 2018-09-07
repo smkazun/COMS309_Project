@@ -12,8 +12,17 @@
         android:layout_height="130dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="142dp"
+        android:layout_marginTop="144dp"
         android:text="test" />
+
+    <TextView
+        android:id="@+id/consulor"
+        android:layout_width="303dp"
+        android:layout_height="72dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="43dp"
+        android:text="comsulor" />
 
     <Button
         android:id="@+id/button_right"
@@ -48,5 +57,22 @@
         android:layout_below="@+id/button_right"
         android:layout_centerHorizontal="true"
         android:text="↓" />
+
+    <ImageView
+        android:id="@+id/image1"
+        android:layout_width="225dp"
+        android:layout_height="164dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="186dp"
+        app:srcCompat="@android:drawable/screen_background_light" />
+
+    <ImageView
+        android:id="@+id/image2"
+        android:layout_width="110dp"
+        android:layout_height="146dp"
+        android:layout_above="@+id/button_up"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@android:drawable/screen_background_light" />
 
 </RelativeLayout>
