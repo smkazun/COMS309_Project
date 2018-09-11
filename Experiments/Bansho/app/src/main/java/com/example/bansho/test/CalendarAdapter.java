@@ -50,9 +50,9 @@ public class CalendarAdapter extends BaseAdapter {
         }
 
 
-//        float dp = mContext.getResources().getDisplayMetrics().density;
-//        AbsListView.LayoutParams params = new AbsListView.LayoutParams(parent.getWidth()/7 - (int)dp, (parent.getHeight() - (int)dp * mDateManager.getWeeks() ) / mDateManager.getWeeks());
-//        convertView.setLayoutParams(params);
+        float dp = mContext.getResources().getDisplayMetrics().density;
+        AbsListView.LayoutParams params = new AbsListView.LayoutParams(parent.getWidth()/7 - (int)dp, (parent.getHeight() - (int)dp * mDateManager.getWeeks() ) / mDateManager.getWeeks());
+        convertView.setLayoutParams(params);
 
         //show date
         SimpleDateFormat dateFormat = new SimpleDateFormat("d", Locale.US);
