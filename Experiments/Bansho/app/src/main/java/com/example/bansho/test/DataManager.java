@@ -77,10 +77,10 @@ public class DataManager {
     }
 
 
-    public boolean isToday(Date data){
+    public boolean isToday(Date date){
         SimpleDateFormat format = new SimpleDateFormat("yyyy.MM", Locale.US);
         String today = format.format(mCalendar.getTime());
-        if (today.equals(format.format(data))) {
+        if (today.equals(format.format(date))) {
             return true;
         }else {
             return false;

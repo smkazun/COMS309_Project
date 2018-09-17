@@ -5,8 +5,8 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -21,6 +21,7 @@ public class CalendarAdapter extends BaseAdapter {
     private DataManager mDateManager;
     private LayoutInflater mLayoutInflater;
 
+    //カスタムセルを拡張したらここでWigetを定義
     private static class ViewHolder {
         public TextView dateText;
     }
@@ -49,27 +50,27 @@ public class CalendarAdapter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
-
+        //セルのサイズを指定
         float dp = mContext.getResources().getDisplayMetrics().density;
         AbsListView.LayoutParams params = new AbsListView.LayoutParams(parent.getWidth()/7 - (int)dp, (parent.getHeight() - (int)dp * mDateManager.getWeeks() ) / mDateManager.getWeeks());
         convertView.setLayoutParams(params);
 
-        //show date
+        //日付のみ表示させる
         SimpleDateFormat dateFormat = new SimpleDateFormat("d", Locale.US);
         holder.dateText.setText(dateFormat.format(dateArray.get(position)));
 
-        //gray out date without current month
+        //当月以外のセルをグレーアウト
         if (mDateManager.isCurrentMonth(dateArray.get(position))){
             convertView.setBackgroundColor(Color.WHITE);
         }else {
             convertView.setBackgroundColor(Color.LTGRAY);
         }
+//        //当日を緑に
+//        if (mDateManager.isToday(dateArray.get(position))) {
+//            convertView.setBackgroundColor(Color.GREEN);
+//        }
 
-        if (mDateManager.isToday(dateArray.get(position))) {
-            convertView.setBackgroundColor(Color.GREEN);
-        }
-
-        //sun red sat to blue
+        //日曜日を赤、土曜日を青に
         int colorId;
         switch (mDateManager.getDayOfWeek(dateArray.get(position))){
             case 1:
@@ -98,21 +99,20 @@ public class CalendarAdapter extends BaseAdapter {
         return null;
     }
 
-
-    //get current month
+    //表示月を取得
     public String getTitle(){
         SimpleDateFormat format = new SimpleDateFormat("yyyy.MM", Locale.US);
         return format.format(mDateManager.mCalendar.getTime());
     }
 
-    //get next month
+    //翌月表示
     public void nextMonth(){
         mDateManager.nextMonth();
         dateArray = mDateManager.getDays();
         this.notifyDataSetChanged();
     }
 
-    //get previous month
+    //前月表示
     public void prevMonth(){
         mDateManager.prevMonth();
         dateArray = mDateManager.getDays();
