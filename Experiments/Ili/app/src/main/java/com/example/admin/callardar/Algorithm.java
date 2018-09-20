@@ -44,12 +44,13 @@ public class Algorithm
         return j;
     }
 
-    public static TextView createTextField(Context classDOTthis, int startingX, int startingY, ViewGroup.LayoutParams params, int color, float visibility)
+    public static TextView createTextField(Context classDOTthis, String text, int startingX, int startingY, ViewGroup.LayoutParams params, int color, float visibility)
     {
         TextView tf = new TextView(classDOTthis);
         tf.setLayoutParams(params);
         tf.setBackgroundColor(color);
         tf.setAlpha(visibility);
+        tf.setText(text);
 
         tf.setX(startingX);
         tf.setY(startingY);

@@ -1,5 +1,7 @@
 package com.example.admin.callardar;
 
+import java.util.ArrayList;
+
 public interface User
 {
     /**
@@ -17,11 +19,20 @@ public interface User
     String getEmail();
 
     /**
-     * get user's type
+     * get user's type in this calendar
      * @return
      */
 
-    UserType getType();
+    UserType getType(callenDar calender);
+
+    /**
+     *  add a new calendar to current user
+     * @param calender
+     */
+
+    void addCalender(callenDar calender);
+
+    callenDar[] getCalender();
 
     boolean equals(Object o);
 }

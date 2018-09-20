@@ -4,12 +4,20 @@ import java.util.ArrayList;
 
 public class callenDar
 {
+    private String name;
+
     private ArrayList<User> people;
     private ArrayList<User> admins;
     private ArrayList<Event> events;
 
-    public callenDar(User[] admins, User[] toAdd)
+    public callenDar(String Name, User[] admins, User[] toAdd)
     {
+        name = Name;
+        people = new ArrayList<User>();
+        this.admins = new ArrayList<User>();
+        events = new ArrayList<Event>();
+
+
         for(int i = 0 ; i < toAdd.length ; i += 1)
         {
             people.add(toAdd[i]);
@@ -19,6 +27,11 @@ public class callenDar
         {
             this.admins.add(admins[i]);
         }
+    }
+
+    public String toString()
+    {
+        return name;
     }
 
     public User[] getCurrentUser()
@@ -39,9 +52,9 @@ public class callenDar
      * @param content
      * @param toAdd
      */
-    public void eventCreator(String startDate, String endDate, String content, User admin, User[] toAdd)
+    public void eventCreator(String name, String startDate, String endDate, String content, User admin, User[] toAdd)
     {
-        events.add(new Event(startDate, endDate, content, admin, toAdd));
+        events.add(new Event(name, startDate, endDate, content, admin, toAdd));
 
         //toDo
         //draw the UI on real callendar

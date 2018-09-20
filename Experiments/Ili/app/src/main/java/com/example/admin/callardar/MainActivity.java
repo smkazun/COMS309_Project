@@ -7,19 +7,24 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     protected EditText account;
     private EditText password;
 
-    protected User user;
+    private TextView wrongMessage;
+
+    protected static User user;
 
     private Button LOGIN;
 
     /**
      *  get from database to determine the current account
-     *  and passWord if is match
+     *  and passWord if is match, if it is true, add the
+     *  calendar to the user by calling user.addCalender()
+     *
      * @param account
      * @param passWord
      * @return
@@ -27,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
      */
     private boolean ifExist(final String account, final String passWord)
     {
+        if(account.equals("test") && passWord.equals(""))
+        {
+            user = new Admin("test","@");
+            return true;
+        }
+
         //toDO
         user = null;
 
@@ -35,13 +46,18 @@ public class MainActivity extends AppCompatActivity {
 
     private class OnClick implements View.OnClickListener
     {
-
         @Override
         public void onClick(View v)
         {
             if(ifExist( account.getText().toString(), password.getText().toString()))
             {
                 startActivity(new Intent(MainActivity.this,CalendarList.class));
+            }
+            else
+            {
+                System.out.println(account.getText().toString() + " + " +password.getText().toString());
+                wrongMessage.setVisibility(View.VISIBLE);
+                password.setText(new char[]{},0,0);
             }
         }
     }
@@ -52,10 +68,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //toDO
-        LOGIN = findViewById(0);
-        account = findViewById(0);
-        password = findViewById(0);
+        LOGIN = findViewById(R.id.button_Login);
+        account = findViewById(R.id.acc);
+        password = findViewById(R.id.pass);
+
+        wrongMessage = findViewById(R.id.WrongMessage);
+        wrongMessage.setVisibility(View.INVISIBLE);
 
         password.setTransformationMethod(PasswordTransformationMethod.getInstance());
         LOGIN.setOnClickListener(new OnClick());
