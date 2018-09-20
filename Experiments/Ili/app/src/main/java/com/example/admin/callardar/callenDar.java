@@ -53,7 +53,7 @@ public class callenDar
      * @param toAdd
      */
     public void eventCreator(String name, String startDate, String endDate, String content, User admin, User[] toAdd)
-    {
+        {
         events.add(new Event(name, startDate, endDate, content, admin, toAdd));
 
         //toDo
