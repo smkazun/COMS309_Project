@@ -15,7 +15,7 @@ import org.springframework.core.style.ToStringCreator;
 @Table(name = "users")
 public class Users {
 	
-	//TODO
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")

@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
@@ -13,11 +14,7 @@ public class UserController {
 	UserRepository repository;
 	
 	
-	//TODO
-	//@RequestMapping(method = RequestMethod.GET, path = "/users")
-	public List<Users> getAllUsers(){
-		List<Users> result = repository.findAll();
-		return result;
-	}
+	
+	
 
 }
