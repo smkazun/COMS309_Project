@@ -21,9 +21,12 @@ public class CalendarList extends AppCompatActivity {
     ConstraintLayout mainLayout;
     Button accountScreen;
 
+    シルヴァホルン she1;
+
     private void Initialize()
     {
         int length = 100;
+
         callenDar[] arr = MainActivity.user.getCalender();
         screen_CalenderCreator = findViewById(R.id.CalenderCreator);
         mainLayout = findViewById(R.id.JFrame_activity_calendar_list);
@@ -39,23 +42,33 @@ public class CalendarList extends AppCompatActivity {
             length += 100;
         }
 
-        TextView Jpanel = Algorithm.createTextField(CalendarList.this,"Create new calendar", 0, length - 100 , new RelativeLayout.LayoutParams(600, 100), Color.rgb(150,100,15), (float)0.9);
-        Jpanel.setOnClickListener(new View.OnClickListener()
+        final TextView Jpanel = Algorithm.createTextField(CalendarList.this,"Create new calendar", 0, length - 100 , new RelativeLayout.LayoutParams(600, 100), Color.rgb(150,100,15), (float)0.9);
+
+        she1 = new シルヴァホルン(new Point[]{new Point(0,length - 100), new Point(600,length - 100),new Point(600,length),new Point(0,length)});
+
+        Jpanel.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
-            public void onClick(View v)
+            public boolean onTouch(View v, MotionEvent event)
             {
-                mainLayout.removeView(screen_CalenderCreator);
-                mainLayout.addView(screen_CalenderCreator);
-                screen_CalenderCreator.setVisibility(View.VISIBLE);
+                System.out.println((int)v.getX() + (int)event.getX() + "+" + (int)v.getY() + (int)event.getY());
+
+                if(she1.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
+                {
+                    mainLayout.removeView(screen_CalenderCreator);
+                    mainLayout.addView(screen_CalenderCreator);
+                    screen_CalenderCreator.setVisibility(View.VISIBLE);
+                }
+
+                return false;
             }
-        });
+        }
+        );
 
         mainLayout.addView(Jpanel);
 
         Button create = findViewById(R.id.createCalender);
         create.setOnClickListener(new OnClick());
-
 //        accountScreen = findViewById(0);
 //        accountScreen.setOnClickListener(new View.OnClickListener()
 //        {

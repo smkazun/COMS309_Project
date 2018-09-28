@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Random;
+
 public class Algorithm
 {
     private Algorithm()
@@ -194,6 +196,8 @@ public class Algorithm
 
         tf.setX(startingX);
         tf.setY(startingY);
+
+        tf.setId(new Random().nextInt());
 
         return tf;
     }
