@@ -32,14 +32,25 @@ public class MainActivity extends AppCompatActivity {
      */
     private boolean ifExist(final String account, final String passWord)
     {
-        if(account.equals("test") && passWord.equals(""))
+        if(account.equals("") && passWord.equals(""))
         {
-            user = new Admin("test","@");
+            user = new User("test","@");
+
+            User[] arr = new User[15];
+
+            for(int i = 0 ; i < 15 ; i += 1)
+            {
+                arr[i] = new User("illiand" + i, "!");
+            }
+
+            user.addFriends(arr);
+
             return true;
         }
 
         //toDO
         user = null;
+        //user.addFriend...
 
         return false;
     }

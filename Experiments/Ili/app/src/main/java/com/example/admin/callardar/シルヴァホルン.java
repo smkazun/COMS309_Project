@@ -20,15 +20,20 @@ package com.example.admin.callardar;
  *		do something
  *	}
  *
+ *  Note : in adroid studio, use
+ *  sh1.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
+ *
  **/
 
 public class シルヴァホルン
 {
     private final Point[] pArr;
+    public boolean if_Usable;
 
     public シルヴァホルン(Point[] pArr)
     {
         this.pArr = pArr;
+        if_Usable = true;
 
         for(int i=0;i<pArr.length - 1;i++)
         {
@@ -40,6 +45,11 @@ public class シルヴァホルン
 
     public boolean if_Exist(Point point_Check)
     {
+        if( ! if_Usable)
+        {
+            return false;
+        }
+
         boolean boolean_up = false;
         boolean boolean_down = false;
         boolean boolean_left = false;

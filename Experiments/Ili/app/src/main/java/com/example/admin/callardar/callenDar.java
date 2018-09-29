@@ -17,7 +17,6 @@ public class callenDar
         this.admins = new ArrayList<User>();
         events = new ArrayList<Event>();
 
-
         for(int i = 0 ; i < toAdd.length ; i += 1)
         {
             people.add(toAdd[i]);
@@ -36,9 +35,13 @@ public class callenDar
 
     public User[] getCurrentUser()
     {
-        User[] arr = new User[people.size()];
+        User[] arr = new User[people.size() + admins.size()];
 
-        arr = people.toArray(arr);
+        for(int i = 0 ; i < arr.length ;)
+        {
+            arr[i++] = people.get(i);
+            arr[i++] = admins.get(i);
+        }
 
         return arr;
     }

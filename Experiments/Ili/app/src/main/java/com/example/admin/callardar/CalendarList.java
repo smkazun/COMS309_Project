@@ -1,6 +1,8 @@
 package com.example.admin.callardar;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.media.Image;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,22 +19,20 @@ import java.util.ArrayList;
 
 public class CalendarList extends AppCompatActivity {
 
-    ConstraintLayout screen_CalenderCreator;
-    ConstraintLayout mainLayout;
-    Button accountScreen;
+    private ConstraintLayout screen_CalenderCreator;
+    private ConstraintLayout mainLayout;
+    private ConstraintLayout friendList;
+    private Button accountScreen;
 
-    シルヴァホルン she1;
+    private ArrayList<User> people;
 
+    private シルヴァホルン she1;
+
+    @SuppressLint("ClickableViewAccessibility")
     private void Initialize()
     {
         int length = 100;
-
         callenDar[] arr = MainActivity.user.getCalender();
-        screen_CalenderCreator = findViewById(R.id.CalenderCreator);
-        mainLayout = findViewById(R.id.JFrame_activity_calendar_list);
-
-        screen_CalenderCreator.setVisibility(View.INVISIBLE);
-        screen_CalenderCreator.setBackgroundColor(Color.rgb(200,100,50));
 
         for(int i = 0 ; i < arr.length ; i += 1)
         {
@@ -47,28 +47,24 @@ public class CalendarList extends AppCompatActivity {
         she1 = new シルヴァホルン(new Point[]{new Point(0,length - 100), new Point(600,length - 100),new Point(600,length),new Point(0,length)});
 
         Jpanel.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                System.out.println((int)v.getX() + (int)event.getX() + "+" + (int)v.getY() + (int)event.getY());
+                                  {
+                                      @Override
+                                      public boolean onTouch(View v, MotionEvent event)
+                                      {
+                                          if(she1.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
+                                          {
+                                              mainLayout.removeView(screen_CalenderCreator);
+                                              mainLayout.addView(screen_CalenderCreator);
+                                              screen_CalenderCreator.setVisibility(View.VISIBLE);
+                                          }
 
-                if(she1.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
-                {
-                    mainLayout.removeView(screen_CalenderCreator);
-                    mainLayout.addView(screen_CalenderCreator);
-                    screen_CalenderCreator.setVisibility(View.VISIBLE);
-                }
-
-                return false;
-            }
-        }
+                                          return false;
+                                      }
+                                  }
         );
 
         mainLayout.addView(Jpanel);
 
-        Button create = findViewById(R.id.createCalender);
-        create.setOnClickListener(new OnClick());
 //        accountScreen = findViewById(0);
 //        accountScreen.setOnClickListener(new View.OnClickListener()
 //        {
@@ -82,6 +78,110 @@ public class CalendarList extends AppCompatActivity {
 //                //toDO
 //            }
 //        });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void SetComponent()
+    {
+        screen_CalenderCreator = findViewById(R.id.CalenderCreator);
+        mainLayout = findViewById(R.id.JFrame_activity_calendar_list);
+        friendList = findViewById(R.id.JFrame_FriendList);
+
+        screen_CalenderCreator.setVisibility(View.INVISIBLE);
+        screen_CalenderCreator.setBackgroundColor(Color.rgb(200,100,50));
+        friendList.setVisibility(View.INVISIBLE);
+        friendList.setBackgroundColor(Color.rgb(200,100,20));
+
+        final ArrayList<TextView> text = new ArrayList<TextView>();
+        final ArrayList<ImageView> pic = new ArrayList<ImageView>();
+        final ArrayList<シルヴァホルン> sheruns = new ArrayList<シルヴァホルン>();
+        final ArrayList<Integer> shs = new ArrayList<Integer>();
+
+        Button create = findViewById(R.id.createCalender);
+        create.setOnClickListener(new OnClick());
+
+        Button b = findViewById(R.id.closeShow);
+        b.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                friendList.setVisibility(View.INVISIBLE);
+                screen_CalenderCreator.setVisibility(View.VISIBLE);
+
+                for(int i = 0 ; i < text.size() ; i += 1)
+                {
+                    text.get(i).setVisibility(View.INVISIBLE);
+                    pic.get(i).setVisibility(View.INVISIBLE);
+
+                    if(sheruns.get(i).if_Usable)
+                    {
+                        shs.add(10);
+                    }
+                    else
+                    {
+                        shs.add(0);
+                    }
+
+                    sheruns.get(i).if_Usable = false;
+                }
+            }
+        });
+
+        //create the friend panel
+        ImageView showFriendList = findViewById(R.id.show);
+        showFriendList.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                she1.if_Usable = false;
+                friendList.setVisibility(View.VISIBLE);
+                screen_CalenderCreator.setVisibility(View.INVISIBLE);
+
+                for(int i = 0 ; i < text.size() ; i += 1)
+                {
+                    text.get(i).setVisibility(View.VISIBLE);
+                    pic.get(i).setVisibility(View.VISIBLE);
+
+                    if(shs.get(0) == 10)
+                    {
+                        shs.remove(0);
+                        sheruns.get(i).if_Usable = true;
+                    }
+                }
+
+                if(people == null)
+                {
+                    people = new ArrayList<User>();
+                    mainLayout.removeView(friendList);
+                    mainLayout.addView(friendList);
+
+                    for(int i = 0 ; i < text.size() ;)
+                    {
+                        mainLayout.removeView(text.remove(0));
+                        mainLayout.removeView(pic.remove(0));
+                        sheruns.remove(0);
+                    }
+
+                    int x0 = (int) friendList.getX();
+                    int x1 = (int) friendList.getX() + friendList.getWidth();
+                    int y0 = (int) friendList.getY();
+                    int y1 = (int) friendList.getY() + friendList.getHeight() / 2;
+
+                    int x8 = (int) friendList.getX();
+                    int x9 = (int) friendList.getX() + friendList.getWidth();
+                    int y8 = (int) friendList.getY() + y1 + 100;
+                    int y9 = y8 + friendList.getHeight() / 2;
+
+                    she1.if_Usable = false;
+
+                    Algorithm.memberAddingProcess(CalendarList.this, mainLayout, new int[]{x0, x1, y0, y1}, new int[]{x8, x9, y8, y9}, 7, 3, null, MainActivity.user.getFriends(),people, pic, text, sheruns);
+                }
+
+                return false;
+            }
+        });
     }
 
     /**
@@ -102,12 +202,13 @@ public class CalendarList extends AppCompatActivity {
         //toDO
         //this is a 仮
         MainActivity.user.addCalender(calenda);
+        people = null;
         Initialize();
 
         return calenda;
     }
 
-    public class OnClick implements View.OnClickListener
+    private class OnClick implements View.OnClickListener
     {
         @Override
         public void onClick(View v)
@@ -117,7 +218,8 @@ public class CalendarList extends AppCompatActivity {
 
             String name = tf.getText().toString();
             User[] user_Admin = null;
-            User[] user_ToAdd = null;
+            User[] user_ToAdd = new User[people.size()];
+            user_ToAdd = people.toArray(user_ToAdd);
 
             ArrayList<User> admins = new ArrayList<User>();
             ArrayList<User> people = new ArrayList<User>();
@@ -164,6 +266,7 @@ public class CalendarList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_list);
 
+        SetComponent();
         Initialize();
     }
 }
