@@ -1,9 +1,6 @@
-package com.example.admin.callardar;
-
-import android.support.annotation.NonNull;
+package com.example.admin.callardar.Classes;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class User implements Comparable<User>
 {

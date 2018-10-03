@@ -1,4 +1,4 @@
-package com.example.admin.callardar;
+package com.example.admin.callardar.Classes;
 
 public class Point
 {

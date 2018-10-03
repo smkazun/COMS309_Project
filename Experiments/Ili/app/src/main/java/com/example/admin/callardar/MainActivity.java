@@ -9,6 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.admin.callardar.Classes.User;
+import com.example.admin.callardar.Classes.callenDar;
+import com.example.admin.callardar.Connection.Method_Connection;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     protected EditText account;
@@ -48,11 +54,41 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-        //toDO
-        user = null;
-        //user.addFriend...
+        String URL = null;
+        ArrayList<String> message = new ArrayList<String>();
+        ArrayList<String> s = new ArrayList<String>();
 
-        return false;
+        Method_Connection.makeStringReq_POST(URL, s, message);
+
+        if(message.size() == 0)
+        {
+            return false;
+        }
+
+        //toDO friend list
+        URL = null;
+        message = new ArrayList<String>();
+
+        Method_Connection.makeStringReq_GET(URL, message);
+        user = new User(account, null);
+
+        for(int i = 0 ; i < message.size() ; i += 1)
+        {
+            user.addFriends(new User[]{new User(message.get(i), null)});
+        }
+
+        //toDO calladar list
+        URL = null;
+        message = new ArrayList<String>();
+
+        Method_Connection.makeStringReq_GET(URL, message);
+
+        for(int i = 0 ; i < message.size() ; i += 1)
+        {
+            //user.addCalender(new callenDar(message.get(i), message.get(i + 1), ));
+        }
+
+        return true;
     }
 
     private class OnClick implements View.OnClickListener

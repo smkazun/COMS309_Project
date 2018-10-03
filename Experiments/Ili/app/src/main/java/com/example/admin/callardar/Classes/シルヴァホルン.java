@@ -1,4 +1,6 @@
-package com.example.admin.callardar;
+package com.example.admin.callardar.Classes;
+
+import com.example.admin.callardar.Classes.Point;
 
 /**
  * This is a possible ex.

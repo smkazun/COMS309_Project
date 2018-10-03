@@ -2,18 +2,23 @@ package com.example.admin.callardar;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.media.Image;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.admin.callardar.Classes.Algorithm;
+import com.example.admin.callardar.Classes.Point;
+import com.example.admin.callardar.Classes.User;
+import com.example.admin.callardar.Classes.callenDar;
+import com.example.admin.callardar.Classes.シルヴァホルン;
+import com.example.admin.callardar.Connection.Method_Connection;
 
 import java.util.ArrayList;
 
@@ -25,6 +30,7 @@ public class CalendarList extends AppCompatActivity {
     private Button accountScreen;
 
     private ArrayList<User> people;
+    private ArrayList<User> admins;
 
     private シルヴァホルン she1;
 
@@ -154,6 +160,7 @@ public class CalendarList extends AppCompatActivity {
                 if(people == null)
                 {
                     people = new ArrayList<User>();
+                    admins = new ArrayList<User>();
                     mainLayout.removeView(friendList);
                     mainLayout.addView(friendList);
 
@@ -176,7 +183,7 @@ public class CalendarList extends AppCompatActivity {
 
                     she1.if_Usable = false;
 
-                    Algorithm.memberAddingProcess(CalendarList.this, mainLayout, new int[]{x0, x1, y0, y1}, new int[]{x8, x9, y8, y9}, 7, 3, null, MainActivity.user.getFriends(),people, pic, text, sheruns);
+                    Algorithm.memberAddingProcess(CalendarList.this, mainLayout, new int[]{x0, x1, y0, y1}, new int[]{x8, x9, y8, y9}, 4, 6, null, MainActivity.user.getFriends(),people, pic, text, sheruns);
                 }
 
                 return false;
@@ -203,6 +210,7 @@ public class CalendarList extends AppCompatActivity {
         //this is a 仮
         MainActivity.user.addCalender(calenda);
         people = null;
+        admins = null;
         Initialize();
 
         return calenda;
@@ -217,28 +225,27 @@ public class CalendarList extends AppCompatActivity {
             EditText tf = findViewById(R.id.name_Calender);
 
             String name = tf.getText().toString();
-            User[] user_Admin = null;
+
             User[] user_ToAdd = new User[people.size()];
             user_ToAdd = people.toArray(user_ToAdd);
 
-            ArrayList<User> admins = new ArrayList<User>();
-            ArrayList<User> people = new ArrayList<User>();
-
             admins.add(MainActivity.user);
+            User[] user_Admin = new User[admins.size()];
+            user_Admin = admins.toArray(user_Admin);
+
 
             //toDO
             //open a new screen to create the calendar
             //add people in
             //when it is done
-            user_Admin = new User[admins.size()];
-            user_ToAdd = new User[people.size()];
-            user_Admin = admins.toArray(user_Admin);
-            user_ToAdd = admins.toArray(user_ToAdd);
+            String URL = null;
+            ArrayList<String> s = new ArrayList<String>();
+
+            Method_Connection.makeStringReq_POST(URL, null, s);
 
             screen_CalenderCreator.setVisibility(View.INVISIBLE);
             callenDar calender = createCalendarNow(name, user_Admin, user_ToAdd);
-            //todo this should be delete when finished'//'
-            //MainActivity.user.addCalender(calender);
+            MainActivity.user.addCalender(calender);
 
             writeCalendar(calender);
         }

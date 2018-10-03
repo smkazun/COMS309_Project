@@ -1,22 +1,16 @@
-package com.example.admin.callardar;
+package com.example.admin.callardar.Classes;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Icon;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
-import android.support.constraint.solver.widgets.WidgetContainer;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -75,6 +69,7 @@ public class Algorithm
 
         final ArrayList<String> pictures = new ArrayList<String>();
         ArrayList<String> name = new ArrayList<String>();
+        final ArrayList<User> copy_User= new ArrayList<User>();
         final ArrayList<ImageView> copy_Pic = new ArrayList<ImageView>();
         final ArrayList<TextView> copy_Tex = new ArrayList<>();
         final ArrayList<シルヴァホルン> copy_sheruns = new ArrayList<シルヴァホルン>();
@@ -114,6 +109,8 @@ public class Algorithm
             {
 
             }
+
+            copy_User.add(toAdd[i]);
 
             views_Pic.add(v);
             views_Tex.add(v_text);
@@ -165,7 +162,7 @@ public class Algorithm
                         Time_Control.add(copy_Pic.get(i));
                         view_MOVE(new View[]{copy_Pic.get(i), copy_Tex.get(i)}, left_X_end + scale_X * (x_ONE + 10), up_Y_end + scale_Y * (y_ONE + 50));
 
-                        return_Value.add(toAdd[i]);
+                        return_Value.add(copy_User.get(i));
 
                         for(int j = i + 1; j < copy_sheruns.size() ; j += 1)
                         {
@@ -179,6 +176,7 @@ public class Algorithm
                         }
 
                         copy_sheruns.remove(copy_sheruns.size() - 1);
+                        copy_User.remove(i);
                         copy_Pic.remove(i);
                         copy_Tex.remove(i);
                     }
