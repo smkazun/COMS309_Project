@@ -3,6 +3,7 @@ package com.example.admin.callardar.Classes;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.view.MotionEvent;
@@ -36,6 +37,57 @@ public class Algorithm
     }
 
     /**
+     * call it when need it (Ver.2)
+     * @param classDOTthis
+     * @param Layout
+     * @param Zone
+     * @param X_number
+     * @param Y_number
+     * @param addForView
+     * @param toAdd
+     * @param views_Pic
+     * @param views_Tex
+     * @param index
+     */
+    public static void create_ImageAndTexts(Object classDOTthis, Object Layout, int[] Zone, final int X_number, final int Y_number, final String[] addForView, final User[] toAdd, final ArrayList<ImageView> views_Pic, final ArrayList<TextView> views_Tex, int index)
+    {
+        ConstraintLayout layout = (ConstraintLayout) Layout;
+
+        final int left_X_start = Zone[0];
+        final int right_X_start = Zone[1];
+        final int up_Y_start = Zone[2];
+        final int down_Y_start = Zone[3];
+
+        final int x_ONE = (right_X_start - left_X_start) / X_number - 10;
+        final int y_ONE = (down_Y_start - up_Y_start) / Y_number - 50;
+
+        for(int i = index ; i < index + X_number * Y_number ; i += 1)
+        {
+            int scale_X = i % X_number;
+            int scale_Y = i / X_number;
+            Point p1 = new Point(left_X_start + scale_X * (x_ONE + 10),up_Y_start + scale_Y * (y_ONE + 50));
+            Random r = new Random();
+
+            ImageView v = Algorithm.createJPanel((Context) classDOTthis, p1.x, p1.y, new RelativeLayout.LayoutParams(x_ONE, y_ONE), Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255)), 1);
+            TextView v_text = Algorithm.createTextField((Context) classDOTthis, toAdd[i].getName(), p1.x, p1.y + y_ONE, new RelativeLayout.LayoutParams(x_ONE, 40), Color.WHITE, 1);
+
+            try
+            {
+                //((ImageView)v).setImage);
+            }
+            catch(IndexOutOfBoundsException e)
+            {
+
+            }
+
+            views_Pic.add(v);
+            views_Tex.add(v_text);
+            layout.addView(v);
+            layout.addView(v_text);
+        }
+    }
+
+    /**
      * Call it when need it
      * @param classDOTthis
      * @param Layout
@@ -43,14 +95,16 @@ public class Algorithm
      * @param Zone2
      * @param X_number
      * @param Y_number
-     * @param addForView
      * @param toAdd
-     * @param return_Value
+     * @param return_Value_Picture
      * @param views_Pic
      * @param views_Tex
      */
     @SuppressLint("ClickableViewAccessibility")
-    public static void memberAddingProcess(Object classDOTthis, Object Layout, int[] Zone1, int[] Zone2, final int X_number, final int Y_number, final String[] addForView, final User[] toAdd, final ArrayList<User> return_Value, final ArrayList<ImageView> views_Pic, final ArrayList<TextView> views_Tex, final ArrayList<シルヴァホルン> sheruns)
+    public static void memberAddingProcess(final Object classDOTthis, Object Layout, int[] Zone1, int[] Zone2, final int X_number, final int Y_number,
+                                           final User[] toAdd, final ArrayList<User> return_Value_toAdd, final ArrayList<ImageView> return_Value_Picture,
+                                           final ArrayList<TextView> return_Value_Text, final ArrayList<ImageView> views_Pic, final ArrayList<TextView> views_Tex,
+                                           final ArrayList<シルヴァホルン> sheruns1,final ArrayList<シルヴァホルン> sheruns2, final int index1, final int index2)
     {
         final int left_X_start = Zone1[0];
         final int right_X_start = Zone1[1];
@@ -63,108 +117,129 @@ public class Algorithm
 
         final int x_ONE = (right_X_start - left_X_start) / X_number - 10;
         final int y_ONE = (down_Y_start - up_Y_start) / Y_number - 50;
+        final int x_endBy = (right_X_end - left_X_end) / (x_ONE + 10);
+        final int y_endBy = (down_Y_end - up_Y_end) / (y_ONE + 50);
 
-        final int x_endBy = (right_X_end - left_X_end) / x_ONE;
-        final int y_endBy = (down_Y_end - up_Y_end) / y_ONE;
-
-        final ArrayList<String> pictures = new ArrayList<String>();
-        ArrayList<String> name = new ArrayList<String>();
         final ArrayList<User> copy_User= new ArrayList<User>();
         final ArrayList<ImageView> copy_Pic = new ArrayList<ImageView>();
         final ArrayList<TextView> copy_Tex = new ArrayList<>();
-        final ArrayList<シルヴァホルン> copy_sheruns = new ArrayList<シルヴァホルン>();
-        final ArrayList<ImageView> Time_Control = new ArrayList<ImageView>();
 
-        ConstraintLayout layout = (ConstraintLayout) Layout;
+        final ConstraintLayout layout = (ConstraintLayout) Layout;
 
-        for(int i = 0; i < toAdd.length ; i += 1)
-        {
-            if(addForView != null)
-            {
-                pictures.add(addForView[i]);
-            }
-
-            name.add(toAdd[i].getName());
-
+        for(int i = index1; i < index1 + X_number * Y_number ; i += 1) {
             //create zone,logic
             int scale_X = i % X_number;
             int scale_Y = i / X_number;
-            Point p1 = new Point(left_X_start + scale_X * (x_ONE + 10),up_Y_start + scale_Y * (y_ONE + 50));
+            Point p1 = new Point(left_X_start + scale_X * (x_ONE + 10), up_Y_start + scale_Y * (y_ONE + 50));
             Point p2 = new Point(left_X_start + (x_ONE + 10) + scale_X * (x_ONE + 10), up_Y_start + scale_Y * (y_ONE + 50));
             Point p3 = new Point(left_X_start + (x_ONE + 10) + scale_X * (x_ONE + 10), up_Y_start + (y_ONE + 50) + scale_Y * (y_ONE + 50));
-            Point p4 = new Point(left_X_start + scale_X * (x_ONE + 10),up_Y_start + (y_ONE + 50) + scale_Y * (y_ONE + 50));
+            Point p4 = new Point(left_X_start + scale_X * (x_ONE + 10), up_Y_start + (y_ONE + 50) + scale_Y * (y_ONE + 50));
 
-            sheruns.add(new シルヴァホルン(new Point[]{p1, p2, p3, p4}));
-            copy_sheruns.add(new シルヴァホルン(new Point[]{p1, p2, p3, p4}));
-            //create vision
-            Random r = new Random();
-            ImageView v = Algorithm.createJPanel((Context)classDOTthis, p1.x, p1.y, new RelativeLayout.LayoutParams(x_ONE, y_ONE), Color.rgb(r.nextInt(255),r.nextInt(255),r.nextInt(255)), 1);
-            TextView v_text = Algorithm.createTextField((Context)classDOTthis, name.get(i), p1.x, p1.y + y_ONE, new RelativeLayout.LayoutParams(x_ONE, 40), Color.WHITE, 1);
+            sheruns1.add(new シルヴァホルン(new Point[]{p1, p2, p3, p4}));
 
-            try
-            {
-                //((ImageView)v).setImage);
-            }
-            catch(IndexOutOfBoundsException e)
-            {
+            copy_Pic.add(views_Pic.get(i));
+            copy_Tex.add(views_Tex.get(i));
 
-            }
+            //------------------------------
+        }
 
+        for(int i = index2; i < index2 + x_endBy * y_endBy ; i += 1)
+        {
+            int scale_X = i % x_endBy;
+            int scale_Y = i / x_endBy;
+            Point p1 = new Point(left_X_end + scale_X * (x_ONE + 10),up_Y_end + scale_Y * (y_ONE + 50));
+            Point p2 = new Point(left_X_end + (x_ONE + 10) + scale_X * (x_ONE + 10), up_Y_end + scale_Y * (y_ONE + 50));
+            Point p3 = new Point(left_X_end + (x_ONE + 10) + scale_X * (x_ONE + 10), up_Y_end + (y_ONE + 50) + scale_Y * (y_ONE + 50));
+            Point p4 = new Point(left_X_end + scale_X * (x_ONE + 10),up_Y_end + (y_ONE + 50) + scale_Y * (y_ONE + 50));
+
+            sheruns2.add(new シルヴァホルン(new Point[]{p1, p2, p3, p4}));
+
+            sheruns2.get(i).if_Usable = false;
+        }
+
+
+        for(int i = 0 ; i < toAdd.length ; i += 1)
+        {
             copy_User.add(toAdd[i]);
-
-            views_Pic.add(v);
-            views_Tex.add(v_text);
-            copy_Pic.add(v);
-            copy_Tex.add(v_text);
-            layout.addView(v);
-            layout.addView(v_text);
         }
 
         layout.setOnTouchListener(new View.OnTouchListener()
         {
+            private long sysTime = System.currentTimeMillis();
+
             @Override
             public boolean onTouch(View v, MotionEvent event)
             {
-                for(int i = 0 ; i < copy_sheruns.size() ; i += 1)
-                {
-                    if(copy_sheruns.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
-                    {
-                        int scale_X = return_Value.size() % x_endBy;
-                        int scale_Y = return_Value.size() / x_endBy;
-                        int moving_X = (int)copy_Pic.get(i).getX();
-                        int moving_Y = (int)copy_Pic.get(i).getY();
-                        int moving_X_cur = 0;
-                        int moving_Y_cur = 0;
+                if(System.currentTimeMillis() - sysTime <= 200)return false;
 
+                sysTime = System.currentTimeMillis();
+
+                for(int i = index1 ; i < Math.min(copy_User.size(), index1 + X_number * Y_number) ; i += 1)
+                {
+                    if(sheruns1.get(i - index1).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
+                    {
                         //ASSGIEND ?
-                        int xC = (return_Value.size() - 1) % x_endBy;
-                        int yC = (return_Value.size() - 1) / x_endBy;
+                        int xC = (return_Value_Picture.size() - 1) % x_endBy;
+                        int yC = (return_Value_Picture.size() - 1) / x_endBy;
                         int HxC = left_X_end + xC * (x_ONE + 10);
                         int HyC = up_Y_end + yC * (y_ONE + 50);
 
                         //broken
-                        if(Time_Control.size() >= 1 && (Time_Control.get( Time_Control.size() - 1 ).getX() != HxC || Time_Control.get( Time_Control.size() - 1 ).getY() != HyC))
+                        if(return_Value_Picture.size() >= 1 && (return_Value_Picture.get(0).getX() != left_X_end || return_Value_Picture.get(0).getY() != up_Y_end))
                         {
                             return false;
                         }
 
-                        for(int j = 0; j < copy_Pic.size() / X_number; j += 1)
+
+                        for(int j = 0; j < Math.min(copy_User.size(), index1 + X_number * Y_number) / X_number; j += 1)
                         {
                             HxC = left_X_start + (X_number - 1) * (x_ONE + 10);
                             HyC = up_Y_start + j * (y_ONE + 50);
 
-                            if(Time_Control.size() >= 1 && (copy_Pic.get((j + 1) * X_number - 1)).getX() != HxC || copy_Pic.get((j + 1) * X_number - 1).getY() != HyC)
+                            if(return_Value_Picture.size() >= 1 && (copy_Pic.get((j + index1 + 1) * X_number - 1)).getX() != HxC || copy_Pic.get((j + index1 + 1) * X_number - 1).getY() != HyC)
                             {
                                 return false;
                             }
                         }
 
-                        Time_Control.add(copy_Pic.get(i));
-                        view_MOVE(new View[]{copy_Pic.get(i), copy_Tex.get(i)}, left_X_end + scale_X * (x_ONE + 10), up_Y_end + scale_Y * (y_ONE + 50));
+                        int scale_X = return_Value_Picture.size() % x_endBy;
+                        int scale_Y = return_Value_Picture.size() / x_endBy;
+                        int moving_X = (int)copy_Pic.get(i).getX();
+                        int moving_Y = (int)copy_Pic.get(i).getY();
+                        int moving_X_cur = 0;
+                        int moving_Y_cur = 0;
 
-                        return_Value.add(copy_User.get(i));
+                        view_MOVE(new View[]{copy_Pic.get(i), copy_Tex.get(i)}, left_X_end, up_Y_end);
 
-                        for(int j = i + 1; j < copy_sheruns.size() ; j += 1)
+                        //END-------------
+                        int j = 0;
+
+                        for(j = index2 ; j < Math.min(return_Value_Picture.size(), index2 + x_endBy * y_endBy) - 1; j += 1)
+                        {
+                            scale_X = (j + 1) % x_endBy;
+                            scale_Y = (j + 1) / x_endBy;
+
+                            view_MOVE(new View[]{return_Value_Picture.get(j), return_Value_Text.get(j)}, left_X_end + scale_X * (x_ONE + 10), up_Y_end + scale_Y * (y_ONE + 50));
+                        }
+
+                        return_Value_Picture.add(0, copy_Pic.get(i));
+                        return_Value_Text.add(0, copy_Tex.get(i));
+                        return_Value_toAdd.add(0, copy_User.get(i));
+
+                        if(index2 + x_endBy * y_endBy < return_Value_Picture.size())
+                        {
+                            view_MOVE(new View[]{return_Value_Picture.get(x_endBy * y_endBy), return_Value_Text.get(x_endBy * y_endBy)}, (float)return_Value_Picture.get(x_endBy * y_endBy).getX() + 500, return_Value_Picture.get(x_endBy * y_endBy).getY());
+                        }
+                        else if(return_Value_Picture.size() >= 2)
+                        {
+                            scale_X = (j + 1) % x_endBy;
+                            scale_Y = (j + 1) / x_endBy;
+
+                            view_MOVE(new View[]{return_Value_Picture.get(j + 1), return_Value_Text.get(j + 1)}, left_X_end + scale_X * (x_ONE + 10), up_Y_end + scale_Y * (y_ONE + 50));
+                        }
+
+                        //FROM--------------
+                        for(j = i + 1; j < Math.min(copy_User.size(), index1 + X_number * Y_number); j += 1)
                         {
                             moving_X_cur = (int)copy_Pic.get(j).getX();
                             moving_Y_cur = (int)copy_Pic.get(j).getY();
@@ -175,10 +250,145 @@ public class Algorithm
                             moving_Y = moving_Y_cur;
                         }
 
-                        copy_sheruns.remove(copy_sheruns.size() - 1);
+                        if(j < copy_User.size())
+                        {
+                            if(copy_Pic.size() == j)
+                            {
+                                Random r = new Random();
+                                ImageView newImage = Algorithm.createJPanel((Context) classDOTthis, right_X_start, down_Y_start, new RelativeLayout.LayoutParams(x_ONE, y_ONE), Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255)), 1);
+                                TextView newText = Algorithm.createTextField((Context) classDOTthis, copy_User.get(j).getName(), right_X_start, down_Y_start + y_ONE, new RelativeLayout.LayoutParams(x_ONE, 40), Color.WHITE, 1);
+
+                                view_MOVE(new View[]{newImage, newText}, moving_X, moving_Y);
+
+                                views_Pic.add(newImage);
+                                views_Tex.add(newText);
+                                copy_Pic.add(newImage);
+                                copy_Tex.add(newText);
+                                layout.addView(newImage);
+                                layout.addView(newText);
+                            }
+                            else
+                            {
+                                view_MOVE(new View[]{copy_Pic.get(j),copy_Tex.get(j)}, moving_X, moving_Y);
+                            }
+                        }
+
                         copy_User.remove(i);
                         copy_Pic.remove(i);
                         copy_Tex.remove(i);
+
+                        if(index1 + X_number * Y_number > copy_User.size())
+                        {
+                            sheruns1.get(copy_User.size() - index1).if_Usable = false;
+                        }
+                        if ( ! sheruns2.get(x_endBy * y_endBy - 1).if_Usable && ! sheruns2.get(return_Value_Picture.size() - 1 - index2).if_Usable)
+                        {
+                            sheruns2.get(return_Value_Picture.size() - 1 - index2).if_Usable = true;
+                        }
+                    }
+                }
+
+                //---------------------------------------------DOWN---------------------------------------------
+
+                for(int i = index2 ; i < Math.min(return_Value_Picture.size(), index2 + x_endBy * y_endBy) ; i += 1)
+                {
+                    if(sheruns2.get(i - index2).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
+                    {
+                        //ASSGIEND ?
+                        int xC = (copy_Pic.size() - 1) % X_number;
+                        int yC = (copy_Pic.size() - 1) / X_number;
+                        int HxC = left_X_end + xC * (x_ONE + 10);
+                        int HyC = up_Y_end + yC * (y_ONE + 50);
+
+                        //broken
+                        if(copy_Pic.size() >= 1 && (copy_Pic.get(0).getX() != left_X_start || copy_Pic.get(0).getY() != up_Y_start))
+                        {
+                            return false;
+                        }
+
+                        for(int j = 0; j < Math.min(return_Value_Picture.size(), index1 + x_endBy * y_endBy) / x_endBy; j += 1)
+                        {
+                            HxC = left_X_end + (x_endBy - 1) * (x_ONE + 10);
+                            HyC = up_Y_end + j * (y_ONE + 50);
+
+                            if(copy_Pic.size() >= 1 && (return_Value_Picture.get((j + index2 + 1) * x_endBy - 1)).getX() != HxC || return_Value_Picture.get((j + index2 + 1) * x_endBy - 1).getY() != HyC)
+                            {
+                                return false;
+                            }
+                        }
+
+                        int scale_X = copy_Pic.size() % X_number;
+                        int scale_Y = copy_Pic.size() / X_number;
+                        int moving_X = (int)return_Value_Picture.get(i).getX();
+                        int moving_Y = (int)return_Value_Picture.get(i).getY();
+                        int moving_X_cur = 0;
+                        int moving_Y_cur = 0;
+
+                        view_MOVE(new View[]{return_Value_Picture.get(i), return_Value_Text.get(i)}, left_X_start, up_Y_start);
+
+                        //END-------------
+                        int j = 0;
+
+                        for(j = index1 ; j < Math.min(copy_Pic.size(), index1 + X_number * Y_number) - 1 ; j += 1)
+                        {
+                            scale_X = (j + 1) % X_number;
+                            scale_Y = (j + 1) / X_number;
+
+                            view_MOVE(new View[]{copy_Pic.get(j), copy_Tex.get(j)}, left_X_start + scale_X * (x_ONE + 10), up_Y_start + scale_Y * (y_ONE + 50));
+                        }
+
+                        copy_Pic.add(0, return_Value_Picture.get(i));
+                        copy_Tex.add(0, return_Value_Text.get(i));
+                        copy_User.add(0,return_Value_toAdd.get(i));
+
+                        if(index1 + X_number * Y_number < copy_Pic.size())
+                        {
+                            view_MOVE(new View[]{copy_Pic.get(X_number * Y_number), copy_Tex.get(X_number * Y_number)}, copy_Pic.get(X_number * Y_number).getX() + 500, copy_Pic.get(X_number * Y_number).getY());
+                        }
+                        else if(copy_Pic.size() >= 2)
+                        {
+                            scale_X = (j + 1) % x_endBy;
+                            scale_Y = (j + 1) / x_endBy;
+
+                            view_MOVE(new View[]{copy_Pic.get(j + 1), copy_Tex.get(j + 1)}, left_X_start + scale_X * (x_ONE + 10), up_Y_start + scale_Y * (y_ONE + 50));
+                        }
+
+                        //FROM--------------
+                        for(j = i + 1; j < Math.min(return_Value_Picture.size(), index2 + x_endBy * y_endBy); j += 1)
+                        {
+                            moving_X_cur = (int)return_Value_Picture.get(j).getX();
+                            moving_Y_cur = (int)return_Value_Picture.get(j).getY();
+
+                            view_MOVE(new View[]{return_Value_Picture.get(j), return_Value_Text.get(j)}, moving_X, moving_Y);
+
+                            moving_X = moving_X_cur;
+                            moving_Y = moving_Y_cur;
+                        }
+
+                        if(j < return_Value_Picture.size())
+                        {
+                            Random r = new Random();
+
+                            view_MOVE(new View[]{return_Value_Picture.get(j), return_Value_Text.get(j)}, moving_X, moving_Y);
+                        }
+
+                        return_Value_Picture.remove(i);
+                        return_Value_Text.remove(i);
+                        return_Value_toAdd.remove(i);
+
+                        if(index2 + x_endBy * y_endBy > return_Value_Picture.size())
+                        {
+                            sheruns2.get(return_Value_Picture.size() - index2).if_Usable = false;
+                        }
+
+                        if(copy_Pic.size() == 1)
+                        {
+                            sheruns1.get(0).if_Usable = true;
+                        }
+                        else if ( ! sheruns1.get(X_number * Y_number - 1).if_Usable && ! sheruns1.get(copy_Pic.size() - 1 - index1).if_Usable)
+                        {
+                            sheruns1.get(copy_Pic.size() - 1 - index1).if_Usable = true;
+                        }
                     }
                 }
 
@@ -294,6 +504,7 @@ public class Algorithm
                     }
 
                     handler.removeCallbacks(t);
+
                     return;
                 }
 

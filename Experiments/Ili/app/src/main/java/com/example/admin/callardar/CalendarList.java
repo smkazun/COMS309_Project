@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,6 +29,9 @@ public class CalendarList extends AppCompatActivity {
     private ConstraintLayout mainLayout;
     private ConstraintLayout friendList;
     private Button accountScreen;
+    private ImageView trans;
+
+    private ArrayList<TextView> calT;
 
     private ArrayList<User> people;
     private ArrayList<User> admins;
@@ -38,12 +42,14 @@ public class CalendarList extends AppCompatActivity {
     private void Initialize()
     {
         int length = 100;
+        calT = new ArrayList<TextView>();
         callenDar[] arr = MainActivity.user.getCalender();
 
         for(int i = 0 ; i < arr.length ; i += 1)
         {
             TextView tf = Algorithm.createTextField(CalendarList.this, arr[i].toString(),0, length - 100,new RelativeLayout.LayoutParams(600,100), Color.YELLOW,(float)0.9);
             mainLayout.addView(tf);
+            calT.add(tf);
 
             length += 100;
         }
@@ -59,9 +65,12 @@ public class CalendarList extends AppCompatActivity {
                                       {
                                           if(she1.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
                                           {
+                                              mainLayout.removeView(trans);
+                                              mainLayout.addView(trans);
                                               mainLayout.removeView(screen_CalenderCreator);
                                               mainLayout.addView(screen_CalenderCreator);
                                               screen_CalenderCreator.setVisibility(View.VISIBLE);
+                                              trans.setVisibility(View.VISIBLE);
                                           }
 
                                           return false;
@@ -92,6 +101,10 @@ public class CalendarList extends AppCompatActivity {
         screen_CalenderCreator = findViewById(R.id.CalenderCreator);
         mainLayout = findViewById(R.id.JFrame_activity_calendar_list);
         friendList = findViewById(R.id.JFrame_FriendList);
+        trans = findViewById(R.id.Transparent);
+        trans.setBackgroundColor(Color.BLACK);
+        trans.setAlpha((float)0.8);
+        trans.setVisibility(View.INVISIBLE);
 
         screen_CalenderCreator.setVisibility(View.INVISIBLE);
         screen_CalenderCreator.setBackgroundColor(Color.rgb(200,100,50));
@@ -100,8 +113,13 @@ public class CalendarList extends AppCompatActivity {
 
         final ArrayList<TextView> text = new ArrayList<TextView>();
         final ArrayList<ImageView> pic = new ArrayList<ImageView>();
-        final ArrayList<シルヴァホルン> sheruns = new ArrayList<シルヴァホルン>();
-        final ArrayList<Integer> shs = new ArrayList<Integer>();
+        final ArrayList<TextView> return_Text = new ArrayList<TextView>();
+        final ArrayList<ImageView> return_Pic = new ArrayList<ImageView>();
+        final ArrayList<シルヴァホルン> sheruns1 = new ArrayList<シルヴァホルン>();
+        final ArrayList<シルヴァホルン> sheruns2 = new ArrayList<シルヴァホルン>();
+
+        final ArrayList<Integer> she1_f = new ArrayList<Integer>();
+        final ArrayList<Integer> she2_f = new ArrayList<Integer>();
 
         Button create = findViewById(R.id.createCalender);
         create.setOnClickListener(new OnClick());
@@ -115,26 +133,46 @@ public class CalendarList extends AppCompatActivity {
                 friendList.setVisibility(View.INVISIBLE);
                 screen_CalenderCreator.setVisibility(View.VISIBLE);
 
-                for(int i = 0 ; i < text.size() ; i += 1)
-                {
-                    text.get(i).setVisibility(View.INVISIBLE);
-                    pic.get(i).setVisibility(View.INVISIBLE);
+                she1_f.clear();
+                she2_f.clear();
 
-                    if(sheruns.get(i).if_Usable)
+                for(int i = 0 ; i < sheruns1.size() ; i += 1)
+                {
+                    if(sheruns1.get(i).if_Usable)
                     {
-                        shs.add(10);
+                        sheruns1.get(i).if_Usable = false;
+                        she1_f.add(10);
                     }
                     else
                     {
-                        shs.add(0);
+                        she1_f.add(0);
                     }
+                }
 
-                    sheruns.get(i).if_Usable = false;
+                for(int i = 0 ; i < sheruns2.size() ; i += 1)
+                {
+                    if(sheruns2.get(i).if_Usable)
+                    {
+                        sheruns2.get(i).if_Usable = false;
+                        she2_f.add(10);
+                    }
+                    else
+                    {
+                        she2_f.add(0);
+                    }
+                }
+                for(int i = 0 ; i < pic.size() ; i += 1)
+                {
+                    text.get(i).setVisibility(View.INVISIBLE);
+                    pic.get(i).setVisibility(View.INVISIBLE);
                 }
             }
         });
 
         //create the friend panel
+        final int L = 4;
+        final int H = 3;
+
         ImageView showFriendList = findViewById(R.id.show);
         showFriendList.setOnTouchListener(new View.OnTouchListener()
         {
@@ -145,30 +183,69 @@ public class CalendarList extends AppCompatActivity {
                 friendList.setVisibility(View.VISIBLE);
                 screen_CalenderCreator.setVisibility(View.INVISIBLE);
 
-                for(int i = 0 ; i < text.size() ; i += 1)
+                for(int i = 0 ; i < sheruns1.size() ; i += 1)
+                {
+                    if(she1_f.get(i) == 10)
+                    {
+                        sheruns1.get(i).if_Usable = true;
+                    }
+                }
+                for(int i = 0 ; i < sheruns2.size() ; i += 1)
+                {
+                    if(she2_f.get(i) == 10)
+                    {
+                        sheruns2.get(i).if_Usable = true;
+                    }
+                }
+
+                for(int i = 0 ; i < pic.size() ; i++)
                 {
                     text.get(i).setVisibility(View.VISIBLE);
                     pic.get(i).setVisibility(View.VISIBLE);
-
-                    if(shs.get(0) == 10)
-                    {
-                        shs.remove(0);
-                        sheruns.get(i).if_Usable = true;
-                    }
                 }
 
                 if(people == null)
                 {
+                    //mainLayout.setBackgroundColor(Color.BLACK);
+
+                    ImageView j1 = findViewById(R.id.arrow_Left_up);
+                    ImageView j2 = findViewById(R.id.arrow_Right_Up);
+                    changeTOnext cto1 = new changeTOnext(false, L * H);
+                    changeTOnext cto2 = new changeTOnext(true, L * H);
+
+                    j1.setOnTouchListener(cto1);
+                    j2.setOnTouchListener(cto2);
+
                     people = new ArrayList<User>();
                     admins = new ArrayList<User>();
+
                     mainLayout.removeView(friendList);
                     mainLayout.addView(friendList);
 
-                    for(int i = 0 ; i < text.size() ;)
+
+                    for(int i = 0 ; i < sheruns1.size() ;)
                     {
-                        mainLayout.removeView(text.remove(0));
+                        sheruns1.remove(0);
+                    }
+                    for(int i = 0 ; i < sheruns2.size() ;)
+                    {
+                        sheruns2.remove(0);
+                    }
+
+                    for(int i = 0 ; i < pic.size() ;)
+                    {
+                        //toDO
+                        text.get(0).setVisibility(View.INVISIBLE);
+                        text.remove(0);
+                      //  mainLayout.removeView(text.remove(0));
                         mainLayout.removeView(pic.remove(0));
-                        sheruns.remove(0);
+                    }
+                    for(int i = 0 ; i < return_Pic.size() ;)
+                    {
+                        return_Text.get(0).setVisibility(View.INVISIBLE);
+                        return_Text.remove(0);
+                    //    mainLayout.removeView(return_Text.remove(0));
+                        mainLayout.removeView(return_Pic.remove(0));
                     }
 
                     int x0 = (int) friendList.getX();
@@ -178,12 +255,13 @@ public class CalendarList extends AppCompatActivity {
 
                     int x8 = (int) friendList.getX();
                     int x9 = (int) friendList.getX() + friendList.getWidth();
-                    int y8 = (int) friendList.getY() + y1 + 100;
-                    int y9 = y8 + friendList.getHeight() / 2;
+                    int y8 = (int) friendList.getY() + friendList.getHeight() / 2  + 100;
+                    int y9 = (int) friendList.getY() + friendList.getHeight();
 
                     she1.if_Usable = false;
 
-                    Algorithm.memberAddingProcess(CalendarList.this, mainLayout, new int[]{x0, x1, y0, y1}, new int[]{x8, x9, y8, y9}, 4, 6, null, MainActivity.user.getFriends(),people, pic, text, sheruns);
+                    Algorithm.create_ImageAndTexts(CalendarList.this, mainLayout, new int[]{x0, x1, y0, y1}, L, H, null, MainActivity.user.getFriends(), pic, text, cto1.index);
+                    Algorithm.memberAddingProcess(CalendarList.this, mainLayout, new int[]{x0, x1, y0, y1}, new int[]{x8, x9, y8, y9}, L, H, MainActivity.user.getFriends(),people, return_Pic, return_Text, pic, text, sheruns1, sheruns2, cto1.index, cto2.index);
                 }
 
                 return false;
@@ -216,11 +294,9 @@ public class CalendarList extends AppCompatActivity {
         return calenda;
     }
 
-    private class OnClick implements View.OnClickListener
-    {
+    private class OnClick implements View.OnClickListener {
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             //todo add user and people
             EditText tf = findViewById(R.id.name_Calender);
 
@@ -241,13 +317,55 @@ public class CalendarList extends AppCompatActivity {
             String URL = null;
             ArrayList<String> s = new ArrayList<String>();
 
-            Method_Connection.makeStringReq_POST(URL, null, s);
+//            Method_Connection.makeStringReq_POST(URL, null, s);
 
             screen_CalenderCreator.setVisibility(View.INVISIBLE);
+            trans.setVisibility(View.INVISIBLE);
             callenDar calender = createCalendarNow(name, user_Admin, user_ToAdd);
             MainActivity.user.addCalender(calender);
 
             writeCalendar(calender);
+        }
+    }
+
+    private class changeTOnext implements View.OnTouchListener
+    {
+        private int index;
+        private boolean way;
+        private boolean isRunning;
+
+        private final int count;
+
+        private changeTOnext(boolean way, int ONE)
+        {
+            this.way = way;
+            count = ONE;
+            isRunning = true;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event)
+        {
+            if( ! isRunning)
+            {
+                return false;
+            }
+
+            if(way)
+            {
+                index += count;
+            }
+            else
+            {
+                index = Math.max(0, index - count);
+            }
+
+            return false;
+        }
+
+        public void setRunning(boolean run)
+        {
+            isRunning = run;
         }
     }
 
