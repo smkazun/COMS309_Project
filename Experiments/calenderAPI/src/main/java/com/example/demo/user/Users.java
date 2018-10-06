@@ -22,9 +22,9 @@ public class Users {
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Integer id;
 	
-	@Column(name = "first_name")
+	@Column(name = "name")
 	@NotFound(action = NotFoundAction.IGNORE)
-	private String firstName;
+	private String name;
 	
 	@Column(name = "email")
 	@NotFound(action = NotFoundAction.IGNORE)
@@ -44,11 +44,11 @@ public class Users {
 	}
 	
 	public String getName() {
-		return this.firstName;
+		return name;
 	}
 	
 	public void setName(String name) {
-		name = firstName;
+		this.name = name;
 	}
 	
 	public String getEmail() {

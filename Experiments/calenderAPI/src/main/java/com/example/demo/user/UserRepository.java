@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.user.Users;
 @Repository
-public interface UserRepository extends CrudRepository<Users, Integer>{ //Crud
+public interface UserRepository extends CrudRepository<Users, Integer>{
 
 		//public List<Users> findAll();
 		
