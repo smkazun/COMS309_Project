@@ -12,38 +12,47 @@ import org.hibernate.annotations.NotFoundAction;
 import org.springframework.core.style.ToStringCreator;
 
 @Entity
-@Table(name = "accessCalander")
-public class accessCalander {
+@Table(name = "Evnet")
+public class event {
 	
 	@Id
-	@Column(name = "InstructorId")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "EventId")
 	@NotFound(action = NotFoundAction.IGNORE)
-	private Integer InstructorId;
+	private Integer EventId;
 	
-	@Id
 	@Column(name = "CalanderId")
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Integer CalanderId;
 	
-	public Integer getInstructorID() {
-		return InstructorId;
+	@Column(name =  "Time")
+	@NotFound(action = NotFoundAction.IGNORE)
+	private Integer Time;
+	
+	public Integer getEventId() {
+		return EventId;
 	}
-	
-	
 	
 	public Integer getCalanderId() {
 		return CalanderId;
 	}
 	
+	public Integer getTime() {
+		return Time;
+	}
 	
-	
+	public void setTime (Integer Time) {
+		this.Time = Time;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringCreator(this)
 				
-				.append("CalanderId", this.getInstructorID())
-				.append("CalanderId", this.getCalanderId()).toString();
+				.append("EventId", this.getEventId())
+				.append("CalanderId", this.getCalanderId())
+				.append("Time", this.getTime()).toString();
 		
 	}
-
+	
 }
