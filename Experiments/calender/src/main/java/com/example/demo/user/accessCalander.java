@@ -29,6 +29,9 @@ public class accessCalander {
 		return InstructorId;
 	}
 	
+	public void setInstructorId(Integer id) {
+		this.InstructorId = id;
+	}
 	
 	
 	public Integer getCalanderId() {
