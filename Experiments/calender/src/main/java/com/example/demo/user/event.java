@@ -44,6 +44,14 @@ public class event {
 	public void setTime (Integer Time) {
 		this.Time = Time;
 	}
+	
+	public void setEventId(Integer Id) {
+		this.EventId = Id;
+	}
+	
+	public void setCalanderId(Integer Id) {
+		this.CalanderId = Id;
+	}
 
 	@Override
 	public String toString() {
