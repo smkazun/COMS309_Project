@@ -21,7 +21,7 @@ import com.example.demo.user.UserRepository;
 
 
 @RestController
-//@RequestMapping(path = "/users")
+@RequestMapping(path = "/users")
 public class UserController {
 	
 	@Autowired
@@ -57,14 +57,14 @@ public class UserController {
 	
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
-	@RequestMapping(method = RequestMethod.POST, path = "/users/new")
+	@RequestMapping(method = RequestMethod.POST, path = "/new")
 	public @ResponseBody String saveUser(@RequestBody Users user) {
 		userRepository.save(user);
 		return "New User " + user.getName() + " saved";
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/users/all")
+	@RequestMapping(method = RequestMethod.GET, path = "/all")
 	@ResponseBody
 	public List<Users> getAllUsers(){
 		logger.info("Entered into Controller Layer");
@@ -73,7 +73,7 @@ public class UserController {
 		return results;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/users/{userId}")
+	@RequestMapping(method = RequestMethod.GET, path = "/{userId}")
 	public Optional<Users> findUserById(@PathVariable("userId") int id){
 		logger.info("Entered into Controller Layer");
 		Optional<Users> results = userRepository.findById(id);
