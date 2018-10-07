@@ -1,6 +1,7 @@
 package event;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -13,11 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.demo.user.UserRepository;
 import com.example.demo.user.Users;
+//import com.example.demo.user.event;
 
 
 
 @RestController
-@RequestMapping(path = "/events")
+//@RequestMapping(path = "/events")
 public class EventController {
 	
 	@Autowired
@@ -42,7 +44,21 @@ public class EventController {
 		return results;
 	}
 		
+	@RequestMapping(method = RequestMethod.GET, path = "/events/{eventId}")
+	public Optional<Events> findEventById(@PathVariable("eventId") int EventId){
+		logger.info("Entered into Controller Layer");
+		Optional<Events> results = eventRepository.findById(EventId);
+		return results;
+	}
 	
+	@RequestMapping(method = RequestMethod.GET, path = "/events/{calendarId}")
+	public Optional<Events> findCalendarById(@PathVariable("calendarId") int CalendarId){
+		logger.info("Entered into Controller Layer");
+		Optional<Events> results = eventRepository.findById(CalendarId);
+		return results;
+	}
+	
+
 	
 	
 }

@@ -21,7 +21,7 @@ import com.example.demo.user.UserRepository;
 
 
 @RestController
-@RequestMapping(path = "/users")
+//@RequestMapping(path = "/users")
 public class UserController {
 	
 	@Autowired
@@ -79,5 +79,6 @@ public class UserController {
 		Optional<Users> results = userRepository.findById(id);
 		return results;
 	}
+	
 	
 }

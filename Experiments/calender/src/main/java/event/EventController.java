@@ -19,7 +19,7 @@ import com.example.demo.user.event;
 
 
 @RestController
-@RequestMapping(path = "/event")
+//@RequestMapping(path = "/event")
 public class EventController {
 	
 	@Autowired
@@ -36,7 +36,7 @@ public class EventController {
 	}
 	
 	//gets all events
-	@RequestMapping(method = RequestMethod.GET, path = "/events")
+	@RequestMapping(method = RequestMethod.GET, path = "/events/all")
 	public List<event> getAllEvents() {
 		logger.info("Entered into Controller layer");
 		List<event> results =  (List<event>) eventRepository.findAll();
@@ -45,6 +45,19 @@ public class EventController {
 	}
 		
 	
+	@RequestMapping(method = RequestMethod.GET, path = "/events/{eventId}")
+	public Optional<event> findEventById(@PathVariable("eventId") int EventId){
+		logger.info("Entered into Controller Layer");
+		Optional<event> results = eventRepository.findById(EventId);
+		return results;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, path = "/events/{calendarId}")
+	public Optional<event> findCalendarById(@PathVariable("calendarId") int CalendarId){
+		logger.info("Entered into Controller Layer");
+		Optional<event> results = eventRepository.findById(CalendarId);
+		return results;
+	}
 	
 	
 }
