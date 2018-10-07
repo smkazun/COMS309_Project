@@ -17,7 +17,7 @@ import com.example.demo.user.Users;
 
 
 @RestController
-@RequestMapping(path = "/event")
+@RequestMapping(path = "/events")
 public class EventController {
 	
 	@Autowired
@@ -28,7 +28,7 @@ public class EventController {
 	//save new event
 	@RequestMapping(method = RequestMethod.POST, path = "/events/new")
 	public String saveEvent(Events event) {
-		//eventRepository.save(event);
+		eventRepository.save(event);
 		return "New event saved";
 		
 	}
@@ -37,10 +37,9 @@ public class EventController {
 	@RequestMapping(method = RequestMethod.GET, path = "/events")
 	public List<Events> getAllEvents() {
 		logger.info("Entered into Controller layer");
-		//List<Events> results =  eventRepository.findAll();
-		//logger.info("number of records fetched: " + results.size());
-		//return results;
-		return null;
+		List<Events> results =  (List<Events>) eventRepository.findAll();
+		logger.info("number of records fetched: " + results.size());
+		return results;
 	}
 		
 	

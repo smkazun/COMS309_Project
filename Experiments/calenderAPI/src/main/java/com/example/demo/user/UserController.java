@@ -21,7 +21,7 @@ import com.example.demo.user.UserRepository;
 
 
 @RestController
-@RequestMapping(path = "/demo")
+@RequestMapping(path = "/users")
 public class UserController {
 	
 	@Autowired
@@ -64,7 +64,7 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/users")
+	@RequestMapping(method = RequestMethod.GET, path = "/users/all")
 	@ResponseBody
 	public List<Users> getAllUsers(){
 		logger.info("Entered into Controller Layer");
