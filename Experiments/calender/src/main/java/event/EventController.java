@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.demo.user.UserRepository;
 import com.example.demo.user.Users;
+import event.EventController;
+import com.example.demo.user.event;
 
 
 
@@ -27,20 +29,19 @@ public class EventController {
 	
 	//save new event
 	@RequestMapping(method = RequestMethod.POST, path = "/events/new")
-	public String saveEvent(Events event) {
-		//eventRepository.save(event);
+	public String saveEvent(event event) {
+		eventRepository.save(event);
 		return "New event saved";
 		
 	}
 	
 	//gets all events
 	@RequestMapping(method = RequestMethod.GET, path = "/events")
-	public List<Events> getAllEvents() {
+	public List<event> getAllEvents() {
 		logger.info("Entered into Controller layer");
-		//List<Events> results =  eventRepository.findAll();
-		//logger.info("number of records fetched: " + results.size());
-		//return results;
-		return null;
+		List<event> results =  (List<event>) eventRepository.findAll();
+		logger.info("number of records fetched: " + results.size());
+		return results;
 	}
 		
 	
