@@ -2,12 +2,11 @@ package com.example.admin.callardar;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,7 +18,6 @@ import com.example.admin.callardar.Classes.Point;
 import com.example.admin.callardar.Classes.User;
 import com.example.admin.callardar.Classes.callenDar;
 import com.example.admin.callardar.Classes.シルヴァホルン;
-import com.example.admin.callardar.Connection.Method_Connection;
 
 import java.util.ArrayList;
 

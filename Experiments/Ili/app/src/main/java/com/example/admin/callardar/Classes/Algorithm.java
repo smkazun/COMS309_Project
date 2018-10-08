@@ -3,7 +3,6 @@ package com.example.admin.callardar.Classes;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.view.MotionEvent;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.Callable;
 
 public class Algorithm
 {
@@ -538,6 +538,30 @@ public class Algorithm
                     }
                 }
             }
+        }
+    }
+
+    public static class Stop implements Callable<Integer>
+    {
+        private long WAIT;
+
+        public Stop(int WAIT)
+        {
+            this.WAIT = WAIT;
+        }
+
+        @Override
+        public Integer call() throws Exception
+        {
+            long sysTime = System.currentTimeMillis();
+            long currentTime = System.currentTimeMillis();
+
+            while(currentTime - sysTime <= WAIT)
+            {
+                currentTime = System.currentTimeMillis();
+            }
+
+            return 10;
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.admin.callardar.Connection;
-;
+
 import android.app.Application;
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
@@ -15,22 +16,16 @@ public class AppController extends Application {
 
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
+    private Context context;
 
-    private static AppController mInstance;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mInstance = this;
-    }
-
-    public static synchronized AppController getInstance() {
-        return mInstance;
+    public AppController(Context context)
+    {
+        this.context = context;
     }
 
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
-            mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+            mRequestQueue = Volley.newRequestQueue(context);
         }
 
         return mRequestQueue;
