@@ -1,4 +1,0 @@
-#Mon Oct 08 05:14:17 CST 2018
-base.0=F\:\\FFOutput\\VC_3_TeamNULL\\Experiments\\Ili\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\45
-path.0=classes.dex
-renamed.0=classes.dex
