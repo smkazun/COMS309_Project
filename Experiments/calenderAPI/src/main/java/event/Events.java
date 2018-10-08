@@ -21,7 +21,7 @@ public class Events {
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Integer EventId;
 	
-	@Column(name = "CalanderId")
+	@Column(name = "CalanderId") //fix spelling TODO
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Integer CalanderId;
 	
