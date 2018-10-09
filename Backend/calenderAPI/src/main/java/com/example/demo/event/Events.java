@@ -12,7 +12,7 @@ import org.hibernate.annotations.NotFoundAction;
 import org.springframework.core.style.ToStringCreator;
 
 @Entity
-@Table(name = "event")
+@Table(name = "Event")
 public class Events {
 	
 	@Id
