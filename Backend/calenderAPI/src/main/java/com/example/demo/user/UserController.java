@@ -44,7 +44,7 @@ public class UserController {
 	*/
 	
 	
-
+	//TODO This method can be in used in place of getAllUsers() or vice-versa
 	@GetMapping(path="/test")
 	public @ResponseBody Iterable<Users> getAllUsersTest() {
 		// This returns a JSON or XML with the users
@@ -81,14 +81,25 @@ public class UserController {
 		return results;
 	}
 	
+	//find user by name
+	@RequestMapping(method = RequestMethod.GET, path = "/{userName}")
+	public Optional<Users> findUserByName(@PathVariable("userName") String name)
+	{
+		logger.info("entered in findUserByName method");
+		//Optional<Users> results = userRepository. //TODO
+		return null;
+		
+	}
+	
 	//removes a user
-	@RequestMapping(method = RequestMethod.POST, path = "/remove")
+	@RequestMapping(method = RequestMethod.POST, path = "/remove") //TODO NOTE: This actually deletes by id
 	@ResponseBody
-	public String removeUser(Users user)
+	public String removeUser(@RequestBody Users user)
 	{
 		String deletedUsersName = user.getName();
+		logger.info("deleted person: " + deletedUsersName);
 		userRepository.delete(user);
-		return "Event " + deletedUsersName +" has been deleted";
+		return deletedUsersName +" has been deleted";
 	}
 	
 }
