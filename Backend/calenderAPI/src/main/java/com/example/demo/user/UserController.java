@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.user.Users;
+import com.example.demo.event.Events;
 import com.example.demo.user.UserRepository;
 
 
@@ -42,25 +44,26 @@ public class UserController {
 	*/
 	
 	
-/*
-	@GetMapping(path="/all")
-	public @ResponseBody Iterable<Users> getAllUsers() {
+
+	@GetMapping(path="/test")
+	public @ResponseBody Iterable<Users> getAllUsersTest() {
 		// This returns a JSON or XML with the users
 		return userRepository.findAll();
 		
 	}
 
-*/
+
 	
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
+	//creates a new user
 	@RequestMapping(method = RequestMethod.POST, path = "/new")
 	public @ResponseBody String saveUser(@RequestBody Users user) {
 		userRepository.save(user);
 		return "New User " + user.getName() + " saved";
 	}
 	
-	
+	//return all user accounts
 	@RequestMapping(method = RequestMethod.GET, path = "/all")
 	@ResponseBody
 	public List<Users> getAllUsers(){
@@ -70,6 +73,7 @@ public class UserController {
 		return results;
 	}
 	
+	//finds a user based on their id
 	@RequestMapping(method = RequestMethod.GET, path = "/{userId}")
 	public Optional<Users> findUserById(@PathVariable("userId") int id){
 		logger.info("Entered into Controller Layer");
@@ -77,5 +81,14 @@ public class UserController {
 		return results;
 	}
 	
+	//removes a user
+	@RequestMapping(method = RequestMethod.POST, path = "/remove")
+	@ResponseBody
+	public String removeUser(Users user)
+	{
+		String deletedUsersName = user.getName();
+		userRepository.delete(user);
+		return "Event " + deletedUsersName +" has been deleted";
+	}
 	
 }

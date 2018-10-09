@@ -52,7 +52,7 @@ public class EventController {
 	@ResponseBody
 	public String getAllEventInfo(@RequestBody Events event)
 	{	
-		return "calendarId: " + event.getCalanderId() + "\neventId: " + event.getEventId() + "\ntime: " + event.getTime();
+		return "calendarId: " + event.getCalendarId() + "\neventId: " + event.getEventId() + "\ntime: " + event.getTime();
 	}
 	
 	//removes an event
@@ -84,13 +84,5 @@ public class EventController {
 		return results;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/{calendarId}")
-	@ResponseBody
-	public Optional<Events> findCalendarById(@PathVariable("calendarId") int CalendarId){
-		logger.info("Entered into Controller Layer");
-		Optional<Events> results = eventRepository.findById(CalendarId);
-		return results;
-		
-	}
 		
 }
