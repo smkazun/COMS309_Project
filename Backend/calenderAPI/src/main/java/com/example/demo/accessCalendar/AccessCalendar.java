@@ -29,7 +29,7 @@ public class AccessCalendar {
 		return ClientId;
 	}
 	
-	public void setInstructorId(Integer id) {
+	public void setClientId(Integer id) {
 		this.ClientId = id;
 	}
 	
@@ -38,6 +38,9 @@ public class AccessCalendar {
 		return CalanderId;
 	}
 	
+	public void setCalendarId(Integer id) {
+		this.CalanderId = id;
+	}
 	
 	
 	@Override
