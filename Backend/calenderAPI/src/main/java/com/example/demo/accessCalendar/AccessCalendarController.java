@@ -65,7 +65,7 @@ public class AccessCalendarController {
 	//get names of all users connected to calendar
 	@RequestMapping(method = RequestMethod.GET, path = "/{calendarId}")
 	@ResponseBody
-	public Optional<AccessCalendar> findUserById(@PathVariable("CalanderId") int id)
+	public Optional<AccessCalendar> findUserById(@PathVariable("CalanderId") Integer id)
 	{
 		Optional<AccessCalendar> results = AccessCalendarRepository.findById(id);
 		return results;
