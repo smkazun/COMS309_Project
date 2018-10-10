@@ -24,7 +24,6 @@ public class AccessCalendar {
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Integer ClientId;
 	
-	@Id
 	@Column(name = "CalanderId")
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Integer CalanderId;

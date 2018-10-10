@@ -40,9 +40,9 @@ public class CalendarController {
 		//String name = calendar.setCalendarName();
 		//int id = calendar.getCalendarId();
 		//String users = calendar.getCalendarUsers();
-		Calendar c = new Calendar();
-		c.setCalendarName(calendar.getCalendarName());
-		c.setCalendarId(calendar.getCalendarId());
+		//Calendar c = new Calendar();
+		//c.setCalendarName(calendar.getCalendarName());
+		//c.setCalendarId(calendar.getCalendarId());
 		//c.setCalendarUsers(calendar.getCalendarUsers());
 		calendarRepository.save(calendar);
 		
@@ -63,7 +63,7 @@ public class CalendarController {
 		
 		//return results.get().getCalendarUsers().toString();
 		//String name = results.
-		return null;
+		return results.toString();
 		
 	}
 	
