@@ -3,6 +3,7 @@ package com.example.demo.calendar;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,6 +31,7 @@ public class Calendar {
 	
 	@Column(name = "calendarUsers")
 	@NotFound(action = NotFoundAction.IGNORE)
+	@ElementCollection(targetClass=Calendar.class)
 	private List<Calendar> calendarUsers;
 	
 	
