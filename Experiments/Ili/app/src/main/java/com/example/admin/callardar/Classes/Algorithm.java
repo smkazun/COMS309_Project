@@ -24,6 +24,205 @@ public class Algorithm
     }
 
     /**
+     * check the specific text in specific header
+     * @param header
+     * @param toCheck
+     * @param s
+     *  string to check
+     * @return
+     */
+    public static boolean ifExist(String header, String toCheck, String s)
+    {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        boolean flag = false;
+        int length_s = s.length();
+        int length_h = header.length();
+        int length_t = toCheck.length();
+
+        for(; i < length_s ; i += 1)
+        {
+            if(s.charAt(i) == header.charAt(0) && s.charAt(i + length_h - 1) == header.charAt(length_h - 1))
+            {
+                if(length_h <= 2)
+                {
+                    flag = true;
+                }
+
+                for(j = 1 ; j < length_h - 1; j += 1)
+                {
+                    if(s.charAt(i + j) != header.charAt(j))
+                    {
+                        break;
+                    }
+
+                    if(j + 1 == length_h - 1)
+                    {
+                        flag = true;
+                    }
+                }
+
+                if(flag && s.charAt(i + length_h + 3) == toCheck.charAt(0) && s.charAt(i + length_h + 3 + length_t - 1) == toCheck.charAt(length_t - 1))
+                {
+                    if(length_t <= 2 && s.charAt(i + length_h + 3 + length_t) == '"')
+                    {
+                        return true;
+                    }
+
+                    for(k = 1 ; k < length_t - 1 ; k +=1)
+                    {
+                        if(s.charAt(i  + length_h + 3 + k) != toCheck.charAt(k))
+                        {
+                            flag = false;
+                            break;
+                        }
+
+                        if(k + 1 == length_t - 1 && s.charAt(i + length_h + 3 + length_t) == '"')
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * check the specific String to specific header, and
+     * add the text into ArrayList
+     * @param header
+     * @param s
+     * @return
+     */
+    public static ArrayList<String> ifExistWithAdd(String header,String s)
+    {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+
+        boolean flag = false;
+        int length_s = s.length();
+        int length_h = header.length();
+
+        ArrayList<String> returnValue = new ArrayList<String>();
+
+        for(; i < length_s ; i += 1)
+        {
+            if(s.charAt(i) == header.charAt(0) && s.charAt(i + length_h - 1) == header.charAt(length_h - 1))
+            {
+                if(length_h <= 2)
+                {
+                    flag = true;
+                }
+
+                for(j = 1 ; j < length_h - 1; j += 1)
+                {
+                    if(s.charAt(i + j) != header.charAt(j))
+                    {
+                        break;
+                    }
+
+                    if(j + 1 == length_h - 1)
+                    {
+                        flag = true;
+                    }
+                }
+
+                if(flag)
+                {
+                    for(k = i + length_h + 3 ; s.charAt(k) != '"' ; k +=1)
+                    {
+                        if(s.charAt(k + 1) == '"')
+                        {
+                            returnValue.add(s.substring(i + length_h + 3, k + 1));
+                            i = k + 2;
+                            flag = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * check the specific String to specific header, and
+     * add the text into ArrayList
+     * @param header
+     * @param toCheck
+     * @param s
+     * @return
+     */
+    public static ArrayList<String> ifExistAndAdd(String header, String toCheck, String s)
+    {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        boolean flag = false;
+        int length_s = s.length();
+        int length_h = header.length();
+        int length_t = toCheck.length();
+
+        ArrayList<String> returnValue = new ArrayList<String>();
+
+        for(; i < length_s ; i += 1)
+        {
+            if(s.charAt(i) == header.charAt(0) && s.charAt(i + length_h - 1) == header.charAt(length_h - 1))
+            {
+                if(length_h <= 2)
+                {
+                    flag = true;
+                }
+
+                for(j = 1 ; j < length_h - 1; j += 1)
+                {
+                    if(s.charAt(i + j) != header.charAt(j))
+                    {
+                        break;
+                    }
+
+                    if(j + 1 == length_h - 1)
+                    {
+                        flag = true;
+                    }
+                }
+
+                if(flag && s.charAt(i + length_h + 3) == toCheck.charAt(0) && s.charAt(i + length_h + 3 + length_t - 1) == toCheck.charAt(length_t - 1))
+                {
+                    if(length_t <= 2 && s.charAt(i + length_h + 3 + length_t) == '"')
+                    {
+                        returnValue.add(s.substring(i + length_h + 3, i + length_h + 3 + length_t));
+                        i = i + length_h + 4 + length_t;
+                        flag = false;
+                    }
+
+                    for(k = 1 ; k < length_t - 1 ; k +=1)
+                    {
+                        if(s.charAt(i  + length_h + 3 + k) != toCheck.charAt(k))
+                        {
+                            flag = false;
+                            break;
+                        }
+
+                        if(k + 1 == length_t - 1 && s.charAt(i + length_h + 3 + length_t) == '"')
+                        {
+                            returnValue.add(s.substring(i + length_h + 3, i + length_h + 3 + length_t));
+                            i = i + length_h + 4 + length_t;
+                            flag = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return returnValue;
+    }
+
+    /**
      *
      *  move a View to the assigned place automatically
      *
@@ -61,7 +260,7 @@ public class Algorithm
         final int x_ONE = (right_X_start - left_X_start) / X_number - 10;
         final int y_ONE = (down_Y_start - up_Y_start) / Y_number - 50;
 
-        for(int i = index ; i < index + X_number * Y_number ; i += 1)
+        for(int i = index ; i < toAdd.length && i < index + X_number * Y_number ; i += 1)
         {
             int scale_X = i % X_number;
             int scale_Y = i / X_number;
@@ -126,7 +325,8 @@ public class Algorithm
 
         final ConstraintLayout layout = (ConstraintLayout) Layout;
 
-        for(int i = index1; i < index1 + X_number * Y_number ; i += 1) {
+        for(int i = 0; i < X_number * Y_number ; i += 1)
+        {
             //create zone,logic
             int scale_X = i % X_number;
             int scale_Y = i / X_number;
@@ -137,13 +337,19 @@ public class Algorithm
 
             sheruns1.add(new シルヴァホルン(new Point[]{p1, p2, p3, p4}));
 
-            copy_Pic.add(views_Pic.get(i));
-            copy_Tex.add(views_Tex.get(i));
-
-            //------------------------------
+            if(i > toAdd.length)
+            {
+                sheruns1.get(i).if_Usable = false;
+            }
         }
 
-        for(int i = index2; i < index2 + x_endBy * y_endBy ; i += 1)
+        for(int i = index1; i < Math.min(toAdd.length, index1 + X_number * Y_number) ; i += 1)
+        {
+            copy_Pic.add(views_Pic.get(i));
+            copy_Tex.add(views_Tex.get(i));
+        }
+
+        for(int i = 0; i < x_endBy * y_endBy ; i += 1)
         {
             int scale_X = i % x_endBy;
             int scale_Y = i / x_endBy;

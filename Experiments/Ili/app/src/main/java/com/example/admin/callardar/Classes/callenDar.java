@@ -35,12 +35,23 @@ public class callenDar
 
     public User[] getCurrentUser()
     {
-        User[] arr = new User[people.size() + admins.size()];
+        User[] arr = new User[people.size()];
 
-        for(int i = 0 ; i < arr.length ;)
+        for(int i = 0 ; i < arr.length ; i += 1)
         {
-            arr[i++] = people.get(i);
-            arr[i++] = admins.get(i);
+            arr[i] = people.get(i);
+        }
+
+        return arr;
+    }
+
+    public User[] getAdmin()
+    {
+        User[] arr = new User[admins.size()];
+
+        for(int i = 0 ; i < arr.length ;i += 1)
+        {
+            arr[i] = admins.get(i);
         }
 
         return arr;

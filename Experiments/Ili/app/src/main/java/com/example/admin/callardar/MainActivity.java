@@ -17,12 +17,14 @@ import android.widget.TextView;
 
 import com.example.admin.callardar.Classes.Algorithm;
 import com.example.admin.callardar.Classes.User;
+import com.example.admin.callardar.Classes.callenDar;
 import com.example.admin.callardar.Connection.AppController;
 import com.example.admin.callardar.Connection.JsonRequestActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -48,6 +50,17 @@ public class MainActivity extends AppCompatActivity {
 
     private Button LOGIN;
     protected static Thread TIME_CONTROL;
+
+//        Algorithm.Stop stop = new Algorithm.Stop(2000);
+//        FutureTask<Integer> task = new FutureTask<Integer>(stop);
+//        new Thread(task).start();
+//        try {
+//            task.get();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
     /**
      *  get from database to determine the current account
@@ -77,22 +90,11 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-        String URL = "http://proj309-VC-03.misc.iastate.edu:8080/demo/users";
+        String URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/all";
         ArrayList<String> s = new ArrayList<String>();
         JsonRequestActivity a = new JsonRequestActivity(MainActivity.this);
         AppController C = new AppController(MainActivity.this);
         a.makeJsonArryReq_TIME(URL, C, s, TIME_CONTROL);
-
-//        Algorithm.Stop stop = new Algorithm.Stop(2000);
-//        FutureTask<Integer> task = new FutureTask<Integer>(stop);
-//        new Thread(task).start();
-//        try {
-//            task.get();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
         try
         {
@@ -106,39 +108,98 @@ public class MainActivity extends AppCompatActivity {
         try
         {
             System.out.println(s.get(0));
+
+            String header = "name";
+            String toCheck = account;
+
+            if( ! Algorithm.ifExist(header, toCheck, s.get(0)))
+            {
+                return false;
+            }
         }
         catch (IndexOutOfBoundsException e)
         {
-            System.out.println("Time Out");
+            System.out.println("Time Out in log in");
             return false;
         }
 
-//        if(message.size() == 0)
-//        {
-//            return false;
-//        }
-
-        //toDO friend list
-        URL = null;
-        //message = new JSONObject();
-
-   //     Method_Connection.makeJsonArrayReq_GET(URL, message);
         user = new User(account, null);
 
+        //toDO friend list
+        URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/all";
+        s = new ArrayList<String>();
+        a = new JsonRequestActivity(MainActivity.this);
+        C = new AppController(MainActivity.this);
+        a.makeJsonArryReq_TIME(URL, C, s, TIME_CONTROL);
 
-  //      user.addFriends(new User[]{new User(message.get(i), null)});
+        try
+        {
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException e)
+        {
 
+        }
+
+        String s0 = "";
+
+        try
+        {
+            s0 = s.get(0);
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            System.out.println("Time Out in adding friend list");
+            return false;
+        }
+
+        s = Algorithm.ifExistWithAdd("name", s0);
+        String[] arr = new String[s.size()];
+        User[] toAdd = new User[s.size()];
+
+        arr = s.toArray(arr);
+
+        for(int i = 0 ; i < arr.length ; i += 1)
+        {
+            toAdd[i] = new User(arr[i], "Default");
+        }
+
+        user.addFriends(toAdd);
 
         //toDO calladar list
-        URL = null;
-        //message = new JSONObject();
+        URL = "http://proj309-VC-03.misc.iastate.edu:8080/calendar/all";
+        s = new ArrayList<String>();
+        a = new JsonRequestActivity(MainActivity.this);
+        C = new AppController(MainActivity.this);
+        a.makeJsonArryReq_TIME(URL, C, s, TIME_CONTROL);
 
-    //    Method_Connection.makeJsonArrayReq_GET(URL, message);
+        try
+        {
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException e)
+        {
 
-//        for(int i = 0 ; i < message.size() ; i += 1)
-//        {
-//            //user.addCalender(new callenDar(message.get(i), message.get(i + 1), ));
-//        }
+        }
+
+        s0 = "";
+
+        try
+        {
+            s0 = s.get(0);
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            System.out.println("Time Out in adding calendar");
+            return false;
+        }
+
+        s = Algorithm.ifExistWithAdd("calendarName", s0);
+        arr = new String[s.size()];
+        arr = s.toArray(arr);
+
+        for(int i = 0 ; i < arr.length ; i += 1)
+        user.addCalender(new callenDar(arr[i], new User[]{}, new User[]{}));
 
         return true;
     }
@@ -259,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                String URL = "http://proj309-VC-03.misc.iastate.edu:8080/demo/users/new";
+                String URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/new";
                 JSONObject message = new JSONObject();
                 AppController C = new AppController(MainActivity.this);
                 JsonRequestActivity a = new JsonRequestActivity(MainActivity.this);

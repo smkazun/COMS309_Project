@@ -80,12 +80,17 @@ public class JsonRequestActivity{
                     @Override
                     public void onResponse(JSONObject response) {
 //                        pDialog.hide();
+                        System.out.println("正确！");
                     }
                 }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
 //                pDialog.hide();
+//                Log.e("ERROR : ", error.getMessage(), error);
+//                byte[] htmlBodyBytes = error.networkResponse.data;
+//                Log.e("ERROR : ", new String(htmlBodyBytes), error);
+                System.out.println("错误！");
             };
         });
 
@@ -117,8 +122,11 @@ public class JsonRequestActivity{
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
+//                Log.e("ERROR : ", error.getMessage(), error);
+//                byte[] htmlBodyBytes = error.networkResponse.data;
+//                Log.e("ERROR : ", new String(htmlBodyBytes), error);
                 System.out.println("错误！");
+                Time_Control.interrupt();
  //               pDialog.hide();
             }
         });
