@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -65,9 +66,13 @@ public class AccessCalendarController {
 	//get names of all users connected to calendar
 	@RequestMapping(method = RequestMethod.GET, path = "/{calendarId}")
 	@ResponseBody
-	public Optional<AccessCalendar> findUserById(@PathVariable("CalanderId") Integer id)
+	public Optional<Users> findUserById(@PathVariable("CalanderId") Integer id)
 	{
-		Optional<AccessCalendar> results = AccessCalendarRepository.findById(id);
+		@Query(		 "SELECT e.name " + 
+					 "FROM users e, access_calander b " +
+					 "where e.id = b.client_id " + 
+					 "and b.calander id = " + id)
+		Optional<Users> results = findUserById(id);
 		return results;
 	}
 }
