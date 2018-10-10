@@ -43,7 +43,7 @@ public class CalendarController {
 		Calendar c = new Calendar();
 		c.setCalendarName(calendar.getCalendarName());
 		c.setCalendarId(calendar.getCalendarId());
-		c.setCalendarUsers(calendar.getCalendarUsers());
+		//c.setCalendarUsers(calendar.getCalendarUsers());
 		calendarRepository.save(calendar);
 		
 		return "New Calendar " + calendar.getCalendarName() + " saved";
@@ -61,9 +61,9 @@ public class CalendarController {
 		logger.info("Entered into CalendarController Layer");
 		Optional<Calendar> results = calendarRepository.findById(calendarId);
 		
-		return results.get().getCalendarUsers().toString();
+		//return results.get().getCalendarUsers().toString();
 		//String name = results.
-		
+		return null;
 		
 	}
 	
