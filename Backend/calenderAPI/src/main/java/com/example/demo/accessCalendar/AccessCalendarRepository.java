@@ -1,5 +1,9 @@
 package com.example.demo.accessCalendar;
 
-public class AccessCalendarRepository {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface AccessCalendarRepository extends CrudRepository<AccessCalendar, Integer>{
 
 }
