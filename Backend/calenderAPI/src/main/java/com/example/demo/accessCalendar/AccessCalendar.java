@@ -16,7 +16,7 @@ import org.springframework.core.style.ToStringCreator;
 
 
 @Entity
-@Table(name = "accessCalander")
+@Table(name = "AccessCalander")
 public class AccessCalendar {
 	
 	@Id
