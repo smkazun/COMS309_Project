@@ -29,11 +29,6 @@ public class Calendar {
 	@NotFound(action = NotFoundAction.IGNORE)
 	private String calendarName;
 	
-	@Column(name = "calendarUsers")
-	@NotFound(action = NotFoundAction.IGNORE)
-	@ElementCollection(targetClass=Calendar.class)
-	private List<Calendar> calendarUsers;
-	
 	
 	public Integer getCalendarId() {
 		return calendarId;
@@ -51,25 +46,12 @@ public class Calendar {
 		this.calendarName = calendarName;
 	}
 	
-	public List<Calendar> getCalendarUsers() {
-		return this.calendarUsers;
-	}
-	
-	public void setCalendarUsers(List<Calendar> calendarUsers) {
-		for(int i = 0; i < calendarUsers.size(); ++i)
-		{
-			this.calendarUsers = calendarUsers;
-		}
-		//.calendarUsers = calendarUsers;
-	}
-	
 	@Override
 	public String toString() {
 		return new ToStringCreator(this)
 				
 				.append("calendarId", this.getCalendarId())
-				.append("calendarName", this.getCalendarName())
-				.append("calenderUsers", this.getCalendarUsers()).toString();
+				.append("calendarName", this.getCalendarName()).toString();
 		
 		
 	}
