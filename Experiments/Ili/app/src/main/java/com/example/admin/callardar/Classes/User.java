@@ -105,7 +105,7 @@ public class User implements Comparable<User>
 
         User toCompare = (User) o;
 
-        return name == toCompare.getName() && Email == toCompare.getEmail() && type == toCompare.getType();
+        return name.equals(toCompare.getName()) && Email.equals(toCompare.getEmail()) && type == toCompare.getType();
     }
 
     @Override

@@ -41,51 +41,59 @@ public class Algorithm
         int length_h = header.length();
         int length_t = toCheck.length();
 
-        for(; i < length_s ; i += 1)
+        try
         {
-            if(s.charAt(i) == header.charAt(0) && s.charAt(i + length_h - 1) == header.charAt(length_h - 1))
+            for(; i < length_s ; i += 1)
             {
-                if(length_h <= 2)
+                if(s.charAt(i) == header.charAt(0) && s.charAt(i + length_h - 1) == header.charAt(length_h - 1))
                 {
-                    flag = true;
-                }
-
-                for(j = 1 ; j < length_h - 1; j += 1)
-                {
-                    if(s.charAt(i + j) != header.charAt(j))
-                    {
-                        break;
-                    }
-
-                    if(j + 1 == length_h - 1)
+                    if(length_h <= 2)
                     {
                         flag = true;
                     }
-                }
 
-                if(flag && s.charAt(i + length_h + 3) == toCheck.charAt(0) && s.charAt(i + length_h + 3 + length_t - 1) == toCheck.charAt(length_t - 1))
-                {
-                    if(length_t <= 2 && s.charAt(i + length_h + 3 + length_t) == '"')
+                    for(j = 1 ; j < length_h - 1; j += 1)
                     {
-                        return true;
-                    }
-
-                    for(k = 1 ; k < length_t - 1 ; k +=1)
-                    {
-                        if(s.charAt(i  + length_h + 3 + k) != toCheck.charAt(k))
+                        if(s.charAt(i + j) != header.charAt(j))
                         {
-                            flag = false;
                             break;
                         }
 
-                        if(k + 1 == length_t - 1 && s.charAt(i + length_h + 3 + length_t) == '"')
+                        if(j + 1 == length_h - 1)
+                        {
+                            flag = true;
+                        }
+                    }
+
+                    if(flag && s.charAt(i + length_h + 3) == toCheck.charAt(0) && s.charAt(i + length_h + 3 + length_t - 1) == toCheck.charAt(length_t - 1))
+                    {
+                        if(length_t <= 2 && s.charAt(i + length_h + 3 + length_t) == '"')
                         {
                             return true;
+                        }
+
+                        for(k = 1 ; k < length_t - 1 ; k +=1)
+                        {
+                            if(s.charAt(i  + length_h + 3 + k) != toCheck.charAt(k))
+                            {
+                                flag = false;
+                                break;
+                            }
+
+                            if(k + 1 == length_t - 1 && s.charAt(i + length_h + 3 + length_t) == '"')
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
             }
         }
+        catch (StringIndexOutOfBoundsException e)
+        {
+            return false;
+        }
+
 
         return false;
     }
@@ -109,41 +117,48 @@ public class Algorithm
 
         ArrayList<String> returnValue = new ArrayList<String>();
 
-        for(; i < length_s ; i += 1)
+        try
         {
-            if(s.charAt(i) == header.charAt(0) && s.charAt(i + length_h - 1) == header.charAt(length_h - 1))
+            for(; i < length_s ; i += 1)
             {
-                if(length_h <= 2)
+                if(s.charAt(i) == header.charAt(0) && s.charAt(i + length_h - 1) == header.charAt(length_h - 1))
                 {
-                    flag = true;
-                }
-
-                for(j = 1 ; j < length_h - 1; j += 1)
-                {
-                    if(s.charAt(i + j) != header.charAt(j))
-                    {
-                        break;
-                    }
-
-                    if(j + 1 == length_h - 1)
+                    if(length_h <= 2)
                     {
                         flag = true;
                     }
-                }
 
-                if(flag)
-                {
-                    for(k = i + length_h + 3 ; s.charAt(k) != '"' ; k +=1)
+                    for(j = 1 ; j < length_h - 1; j += 1)
                     {
-                        if(s.charAt(k + 1) == '"')
+                        if(s.charAt(i + j) != header.charAt(j))
                         {
-                            returnValue.add(s.substring(i + length_h + 3, k + 1));
-                            i = k + 2;
-                            flag = false;
+                            break;
+                        }
+
+                        if(j + 1 == length_h - 1)
+                        {
+                            flag = true;
+                        }
+                    }
+
+                    if(flag)
+                    {
+                        for(k = i + length_h + 3 ; s.charAt(k) != '"' ; k +=1)
+                        {
+                            if(s.charAt(k + 1) == '"')
+                            {
+                                returnValue.add(s.substring(i + length_h + 3, k + 1));
+                                i = k + 2;
+                                flag = false;
+                            }
                         }
                     }
                 }
             }
+        }
+        catch (StringIndexOutOfBoundsException e)
+        {
+            return returnValue;
         }
 
         return returnValue;
@@ -169,6 +184,8 @@ public class Algorithm
 
         ArrayList<String> returnValue = new ArrayList<String>();
 
+        try
+        {
         for(; i < length_s ; i += 1)
         {
             if(s.charAt(i) == header.charAt(0) && s.charAt(i + length_h - 1) == header.charAt(length_h - 1))
@@ -217,6 +234,11 @@ public class Algorithm
                     }
                 }
             }
+        }
+        }
+        catch (StringIndexOutOfBoundsException e)
+        {
+            return returnValue;
         }
 
         return returnValue;
