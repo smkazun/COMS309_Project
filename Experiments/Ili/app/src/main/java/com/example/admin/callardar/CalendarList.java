@@ -1,6 +1,7 @@
 package com.example.admin.callardar;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -319,6 +320,7 @@ public class CalendarList extends AppCompatActivity {
         people = null;
         this.admins = null;
         Initialize();
+        startActivity(new Intent(CalendarList.this, MainActivity_Calendar.class));
 
         return calenda;
     }
