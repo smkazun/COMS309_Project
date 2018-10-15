@@ -38,7 +38,7 @@ public class AccessCalendarController {
 	@Autowired
 	private CalendarRepository calendarRepository;
 	@Autowired
-	private UserRepository userRepository;
+	private UserRepository UserRepository;
 	
 	//accessCalendar logger
 	private final Logger alogger = LoggerFactory.getLogger(AccessCalendarController.class);
@@ -64,15 +64,11 @@ public class AccessCalendarController {
 	}
 	
 	//get names of all users connected to calendar
-	@RequestMapping(method = RequestMethod.GET, path = "/{calendarId}")
+	@RequestMapping(method = RequestMethod.GET, path = "/getAllNames/{calendarId}")
 	@ResponseBody
-	public Optional<Users> findUserById(@PathVariable("CalanderId") Integer id)
+	public List<Users> findUserById(@PathVariable("CalanderId") Integer id)
 	{
-		@Query(		 "SELECT e.name " + 
-					 "FROM users e, access_calander b " +
-					 "where e.id = b.client_id " + 
-					 "and b.calander id = " + id)
-		Optional<Users> results = findUserById(id);
+		List<Users> results = UserRepository.getAllNames(id);
 		return results;
 	}
 }

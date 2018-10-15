@@ -53,7 +53,6 @@ public class Calendar {
 				.append("calendarId", this.getCalendarId())
 				.append("calendarName", this.getCalendarName()).toString();
 		
-		
 	}
 	
 
