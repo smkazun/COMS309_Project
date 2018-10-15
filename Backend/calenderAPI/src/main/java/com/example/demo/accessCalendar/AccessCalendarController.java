@@ -48,10 +48,10 @@ public class AccessCalendarController {
 	private final Logger clogger = LoggerFactory.getLogger(UserController.class);
 	
 	
-	//save new event
+	//save new AccessCalendar
 	@RequestMapping(method = RequestMethod.POST, path = "/new")
 	public @ResponseBody String saveEvent(@RequestBody AccessCalendar Access) {
-		AccessCalendarRepository.save(Access);
+		
 		return "New event saved";
 	}
 	
