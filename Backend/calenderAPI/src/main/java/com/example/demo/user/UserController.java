@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.user.Users;
+import com.example.demo.calendar.CalendarRepository;
+import com.example.demo.calendar.Calendar;
 import com.example.demo.event.Events;
 import com.example.demo.user.UserRepository;
 
@@ -25,7 +27,8 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
+	@Autowired
+	private CalendarRepository calendarRepository;
 	
 	/*
 	@RequestMapping(method = RequestMethod.POST, path="/add") // Map ONLY GET Requests
@@ -91,6 +94,13 @@ public class UserController {
 		
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, path = "/getCalendars/{UserId}")
+	@ResponseBody
+	public List<Calendar> findUserById(@PathVariable("id") Integer id)
+	{
+		List<Calendar> results = calendarRepository.getCalendarNames(id);
+		return results;
+	}
 	//removes a user
 	@RequestMapping(method = RequestMethod.POST, path = "/remove") //TODO NOTE: This actually deletes by id
 	@ResponseBody
