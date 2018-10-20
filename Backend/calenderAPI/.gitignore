@@ -11,13 +11,15 @@
 .sts4-cache
 .metadata
 .recommenders
-./j
+
 
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
+.metadata
+.recommenders
 
 ### NetBeans ###
 /nbproject/private/
@@ -26,3 +28,5 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+.metadata
+.recommenders
