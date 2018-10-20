@@ -97,9 +97,9 @@ public class UserController {
 	//returns all calendars names connected to UserId.
 	@RequestMapping(method = RequestMethod.GET, path = "/getCalendars/{UserName}")
 	@ResponseBody
-	public List<Calendar> findUserByName1(@PathVariable("UserName") String name)
+	public Optional<Calendar> findUserByName1(@PathVariable("UserName") String name)
 	{
-		List<Calendar> results = calendarRepository.getCalendarNames(name);
+		Optional<Calendar> results = calendarRepository.getCalendarNames(name);
 		return results;
 	}
 	

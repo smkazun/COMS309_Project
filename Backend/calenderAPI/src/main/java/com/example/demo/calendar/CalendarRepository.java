@@ -1,6 +1,7 @@
 package com.example.demo.calendar;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -19,6 +20,6 @@ public interface CalendarRepository extends CrudRepository<Calendar, Integer> {
 			"select id\r\n" + 
 			"from users b\r\n" + 
 			"where b.name = 1?);", nativeQuery = true)
-	public List<Calendar> getCalendarNames(String name);
+	public Optional<Calendar> getCalendarNames(String name);
 	
 }
