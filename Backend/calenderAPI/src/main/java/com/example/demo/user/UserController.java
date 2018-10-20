@@ -78,6 +78,7 @@ public class UserController {
 	
 	//finds a user based on their id
 	@RequestMapping(method = RequestMethod.GET, path = "/{userId}")
+	@ResponseBody
 	public Optional<Users> findUserById(@PathVariable("userId") int id){
 		logger.info("Entered into Controller Layer");
 		Optional<Users> results = userRepository.findById(id);
@@ -86,6 +87,7 @@ public class UserController {
 	
 	//find user by name
 	@RequestMapping(method = RequestMethod.GET, path = "/{userName}")
+	@ResponseBody
 	public Optional<Users> findUserByName(@PathVariable("userName") String name)
 	{
 		logger.info("entered in findUserByName method");
