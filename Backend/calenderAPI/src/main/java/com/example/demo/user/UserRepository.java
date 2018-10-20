@@ -17,7 +17,7 @@ public interface UserRepository extends CrudRepository<Users, Integer>{
 	@Query(value ="SELECT e.name " + 
 			 "FROM users e, access_calander b " +
 			 "where e.id = b.client_id " + 
-			 "and b.calander id = ?1")
+			 "and b.calander id = ?1", nativeQuery = true)
 	public List<Users> getAllNames(Integer id);
 
 }

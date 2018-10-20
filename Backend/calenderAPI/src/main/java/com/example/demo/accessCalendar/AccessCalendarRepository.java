@@ -12,7 +12,7 @@ import com.example.demo.user.Users;
 public interface AccessCalendarRepository extends CrudRepository<AccessCalendar, Integer>{
 
 	@Query(value ="INSERT INTO access_calander (client_id, calander_id)\r\n" + 
-			"VALUES (?1,?2);")
+			"VALUES (?1,?2);", nativeQuery = true)
 	public List<Users> AddUserId(Integer Userid, Integer CalendarId);
 	
 }

@@ -16,7 +16,7 @@ import org.springframework.core.style.ToStringCreator;
 
 
 @Entity
-@Table(name = "AccessCalander")
+@Table(name = "AccessCalendar")
 public class AccessCalendar {
 	
 	@Id
@@ -24,7 +24,6 @@ public class AccessCalendar {
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Integer ClientId;
 	
-	@Id
 	@Column(name = "CalanderId")
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Integer CalanderId;

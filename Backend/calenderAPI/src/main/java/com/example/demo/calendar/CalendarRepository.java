@@ -18,7 +18,7 @@ public interface CalendarRepository extends CrudRepository<Calendar, Integer> {
 			"( \r\n" + 
 			"select id\r\n" + 
 			"from users b\r\n" + 
-			"where b.name = 1?);")
+			"where b.name = 1?);", nativeQuery = true)
 	public List<Calendar> getCalendarNames(String name);
 	
 }
