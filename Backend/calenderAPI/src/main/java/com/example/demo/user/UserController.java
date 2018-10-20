@@ -94,13 +94,16 @@ public class UserController {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/getCalendars/{UserId}")
+	//returns all calendars names connected to UserId.
+	@RequestMapping(method = RequestMethod.GET, path = "/getCalendars/{UserName}")
 	@ResponseBody
-	public List<Calendar> findUserById(@PathVariable("id") Integer id)
+	public List<Calendar> findUserByName1(@PathVariable("UserName") String name)
 	{
-		List<Calendar> results = calendarRepository.getCalendarNames(id);
+		List<Calendar> results = calendarRepository.getCalendarNames(name);
 		return results;
 	}
+	
+	
 	//removes a user
 	@RequestMapping(method = RequestMethod.POST, path = "/remove") //TODO NOTE: This actually deletes by id
 	@ResponseBody
