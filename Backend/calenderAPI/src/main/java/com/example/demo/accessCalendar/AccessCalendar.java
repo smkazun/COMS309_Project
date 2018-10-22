@@ -20,7 +20,7 @@ import org.springframework.core.style.ToStringCreator;
 public class AccessCalendar {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ClientId")
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Integer ClientId;
