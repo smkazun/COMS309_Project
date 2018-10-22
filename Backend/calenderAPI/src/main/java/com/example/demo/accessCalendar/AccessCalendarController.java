@@ -3,6 +3,7 @@ package com.example.demo.accessCalendar;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,9 +66,9 @@ public class AccessCalendarController {
 	//get names of all users connected to calendar
 	@RequestMapping(method = RequestMethod.GET, path = "/getAllNames/{calendarId}")
 	@ResponseBody
-	public List<Users> findUserById(@PathVariable("CalanderId") Integer id)
+	public List<Strings> findUserById(@PathVariable("CalanderId") Integer id)
 	{
-		List<Users> results = UserRepository.getAllNames(id);
+		List<Strings> results = UserRepository.getAllNames(id);
 		return results;
 	}
 }

@@ -14,10 +14,10 @@ public interface UserRepository extends CrudRepository<Users, Integer>{
 		//public List<Users> findAll();
 		
 		//List<Users> findById(@Param("id") int id);
-	@Query(value ="SELECT e.name " + 
-			 "FROM users e, access_calander b " +
-			 "where e.id = b.client_id " + 
-			 "and b.calander id = ?1", nativeQuery = true)
+	@Query(  value ="SELECT e.name\r\n" + 
+			"FROM users e, access_calander b\r\n" + 
+			"where e.id = b.client_id\r\n" + 
+			"and b.calander_id = ?1;", nativeQuery = true)
 	public List<Users> getAllNames(Integer id);
 
 }
