@@ -2,6 +2,7 @@ package com.example.demo.user;
 
 import java.util.List;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -18,6 +19,6 @@ public interface UserRepository extends CrudRepository<Users, Integer>{
 			"FROM users e, access_calander b\r\n" + 
 			"where e.id = b.client_id\r\n" + 
 			"and b.calander_id = ?1;", nativeQuery = true)
-	public List<Users> getAllNames(Integer id);
+	public List<String> getAllNames(Integer id);
 
 }
