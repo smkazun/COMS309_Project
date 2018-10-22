@@ -164,6 +164,65 @@ public class Algorithm
         return returnValue;
     }
 
+    public static ArrayList<String> ifExistWithAdd_SpecialMode_INT(String header,String s)
+    {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+
+        boolean flag = false;
+        int length_s = s.length();
+        int length_h = header.length();
+
+        ArrayList<String> returnValue = new ArrayList<String>();
+
+        try
+        {
+            for(; i < length_s ; i += 1)
+            {
+                if(s.charAt(i) == header.charAt(0) && s.charAt(i + length_h - 1) == header.charAt(length_h - 1))
+                {
+                    if(length_h <= 2)
+                    {
+                        flag = true;
+                    }
+
+                    for(j = 1 ; j < length_h - 1; j += 1)
+                    {
+                        if(s.charAt(i + j) != header.charAt(j))
+                        {
+                            break;
+                        }
+
+                        if(j + 1 == length_h - 1)
+                        {
+                            flag = true;
+                        }
+                    }
+
+                    if(flag)
+                    {
+                        for(k = i + length_h + 2 ; s.charAt(k) != ',' ; k +=1)
+                        {
+                            if(s.charAt(k + 1) == ',')
+                            {
+                                returnValue.add(s.substring(i + length_h + 2, k + 1));
+                                i = k + 1;
+                                flag = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (StringIndexOutOfBoundsException e)
+        {
+            return returnValue;
+        }
+
+        return returnValue;
+    }
+
     /**
      * check the specific String to specific header, and
      * add the text into ArrayList
@@ -284,8 +343,8 @@ public class Algorithm
 
         for(int i = index ; i < toAdd.length && i < index + X_number * Y_number ; i += 1)
         {
-            int scale_X = i % X_number;
-            int scale_Y = i / X_number;
+            int scale_X = (i - index) % X_number;
+            int scale_Y = (i - index) / X_number;
             Point p1 = new Point(left_X_start + scale_X * (x_ONE + 10),up_Y_start + scale_Y * (y_ONE + 50));
             Random r = new Random();
 
@@ -712,7 +771,7 @@ public class Algorithm
             y_Proportion = y_Distance / (x_Distance + y_Distance);
 
             handler = new Handler();
-            t = new Thread();;
+            t = new Thread();
             t.run();
         }
 

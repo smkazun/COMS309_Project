@@ -4,11 +4,18 @@ import java.util.ArrayList;
 
 public class callenDar
 {
+    private int id;
     private String name;
 
     private ArrayList<User> people;
     private ArrayList<User> admins;
     private ArrayList<Event> events;
+
+    public callenDar(int id, String Name)
+    {
+        this.id = id;
+        name = Name;
+    }
 
     public callenDar(String Name, User[] admins, User[] toAdd)
     {
@@ -26,6 +33,19 @@ public class callenDar
         {
             this.admins.add(admins[i]);
         }
+
+        id = -1;
+    }
+
+    public callenDar(int id, String Name, User[] admins, User[] toAdd)
+    {
+        this(Name, admins, toAdd);
+        this.id = id;
+    }
+
+    public int getId()
+    {
+        return id;
     }
 
     public String toString()
