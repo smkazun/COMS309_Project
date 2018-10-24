@@ -117,4 +117,10 @@ public class UserController {
 		return deletedUsersName +" has been deleted";
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, path = "/getAllUsers")
+	@ResponseBody
+	public List<Users> getUsers(){
+		List<Users> results = userRepository.getAllUsers();
+		return results;
+	}
 }
