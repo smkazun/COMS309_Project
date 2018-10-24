@@ -1,5 +1,6 @@
 package com.example.demo.accessCalendar;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -17,7 +18,7 @@ import org.springframework.core.style.ToStringCreator;
 
 @Entity
 @Table(name = "AccessCalendar")
-public class AccessCalendar {
+public class AccessCalendar implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,6 +28,7 @@ public class AccessCalendar {
 	
 	@Id
 	@Column(name = "CalanderId")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@NotFound(action = NotFoundAction.IGNORE)
 	private Integer CalanderId;
 	
