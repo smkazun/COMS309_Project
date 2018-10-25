@@ -31,6 +31,9 @@ import java.util.concurrent.FutureTask;
 
 public class MainActivity extends AppCompatActivity {
 
+    protected static int X;
+    protected static int Y;
+
     private ConstraintLayout mainLayout;
 
     private static Handler handler;
@@ -74,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private boolean ifExist(final String account, final String passWord)
     {
+        X = mainLayout.getWidth();
+        Y = (int) (mainLayout.getHeight() * 0.9);
+
         if(account.equals("") && passWord.equals(""))
         {
             user = new User("test","@");

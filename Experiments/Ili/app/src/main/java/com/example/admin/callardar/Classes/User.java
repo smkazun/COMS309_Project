@@ -58,6 +58,11 @@ public class User implements Comparable<User>
         }
     }
 
+    public void deleteFriends(User toDelete)
+    {
+        friends.remove(toDelete);
+    }
+
     public User[] getFriends()
     {
         User[] arr = new User[friends.size()];
@@ -110,7 +115,7 @@ public class User implements Comparable<User>
 
         User toCompare = (User) o;
 
-        return name.equals(toCompare.getName()) && Email.equals(toCompare.getEmail()) && type == toCompare.getType();
+        return name.equals(toCompare.getName()) && Email.equals(toCompare.getEmail());
     }
 
     @Override

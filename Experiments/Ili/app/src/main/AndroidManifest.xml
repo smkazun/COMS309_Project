@@ -18,9 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CalendarList"></activity>
-        <activity android:name=".MainActivity_Calendar"/>
-        <activity android:name=".HomeActivity"/>
+        <activity android:name=".CalendarList" />
+        <activity android:name=".MainActivity_Calendar" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".FriendList"></activity>
     </application>
 
 </manifest>

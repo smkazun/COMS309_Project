@@ -64,6 +64,7 @@ public class CalendarList extends AppCompatActivity {
     private Handler handler;
 
     private ArrayList<シルヴァホルン> she_ca;
+    private ArrayList<シルヴァホルン> she_ca_going;
 
     @SuppressLint("ClickableViewAccessibility")
     private void Initialize()
@@ -72,28 +73,32 @@ public class CalendarList extends AppCompatActivity {
 
         callenDar[] arr = MainActivity.user.getCalender();
         she_ca = new ArrayList<シルヴァホルン>();
+        she_ca_going = new ArrayList<シルヴァホルン>();
+        TextView tf = null;
         ImageView Jpanel0 = null;
 
         for(int i = 0 ; i < arr.length ; i += 1)
         {
-            TextView tf = Algorithm.createTextField(CalendarList.this, arr[i].toString(),0, length,new RelativeLayout.LayoutParams(300,100), Color.YELLOW,(float)0.9);
+            tf = Algorithm.createTextField(CalendarList.this, arr[i].toString(),0, length,new RelativeLayout.LayoutParams(300,100), Color.YELLOW,(float)0.9);
             mainLayout.addView(tf);
 
             Jpanel0 = Algorithm.createJPanel(CalendarList.this, 310, length, new RelativeLayout.LayoutParams(100, 100), Color.GREEN, (float)0.5);
             mainLayout.addView(Jpanel0);
             she_ca.add(new シルヴァホルン(new Point[]{new Point(310, length), new Point(410, length), new Point(410, length + 100), new Point(310, length + 100)}));
-
+            she_ca_going.add(new シルヴァホルン(new Point[]{new Point(0,length), new Point(300,length),new Point(300,length + 100),new Point(0,length + 100)}));
+            
             length += 100;
         }
 
         if(Jpanel0 != null)
         {
+            tf.setOnTouchListener(new gotoCalendarListener());
             Jpanel0.setOnTouchListener(new CalendarListener());
         }
 
         final TextView Jpanel = Algorithm.createTextField(CalendarList.this,"Create new calendar", 0, length , new RelativeLayout.LayoutParams(300, 100), Color.rgb(150,100,15), (float)0.9);
 
-        she1 = new シルヴァホルン(new Point[]{new Point(0,length), new Point(600,length),new Point(600,length + 100),new Point(0,length + 100)});
+        she1 = new シルヴァホルン(new Point[]{new Point(0,length), new Point(300,length),new Point(300,length + 100),new Point(0,length + 100)});
 
         Jpanel.setOnTouchListener(new View.OnTouchListener()
                                   {
@@ -211,12 +216,14 @@ public class CalendarList extends AppCompatActivity {
             }
         });
 
-        checkfriends.setOnClickListener(new View.OnClickListener()
+        checkfriends.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
-            public void onClick(View v)
+            public boolean onTouch(View v, MotionEvent event)
             {
-                //todo
+                startActivity(new Intent(CalendarList.this, FriendList.class));
+
+                return false;
             }
         });
     }
@@ -366,6 +373,24 @@ public class CalendarList extends AppCompatActivity {
                             handler.sendMessage(message);
                         }
                     }).start();
+                }
+            }
+
+            return false;
+        }
+    }
+    
+    private class gotoCalendarListener implements View.OnTouchListener
+    {
+        @Override
+        public boolean onTouch(View v, MotionEvent event)
+        {
+            for(int i = 0 ; i < she_ca_going.size() ; i += 1)
+            {
+                if(she_ca_going.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
+                {
+                    //toDO goTo the callendar, initilize event sitting
+                    return false;
                 }
             }
 
@@ -542,7 +567,7 @@ public class CalendarList extends AppCompatActivity {
                     if(MainActivity.user.getFriends().length >= 1)
                     {
                         Algorithm.create_ImageAndTexts(CalendarList.this, mainLayout, new int[]{x0, x1, y0, y1}, L, H, null, MainActivity.user.getFriends(), pic, text, cto1.index);
-                        Algorithm.memberAddingProcess(CalendarList.this, mainLayout, new int[]{x0, x1, y0, y1}, new int[]{x8, x9, y8, y9}, L, H, MainActivity.user.getFriends(), people, return_Pic, return_Text, pic, text, sheruns1, sheruns2, cto1.index, cto2.index);
+                        Algorithm.memberAddingProcess(CalendarList.this, mainLayout, new int[]{x0, x1, y0, y1}, new int[]{x8, x9, y8, y9}, L, H, MainActivity.user.getFriends(), people, return_Pic, return_Text, pic, text, sheruns1, sheruns2, cto1.index, cto2.index, true);
                     }
                 }
 
