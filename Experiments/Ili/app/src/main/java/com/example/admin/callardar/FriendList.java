@@ -47,6 +47,7 @@ public class FriendList extends AppCompatActivity {
     private シルヴァホルン she1;
     private シルヴァホルン she11;
     private シルヴァホルン she2;
+    private シルヴァホルン she21;
     private ArrayList<シルヴァホルン> sheruns2;
     private boolean deleto;
 
@@ -85,6 +86,7 @@ public class FriendList extends AppCompatActivity {
                     trans.setVisibility(View.INVISIBLE);
 
                     she1.if_Usable = true;
+                    she2.if_Usable = true;
                     she11.if_Usable = false;
                     flag_oneturnout = false;
                 }
@@ -102,7 +104,21 @@ public class FriendList extends AppCompatActivity {
                     mainLayout.addView(addingprocess);
 
                     she1.if_Usable = false;
+                    she2.if_Usable = false;
                     she11.if_Usable = true;
+                }
+
+                if(flag_oneturnout && deleto && ! she21.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
+                {
+                    trans.setVisibility(View.INVISIBLE);
+
+                    she1.if_Usable = true;
+                    she2.if_Usable = true;
+                    makesure_peopleshow.removeAllViews();
+                    makesure.setVisibility(View.INVISIBLE);
+
+                    deleto = false;
+                    flag_oneturnout = false;
                 }
 
                 if(flag_oneturnout && she2.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
@@ -114,7 +130,13 @@ public class FriendList extends AppCompatActivity {
                     mainLayout.removeView(friends);
                     mainLayout.addView(friends);
 
+                    for(int i = 0 ; i < sheruns2.size() && i < MainActivity.user.getFriends().length; i += 1)
+                    {
+                        sheruns2.get(i).if_Usable = true;
+                    }
+
                     deleto = true;
+                    she1.if_Usable = false;
                 }
 
                 for(int i = 0 ; sheruns1 != null && i < sheruns1.size() ; i += 1)
@@ -236,13 +258,10 @@ public class FriendList extends AppCompatActivity {
                         {
                             throw new IllegalStateException("YOU ALREADY HAS THIS FRIENDS");
                         }
-                        else
-                        {
-                            MainActivity.user.addFriends(new User[]{sen});
-
-                            break;
-                        }
                     }
+
+                    MainActivity.user.addFriends(new User[]{sen});
+
 
                     addingprocess.removeAllViews();
                     addingprocess.setVisibility(View.INVISIBLE);
@@ -268,6 +287,7 @@ public class FriendList extends AppCompatActivity {
                 h.sendMessage(message);
 
                 she1.if_Usable = true;
+                she2.if_Usable = true;
 
                 return false;
             }
@@ -292,14 +312,13 @@ public class FriendList extends AppCompatActivity {
                 }
                 else
                 {
-                    for(int i = 0 ; i < sheruns2.size(); i += 1)
+                    for(int i = 0 ; i < sheruns2.size() && i < MainActivity.user.getFriends().length; i += 1)
                     {
                         sheruns2.get(i).if_Usable = true;
                     }
 
                     makesure_peopleshow.removeAllViews();
                     makesure.setVisibility(View.INVISIBLE);
-                    deleto = false;
                 }
 
                 return false;
@@ -366,7 +385,8 @@ public class FriendList extends AppCompatActivity {
             {
                 case 10:
                     int zone[] = new int[]{0, container.getWidth(), 0, container.getHeight()};
-                    she11 = new シルヴァホルン(new Point[]{new Point((int)container.getX(), (int)container.getY()), new Point((int)container.getX() + container.getWidth(), (int)container.getY()), new Point((int)container.getX() + container.getWidth(), (int)container.getY() + container.getHeight()), new Point((int)container.getX(), (int)container.getY() + container.getHeight())});
+                    she11 = new シルヴァホルン(new Point[]{new Point((int)addingprocess.getX(), (int)addingprocess.getY()), new Point((int)addingprocess.getX() + addingprocess.getWidth(), (int)addingprocess.getY()), new Point((int)addingprocess.getX() + addingprocess.getWidth(), (int)addingprocess.getY() + addingprocess.getHeight()), new Point((int)addingprocess.getX(), (int)addingprocess.getY() + addingprocess.getHeight())});
+                    she21 = new シルヴァホルン(new Point[]{new Point((int)friends.getX() + (int)container.getX(), (int)friends.getY() + (int)container.getY()), new Point((int)friends.getX() + (int)container.getX() + container.getWidth(), (int)friends.getY() + (int)container.getY()), new Point((int)friends.getX() + (int)container.getX() + container.getWidth(), (int)friends.getY() + (int)container.getY() + container.getHeight()), new Point((int)friends.getX() + (int)container.getX(), (int)friends.getY() + (int)container.getY() + container.getHeight())});
                     sheruns2 = new ArrayList<シルヴァホルン>();
 
                     Algorithm.create_ImageAndTexts(FriendList.this, container, zone, 6, 10, null, MainActivity.user.getFriends(), new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);

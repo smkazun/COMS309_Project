@@ -58,6 +58,8 @@ public class シルヴァホルン
             pArr.add(new Point((int) Double.parseDouble(scanner.next()), (int) Double.parseDouble(scanner.next())));
         }
 
+        scanner.close();
+
         this.pArr = new Point[pArr.size()];
 
         for(int i = 0 ; i < pArr.size() ; i += 1)

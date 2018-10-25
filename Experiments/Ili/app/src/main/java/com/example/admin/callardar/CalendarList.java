@@ -130,8 +130,6 @@ public class CalendarList extends AppCompatActivity {
         people_show_pre_leftArrow = findViewById(R.id.成员预览_左箭头);Color.rgb(10,100,200);
         people_show_pre_rightArrow = findViewById(R.id.成员预览_右箭头);Color.rgb(10,100,200);
         people_show_pre_SortingSystem = findViewById(R.id.SortingSystem_PeopleShow_Pre);Color.rgb(30,10,150);
-
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -161,7 +159,7 @@ public class CalendarList extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event)
             {
-                if(settingSolution.getX() + settingSolution.getWidth() >= 1 || (she3 != null && she3.if_Usable))
+                if(settingSolution.getX() + settingSolution.getWidth() >= 1 || (she3 != null && she3.if_Usable) || trans.getVisibility() == View.VISIBLE)
                 {
                     return false;
                 }
@@ -170,6 +168,7 @@ public class CalendarList extends AppCompatActivity {
                 she2 = new シルヴァホルン(new Point[]{new Point(0, (int)settingSolution.getY()), new Point((int)settingSolution.getWidth(), (int)settingSolution.getY()), new Point((int)settingSolution.getWidth(), mainLayout.getHeight()), new Point(0, mainLayout.getHeight())});
 
                 she1.if_Usable = false;
+
                 for(int i = 0 ; i < she_ca.size() ; i += 1)
                 {
                     she_ca.get(i).if_Usable = false;
@@ -261,6 +260,7 @@ public class CalendarList extends AppCompatActivity {
 
                 she2.if_Usable = false;
                 she1.if_Usable = true;
+
                 for(int i = 0 ; i < she_ca.size() ; i += 1)
                 {
                     she_ca.get(i).if_Usable = true;
@@ -319,7 +319,7 @@ public class CalendarList extends AppCompatActivity {
         public boolean onTouch(View v, MotionEvent event)
         {
             System.out.println(calendar_PreView.getY() + calendar_PreView.getHeight());
-            if(calendar_PreView.getY() + calendar_PreView.getHeight() >= 1)
+            if(calendar_PreView.getY() + calendar_PreView.getHeight() >= 1 || trans.getVisibility() == View.VISIBLE)
             {
                 return false;
             }
@@ -331,9 +331,10 @@ public class CalendarList extends AppCompatActivity {
                     she3 = new シルヴァホルン(new Point[]{new Point(mainLayout.getWidth() - calendar_PreView.getWidth(), 0), new Point(mainLayout.getWidth(), 0), new Point(mainLayout.getWidth(), mainLayout.getHeight()), new Point(mainLayout.getWidth() - people_PreView.getWidth(), mainLayout.getHeight())});
 
                     she1.if_Usable = false;
+
                     for(int j = 0 ; j < she_ca.size() ; j += 1)
                     {
-                        she_ca.get(i).if_Usable = false;
+                        she_ca.get(j).if_Usable = false;
                     }
 
                     int[] zone = new int[]{0, people_PreView.getWidth(), 0, people_PreView.getHeight()};
@@ -489,6 +490,7 @@ public class CalendarList extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event)
             {
                 she1.if_Usable = false;
+
                 friendList.setVisibility(View.VISIBLE);
                 screen_CalenderCreator.setVisibility(View.INVISIBLE);
 
@@ -649,6 +651,9 @@ public class CalendarList extends AppCompatActivity {
 
             callenDar calender = createCalendarNow(name, user_Admin, user_ToAdd);
             writeCalendar(calender);
+
+            she2.if_Usable = false;
+            she3.if_Usable = false;
         }
     }
 
