@@ -28,6 +28,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.concurrent.TimeoutException;
 import java.util.jar.JarEntry;
 
 public class CalendarList extends AppCompatActivity {
@@ -86,15 +88,16 @@ public class CalendarList extends AppCompatActivity {
             mainLayout.addView(Jpanel0);
             she_ca.add(new シルヴァホルン(new Point[]{new Point(310, length), new Point(410, length), new Point(410, length + 100), new Point(310, length + 100)}));
             she_ca_going.add(new シルヴァホルン(new Point[]{new Point(0,length), new Point(300,length),new Point(300,length + 100),new Point(0,length + 100)}));
-            
+
+            Jpanel0.setOnTouchListener(new CalendarListener());
+            tf.setOnTouchListener(new gotoCalendarListener());
+
             length += 100;
         }
 
-        if(Jpanel0 != null)
-        {
-            tf.setOnTouchListener(new gotoCalendarListener());
-            Jpanel0.setOnTouchListener(new CalendarListener());
-        }
+//        if(Jpanel0 != null)
+//        {
+//        }
 
         final TextView Jpanel = Algorithm.createTextField(CalendarList.this,"Create new calendar", 0, length , new RelativeLayout.LayoutParams(300, 100), Color.rgb(150,100,15), (float)0.9);
 
@@ -206,12 +209,15 @@ public class CalendarList extends AppCompatActivity {
         });
 
         pic_of_the_User.setBackgroundColor(Color.rgb(150,100,50));
-        goToaccountSetting.setOnClickListener(new View.OnClickListener()
+
+        goToaccountSetting.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
-            public void onClick(View v)
+            public boolean onTouch(View v, MotionEvent event)
             {
-                //toDO
+                startActivity(new Intent(CalendarList.this, AccountSetting.class));
+
+                return false;
             }
         });
 
@@ -328,6 +334,11 @@ public class CalendarList extends AppCompatActivity {
             {
                 if(she_ca.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
                 {
+                    if(MainActivity.user.getCalender()[i].getCurrentUser() == null)
+                    {
+                        getMessage_WithCalendar(i);
+                    }
+
                     she3 = new シルヴァホルン(new Point[]{new Point(mainLayout.getWidth() - calendar_PreView.getWidth(), 0), new Point(mainLayout.getWidth(), 0), new Point(mainLayout.getWidth(), mainLayout.getHeight()), new Point(mainLayout.getWidth() - people_PreView.getWidth(), mainLayout.getHeight())});
 
                     she1.if_Usable = false;
@@ -350,9 +361,13 @@ public class CalendarList extends AppCompatActivity {
                     {
                         Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[i].getCurrentUser(), Pic, Tex, 0);
                     }
+                    else if(MainActivity.user.getCalender()[i].getCurrentUser() != null)
+                    {
+                        Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[i].getCurrentUser(), Pic, Tex, 0);
+                    }
 
                     //toDO get the data from database
-
+                    //toDO create a new thread join TIME_CONTROL
                     Algorithm.view_MOVE(new View[]{calendar_PreView}, mainLayout.getWidth() - people_PreView.getWidth(),0);
 
                     new Thread(new Runnable()
@@ -390,6 +405,11 @@ public class CalendarList extends AppCompatActivity {
             {
                 if(she_ca_going.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
                 {
+                    if(MainActivity.user.getCalender()[i].getCurrentUser() == null)
+                    {
+                        getMessage_WithCalendar(i);
+                    }
+
                     //toDO goTo the callendar, initilize event sitting
                     return false;
                 }
@@ -397,6 +417,49 @@ public class CalendarList extends AppCompatActivity {
 
             return false;
         }
+    }
+
+    private void getMessage_WithCalendar(int index)
+    {
+        final int calendarID = MainActivity.user.getCalender()[index].getId();
+
+        //toDO
+        final String URL = "";
+        final ArrayList<String> s = new ArrayList<String>();
+        final JsonRequestActivity a = new JsonRequestActivity(CalendarList.this);
+        final AppController C = new AppController(CalendarList.this);
+
+        MainActivity.TIME_CONTROL = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                a.makeJsonArryReq_TIME(URL, C, s, MainActivity.TIME_CONTROL);
+
+                try
+                {
+                    Thread.sleep(5000);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+
+                try
+                {
+                    s.get(0);
+                }
+                catch (IndexOutOfBoundsException e)
+                {
+                    System.out.println("TimeOut when getting data of Calendar --> " + calendarID);
+                }
+
+                //toDO
+                //MainActivity.user.getCalender()[index] = null;
+            }
+        });
+
+        MainActivity.TIME_CONTROL.start();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -651,9 +714,6 @@ public class CalendarList extends AppCompatActivity {
 
             callenDar calender = createCalendarNow(name, user_Admin, user_ToAdd);
             writeCalendar(calender);
-
-            she2.if_Usable = false;
-            she3.if_Usable = false;
         }
     }
 

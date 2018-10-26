@@ -2,8 +2,6 @@ package com.example.admin.callardar;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
@@ -18,11 +16,9 @@ import android.widget.TextView;
 import com.example.admin.callardar.Classes.Algorithm;
 import com.example.admin.callardar.Classes.Point;
 import com.example.admin.callardar.Classes.User;
-import com.example.admin.callardar.Classes.UserType;
 import com.example.admin.callardar.Classes.シルヴァホルン;
 
 import java.util.ArrayList;
-import java.util.MissingFormatArgumentException;
 
 public class FriendList extends AppCompatActivity {
 
@@ -209,8 +205,8 @@ public class FriendList extends AppCompatActivity {
                 {
                     users = new ArrayList<User>();
 
-                    users.add(new User(enter + "1", ""));
-                    users.add(new User(enter + "2", ""));
+                    users.add(new User(255,enter + "1", ""));
+                    users.add(new User(256, enter + "2", ""));
                 }
 
                 if(users != null && users.size() == 0)

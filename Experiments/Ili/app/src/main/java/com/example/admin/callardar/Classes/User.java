@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class User implements Comparable<User>
 {
+    private int id;
     private String name;
     private String Email;
     private UserType type;
@@ -11,8 +12,9 @@ public class User implements Comparable<User>
     private ArrayList<callenDar> calenders;
     private ArrayList<User> friends;
 
-    public User(String Name, String Email)
+    public User(int ID, String Name, String Email)
     {
+        id = ID;
         name = Name;
         this.Email = Email;
         type = null;
@@ -28,11 +30,17 @@ public class User implements Comparable<User>
      * @param Type
      */
 
-    public User(String Name, String Email, UserType Type)
+    public User(int ID, String Name, String Email, UserType Type)
     {
+        id = ID;
         name = Name;
         this.Email = Email;
         type = Type;
+    }
+
+    public int getID()
+    {
+        return id;
     }
 
     public String getName()

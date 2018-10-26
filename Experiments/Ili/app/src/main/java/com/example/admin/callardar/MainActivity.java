@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -82,13 +83,13 @@ public class MainActivity extends AppCompatActivity {
 
         if(account.equals("") && passWord.equals(""))
         {
-            user = new User("test","@");
+            user = new User(100, "test","@");
 
             User[] arr = new User[15];
 
             for(int i = 0 ; i < 15 ; i += 1)
             {
-                arr[i] = new User("illiand" + i, "!");
+                arr[i] = new User(i, "illiand" + i, "!");
             }
 
             user.addFriends(arr);
@@ -112,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        int id = 0;
+
         try
         {
             System.out.println(s.get(0));
@@ -130,7 +133,8 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
-        user = new User(account, null);
+        //toDO right ID
+        user = new User(new Random().nextInt(25550000) + 25555552, account, null);
 
         //toDO friend list
         URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/all";
@@ -168,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0 ; i < arr.length ; i += 1)
         {
-            toAdd[i] = new User(arr[i], "Default");
+            toAdd[i] = new User(i, arr[i], "Default");
         }
 
         user.addFriends(toAdd);
@@ -205,8 +209,10 @@ public class MainActivity extends AppCompatActivity {
         arr = new String[s.size()];
         arr = s.toArray(arr);
 
+        s = Algorithm.ifExistWithAdd_SpecialMode_INT("calendarId", s0);
+
         for(int i = 0 ; i < arr.length ; i += 1)
-        user.addCalender(new callenDar(arr[i], new User[]{}, new User[]{}));
+        user.addCalender(new callenDar(Integer.parseInt(s.get(i)), arr[i]));
 
         return true;
     }
@@ -350,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
                 mainLayout.removeView(CREATE_layout);
                 mainLayout.addView(login);
 
-                user = new User(account.toString(),"@");
+                user = new User(0, account.toString(),"@");
                 startActivity(new Intent(MainActivity.this,CalendarList.class));
             }
         });
