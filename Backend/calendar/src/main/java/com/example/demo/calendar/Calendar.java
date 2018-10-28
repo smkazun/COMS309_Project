@@ -1,7 +1,17 @@
 package com.example.demo.calendar;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -10,25 +20,29 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.springframework.core.style.ToStringCreator;
 
+import com.example.demo.user.*;;
+
 @Entity
 @Table(name = "calendar")
 public class Calendar {
-	
+
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "calendarId")
-	@NotFound(action = NotFoundAction.IGNORE)
 	private Integer calendarId;
-	
-	@Column(name = "calendarName")
-	@NotFound(action = NotFoundAction.IGNORE)
+
 	private String calendarName;
 	
+	@JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "AccessCalendar",
+			joinColumns = { @JoinColumn(name = "Calendar_id")},
+			inverseJoinColumns = { @JoinColumn(name = "User_id") })
+	private Set<Users> users = new HashSet<>();
 	
 	public Integer getCalendarId() {
 		return calendarId;
@@ -46,14 +60,28 @@ public class Calendar {
 		this.calendarName = calendarName;
 	}
 	
-	@Override
-	public String toString() {
-		return new ToStringCreator(this)
-				
-				.append("calendarId", this.getCalendarId())
-				.append("calendarName", this.getCalendarName()).toString();
-		
+	public Set<Users> getUsers(){
+		return users;
 	}
 	
-
+	public void setUsers(Set<Users> users) {
+		this.users = users;
+	}
+	
+	public Map<String, Object> toDTO()
+	{
+		Map<String,Object> map = new HashMap<>();
+		map.put("Calendar_id", this.calendarId);
+		
+		Set<Map<String,Object>> usersDTO = new HashSet<>();
+		for(Users u : users) {
+			Map<String,Object> usersMap = new HashMap<>();
+			usersMap.put("user_id", u.getId());
+			usersDTO.add(usersMap);
+		}
+		map.put("Users", usersDTO);
+		
+		return map;
+	}
+	
 }
