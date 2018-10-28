@@ -64,6 +64,7 @@ public class CalendarList extends AppCompatActivity {
 
     private シルヴァホルン she1;
     private Handler handler;
+    private Thread t;
 
     private ArrayList<シルヴァホルン> she_ca;
     private ArrayList<シルヴァホルン> she_ca_going;
@@ -233,7 +234,7 @@ public class CalendarList extends AppCompatActivity {
         });
     }
 
-    private static class inLeakHandle extends Handler
+    private class inLeakHandle extends Handler
     {
         public void handleMessage(Message msg)
         {
@@ -248,6 +249,57 @@ public class CalendarList extends AppCompatActivity {
                     trans.setVisibility(View.INVISIBLE);
                     people_PreView.removeAllViews();
                     break;
+                default:
+                    int i = msg.what % 1000;
+
+                    she3 = new シルヴァホルン(new Point[]{new Point(mainLayout.getWidth() - calendar_PreView.getWidth(), 0), new Point(mainLayout.getWidth(), 0), new Point(mainLayout.getWidth(), mainLayout.getHeight()), new Point(mainLayout.getWidth() - people_PreView.getWidth(), mainLayout.getHeight())});
+
+                    she1.if_Usable = false;
+
+                    for(int j = 0 ; j < she_ca.size() ; j += 1)
+                    {
+                        she_ca.get(j).if_Usable = false;
+                    }
+
+                    int[] zone = new int[]{0, people_PreView.getWidth(), 0, people_PreView.getHeight()};
+                    ArrayList<ImageView> Pic = new ArrayList<ImageView>();
+                    ArrayList<TextView> Tex = new ArrayList<TextView>();
+
+                    mainLayout.removeView(trans);
+                    mainLayout.addView(trans);
+                    mainLayout.removeView(calendar_PreView);
+                    mainLayout.addView(calendar_PreView);
+
+                    if(MainActivity.user.getName().equals("test"))
+                    {
+                        Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[i].getCurrentUser(), Pic, Tex, 0);
+                    }
+                    else if(MainActivity.user.getCalender()[i].getCurrentUser() != null)
+                    {
+                        Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[i].getCurrentUser(), Pic, Tex, 0);
+                    }
+
+                    Algorithm.view_MOVE(new View[]{calendar_PreView}, mainLayout.getWidth() - people_PreView.getWidth(),0);
+
+                    new Thread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            try
+                            {
+                                Thread.sleep(101);
+                            }
+                            catch (InterruptedException e)
+                            {
+                                e.printStackTrace();
+                            }
+
+                            Message message = new Message();
+                            message.what = 10;
+                            handler.sendMessage(message);
+                        }
+                    }).start();
             }
         }
     }
@@ -324,8 +376,7 @@ public class CalendarList extends AppCompatActivity {
         @Override
         public boolean onTouch(View v, MotionEvent event)
         {
-            System.out.println(calendar_PreView.getY() + calendar_PreView.getHeight());
-            if(calendar_PreView.getY() + calendar_PreView.getHeight() >= 1 || trans.getVisibility() == View.VISIBLE)
+            if((t != null && t.isAlive()) || calendar_PreView.getY() + calendar_PreView.getHeight() >= 1 || trans.getVisibility() == View.VISIBLE)
             {
                 return false;
             }
@@ -334,50 +385,25 @@ public class CalendarList extends AppCompatActivity {
             {
                 if(she_ca.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
                 {
-                    if(MainActivity.user.getCalender()[i].getCurrentUser() == null)
-                    {
-                        getMessage_WithCalendar(i);
-                    }
+                    final int index = i;
 
-                    she3 = new シルヴァホルン(new Point[]{new Point(mainLayout.getWidth() - calendar_PreView.getWidth(), 0), new Point(mainLayout.getWidth(), 0), new Point(mainLayout.getWidth(), mainLayout.getHeight()), new Point(mainLayout.getWidth() - people_PreView.getWidth(), mainLayout.getHeight())});
-
-                    she1.if_Usable = false;
-
-                    for(int j = 0 ; j < she_ca.size() ; j += 1)
-                    {
-                        she_ca.get(j).if_Usable = false;
-                    }
-
-                    int[] zone = new int[]{0, people_PreView.getWidth(), 0, people_PreView.getHeight()};
-                    ArrayList<ImageView> Pic = new ArrayList<ImageView>();
-                    ArrayList<TextView> Tex = new ArrayList<TextView>();
-
-                    mainLayout.removeView(trans);
-                    mainLayout.addView(trans);
-                    mainLayout.removeView(calendar_PreView);
-                    mainLayout.addView(calendar_PreView);
-
-                    if(MainActivity.user.getName().equals("test"))
-                    {
-                        Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[i].getCurrentUser(), Pic, Tex, 0);
-                    }
-                    else if(MainActivity.user.getCalender()[i].getCurrentUser() != null)
-                    {
-                        Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[i].getCurrentUser(), Pic, Tex, 0);
-                    }
-
-                    //toDO get the data from database
-                    //toDO create a new thread join TIME_CONTROL
-                    Algorithm.view_MOVE(new View[]{calendar_PreView}, mainLayout.getWidth() - people_PreView.getWidth(),0);
-
-                    new Thread(new Runnable()
+                    t = new Thread(new Runnable()
                     {
                         @Override
                         public void run()
                         {
+                            if(MainActivity.user.getCalender()[index].getCurrentUser() == null)
+                            {
+                                getMessage_WithCalendar(index, t);
+                            }
+                            else
+                            {
+                                return;
+                            }
+
                             try
                             {
-                                Thread.sleep(101);
+                                MainActivity.TIME_CONTROL.join();
                             }
                             catch (InterruptedException e)
                             {
@@ -385,10 +411,23 @@ public class CalendarList extends AppCompatActivity {
                             }
 
                             Message message = new Message();
-                            message.what = 10;
+                            message.what = 1000 + index;
                             handler.sendMessage(message);
                         }
-                    }).start();
+                    });
+
+                    if(MainActivity.user.getCalender()[index].getCurrentUser() == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        Message message = new Message();
+                        message.what = 1000 + index;
+                        handler.sendMessage(message);
+                    }
+
+
                 }
             }
 
@@ -405,12 +444,33 @@ public class CalendarList extends AppCompatActivity {
             {
                 if(she_ca_going.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
                 {
-                    if(MainActivity.user.getCalender()[i].getCurrentUser() == null)
-                    {
-                        getMessage_WithCalendar(i);
-                    }
+                    final int index = i;
 
-                    //toDO goTo the callendar, initilize event sitting
+                    t = new Thread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            if(MainActivity.user.getCalender()[index].getCurrentUser() == null)
+                            {
+                                getMessage_WithCalendar(index, t);
+
+                                try
+                                {
+                                    Thread.sleep(5000);
+                                }
+                                catch (InterruptedException e)
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            //toDO goTo the callendar, initilize event sitting
+                        }
+                    });
+
+                    t.start();
+
                     return false;
                 }
             }
@@ -419,7 +479,7 @@ public class CalendarList extends AppCompatActivity {
         }
     }
 
-    private void getMessage_WithCalendar(int index)
+    private void getMessage_WithCalendar(int index, final Thread thread)
     {
         final int calendarID = MainActivity.user.getCalender()[index].getId();
 
@@ -456,6 +516,8 @@ public class CalendarList extends AppCompatActivity {
 
                 //toDO
                 //MainActivity.user.getCalender()[index] = null;
+
+                thread.interrupt();
             }
         });
 
