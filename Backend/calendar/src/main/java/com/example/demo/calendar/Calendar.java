@@ -25,7 +25,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.springframework.core.style.ToStringCreator;
 
-import com.example.demo.user.*;;
+import com.example.demo.user.*;
 
 @Entity
 @Table(name = "calendar")
