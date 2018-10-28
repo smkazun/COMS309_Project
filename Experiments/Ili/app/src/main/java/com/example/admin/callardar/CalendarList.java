@@ -559,7 +559,7 @@ public class CalendarList extends AppCompatActivity {
         Button create = findViewById(R.id.createCalender);
         create.setOnClickListener(new OnClick());
 
-        Button b = findViewById(R.id.closeShow);
+        final Button b = findViewById(R.id.closeShow);
         b.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -596,11 +596,6 @@ public class CalendarList extends AppCompatActivity {
                         she2_f.add(0);
                     }
                 }
-                for(int i = 0 ; i < pic.size() ; i += 1)
-                {
-                    text.get(i).setVisibility(View.INVISIBLE);
-                    pic.get(i).setVisibility(View.INVISIBLE);
-                }
             }
         });
 
@@ -614,6 +609,11 @@ public class CalendarList extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event)
             {
+                if(admins != null && admins.size() == 0)
+                {
+                    return false;
+                }
+
                 she1.if_Usable = false;
 
                 friendList.setVisibility(View.VISIBLE);
@@ -634,67 +634,101 @@ public class CalendarList extends AppCompatActivity {
                     }
                 }
 
-                for(int i = 0 ; i < pic.size() ; i++)
-                {
-                    text.get(i).setVisibility(View.VISIBLE);
-                    pic.get(i).setVisibility(View.VISIBLE);
-                }
-
                 if(people == null)
                 {
                     //mainLayout.setBackgroundColor(Color.BLACK);
-
-                    changeTOnext cto1 = new changeTOnext(false, L * H);
-                    changeTOnext cto2 = new changeTOnext(true, L * H);
-
                     people = new ArrayList<User>();
-                    admins = new ArrayList<User>();
 
                     mainLayout.removeView(friendList);
                     mainLayout.addView(friendList);
 
+                    sheruns1.clear();
+                    sheruns2.clear();
+                    pic.clear();
+                    text.clear();
+                    return_Pic.clear();
+                    return_Text.clear();
 
-                    for(int i = 0 ; i < sheruns1.size() ;)
-                    {
-                        sheruns1.remove(0);
-                    }
-                    for(int i = 0 ; i < sheruns2.size() ;)
-                    {
-                        sheruns2.remove(0);
-                    }
+                    friendList.removeAllViews();
+                    friendList.addView(b);
 
-                    for(int i = 0 ; i < pic.size() ;)
-                    {
-                        //toDO
-                        text.get(0).setVisibility(View.INVISIBLE);
-                        text.remove(0);
-                    //    mainLayout.removeView(text.remove(0));
-                        mainLayout.removeView(pic.remove(0));
-                    }
-                    for(int i = 0 ; i < return_Pic.size() ;)
-                    {
-                        return_Text.get(0).setVisibility(View.INVISIBLE);
-                        return_Text.remove(0);
-                    //    mainLayout.removeView(return_Text.remove(0));
-                        mainLayout.removeView(return_Pic.remove(0));
-                    }
-
-                    int x0 = (int) friendList.getX();
-                    int x1 = (int) friendList.getX() + friendList.getWidth();
-                    int y0 = (int) friendList.getY();
-                    int y1 = (int) friendList.getY() + friendList.getHeight() / 2;
-
-                    int x8 = (int) friendList.getX();
-                    int x9 = (int) friendList.getX() + friendList.getWidth();
-                    int y8 = (int) friendList.getY() + friendList.getHeight() / 2  + 100;
-                    int y9 = (int) friendList.getY() + friendList.getHeight();
+                    int zone1[] = new int[]{0, friendList.getWidth(), 0, friendList.getHeight() / 2 - 50};
+                    int zone2[] = new int[]{0, friendList.getWidth(), friendList.getHeight() / 2 + 50, friendList.getHeight()};
 
                     she1.if_Usable = false;
 
                     if(MainActivity.user.getFriends().length >= 1)
                     {
-                        Algorithm.create_ImageAndTexts(CalendarList.this, mainLayout, new int[]{x0, x1, y0, y1}, L, H, null, MainActivity.user.getFriends(), pic, text, cto1.index);
-                        Algorithm.memberAddingProcess(CalendarList.this, mainLayout, new int[]{x0, x1, y0, y1}, new int[]{x8, x9, y8, y9}, L, H, MainActivity.user.getFriends(), people, return_Pic, return_Text, pic, text, sheruns1, sheruns2, cto1.index, cto2.index, true);
+                        Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zone1, L, H, null, MainActivity.user.getFriends(), pic, text, 0);
+                        Algorithm.memberAddingProcess(CalendarList.this, friendList, zone1, zone2, L, H, MainActivity.user.getFriends(), people, return_Pic, return_Text, pic, text, sheruns1, sheruns2, 0, 0, true);
+                    }
+                }
+
+                return false;
+            }
+        });
+
+        ImageView showFriendList2 = findViewById(R.id.show2);
+        showFriendList2.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if(people == null || people.size() == 0)
+                {
+                    return false;
+                }
+
+                she1.if_Usable = false;
+
+                friendList.setVisibility(View.VISIBLE);
+                screen_CalenderCreator.setVisibility(View.INVISIBLE);
+
+                for(int i = 0 ; i < sheruns1.size() ; i += 1)
+                {
+                    if(she1_f.get(i) == 10)
+                    {
+                        sheruns1.get(i).if_Usable = true;
+                    }
+                }
+                for(int i = 0 ; i < sheruns2.size() ; i += 1)
+                {
+                    if(she2_f.get(i) == 10)
+                    {
+                        sheruns2.get(i).if_Usable = true;
+                    }
+                }
+
+                if(admins == null)
+                {
+                    //mainLayout.setBackgroundColor(Color.BLACK);
+                    admins = new ArrayList<User>();
+
+                    mainLayout.removeView(friendList);
+                    mainLayout.addView(friendList);
+
+                    sheruns1.clear();
+                    sheruns2.clear();
+                    pic.clear();
+                    text.clear();
+                    return_Pic.clear();
+                    return_Text.clear();
+
+                    friendList.removeAllViews();
+                    friendList.addView(b);
+
+                    int zone1[] = new int[]{0, friendList.getWidth(), 0, friendList.getHeight() / 2 - 50};
+                    int zone2[] = new int[]{0, friendList.getWidth(), friendList.getHeight() / 2 + 50, friendList.getHeight()};
+
+                    she1.if_Usable = false;
+
+                    if(MainActivity.user.getFriends().length >= 1)
+                    {
+                        User[] peoples = new User[people.size()];
+                        peoples = people.toArray(peoples);
+
+                        Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zone1, L, H, null, peoples, pic, text, 0);
+                        Algorithm.memberAddingProcess(CalendarList.this, friendList, zone1, zone2, L, H, peoples, admins, return_Pic, return_Text, pic, text, sheruns1, sheruns2, 0, 0, true);
                     }
                 }
 
@@ -768,6 +802,7 @@ public class CalendarList extends AppCompatActivity {
             User[] user_ToAdd = new User[people.size()];
             user_ToAdd = people.toArray(user_ToAdd);
 
+            admins.add(MainActivity.user);
             User[] user_Admin = new User[admins.size()];
             user_Admin = admins.toArray(user_Admin);
 

@@ -381,10 +381,10 @@ public class Algorithm
      * @param views_Tex
      */
     @SuppressLint("ClickableViewAccessibility")
-    public static void memberAddingProcess(final Object classDOTthis, Object Layout, int[] Zone1, int[] Zone2, final int X_number, final int Y_number,
+    public static void memberAddingProcess(final Object classDOTthis, Object Layout, final int[] Zone1, final int[] Zone2, final int X_number, final int Y_number,
                                            final User[] toAdd, final ArrayList<User> return_Value_toAdd, final ArrayList<ImageView> return_Value_Picture,
                                            final ArrayList<TextView> return_Value_Text, final ArrayList<ImageView> views_Pic, final ArrayList<TextView> views_Tex,
-                                           final ArrayList<シルヴァホルン> sheruns1,final ArrayList<シルヴァホルン> sheruns2, final int index1, final int index2,
+                                           final ArrayList<シルヴァホルン> sheruns1, final ArrayList<シルヴァホルン> sheruns2, final int index1, final int index2,
                                            boolean chyet)
     {
         final ConstraintLayout layout = (ConstraintLayout) Layout;
@@ -467,6 +467,20 @@ public class Algorithm
 
                 sysTime = System.currentTimeMillis();
 
+                final int left_X_start = Zone1[0];
+                final int right_X_start = Zone1[1];
+                final int up_Y_start = Zone1[2];
+                final int down_Y_start = Zone1[3];
+                final int left_X_end = Zone2[0];
+                final int right_X_end = Zone2[1];
+                final int up_Y_end = Zone2[2];
+                final int down_Y_end = Zone2[3];
+
+                final int x_ONE = (right_X_start - left_X_start) / X_number - 10;
+                final int y_ONE = (down_Y_start - up_Y_start) / Y_number - 50;
+                final int x_endBy = (right_X_end - left_X_end) / (x_ONE + 10);
+                final int y_endBy = (down_Y_end - up_Y_end) / (y_ONE + 50);
+
                 for(int i = index1 ; i < Math.min(copy_User.size(), index1 + X_number * Y_number) ; i += 1)
                 {
                     if(sheruns1.get(i - index1).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
@@ -482,7 +496,6 @@ public class Algorithm
                         {
                             return false;
                         }
-
 
                         for(int j = 0; j < Math.min(copy_User.size(), index1 + X_number * Y_number) / X_number; j += 1)
                         {
