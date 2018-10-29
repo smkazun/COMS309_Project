@@ -92,4 +92,10 @@ public class Point
 
         return x == p2.x && y == p2.y;
     }
+
+    @Override
+    public String toString()
+    {
+        return "(" + x + ", " + y + ")";
+    }
 }

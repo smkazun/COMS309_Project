@@ -24,6 +24,286 @@ public class Algorithm
     }
 
     /**
+     * check the specific text in specific header
+     * @param header
+     * @param toCheck
+     * @param s
+     *  string to check
+     * @return
+     */
+    public static boolean ifExist(String header, String toCheck, String s)
+    {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        boolean flag = false;
+        int length_s = s.length();
+        int length_h = header.length();
+        int length_t = toCheck.length();
+
+        try
+        {
+            for(; i < length_s ; i += 1)
+            {
+                if(s.charAt(i) == header.charAt(0) && s.charAt(i + length_h - 1) == header.charAt(length_h - 1))
+                {
+                    if(length_h <= 2)
+                    {
+                        flag = true;
+                    }
+
+                    for(j = 1 ; j < length_h - 1; j += 1)
+                    {
+                        if(s.charAt(i + j) != header.charAt(j))
+                        {
+                            break;
+                        }
+
+                        if(j + 1 == length_h - 1)
+                        {
+                            flag = true;
+                        }
+                    }
+
+                    if(flag && s.charAt(i + length_h + 3) == toCheck.charAt(0) && s.charAt(i + length_h + 3 + length_t - 1) == toCheck.charAt(length_t - 1))
+                    {
+                        if(length_t <= 2 && s.charAt(i + length_h + 3 + length_t) == '"')
+                        {
+                            return true;
+                        }
+
+                        for(k = 1 ; k < length_t - 1 ; k +=1)
+                        {
+                            if(s.charAt(i  + length_h + 3 + k) != toCheck.charAt(k))
+                            {
+                                flag = false;
+                                break;
+                            }
+
+                            if(k + 1 == length_t - 1 && s.charAt(i + length_h + 3 + length_t) == '"')
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (StringIndexOutOfBoundsException e)
+        {
+            return false;
+        }
+
+
+        return false;
+    }
+
+    /**
+     * check the specific String to specific header, and
+     * add the text into ArrayList
+     * @param header
+     * @param s
+     * @return
+     */
+    public static ArrayList<String> ifExistWithAdd(String header,String s)
+    {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+
+        boolean flag = false;
+        int length_s = s.length();
+        int length_h = header.length();
+
+        ArrayList<String> returnValue = new ArrayList<String>();
+
+        try
+        {
+            for(; i < length_s ; i += 1)
+            {
+                if(s.charAt(i) == header.charAt(0) && s.charAt(i + length_h - 1) == header.charAt(length_h - 1))
+                {
+                    if(length_h <= 2)
+                    {
+                        flag = true;
+                    }
+
+                    for(j = 1 ; j < length_h - 1; j += 1)
+                    {
+                        if(s.charAt(i + j) != header.charAt(j))
+                        {
+                            break;
+                        }
+
+                        if(j + 1 == length_h - 1)
+                        {
+                            flag = true;
+                        }
+                    }
+
+                    if(flag)
+                    {
+                        for(k = i + length_h + 3 ; s.charAt(k) != '"' ; k +=1)
+                        {
+                            if(s.charAt(k + 1) == '"')
+                            {
+                                returnValue.add(s.substring(i + length_h + 3, k + 1));
+                                i = k + 2;
+                                flag = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (StringIndexOutOfBoundsException e)
+        {
+            return returnValue;
+        }
+
+        return returnValue;
+    }
+
+    public static ArrayList<String> ifExistWithAdd_SpecialMode_INT(String header,String s)
+    {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+
+        boolean flag = false;
+        int length_s = s.length();
+        int length_h = header.length();
+
+        ArrayList<String> returnValue = new ArrayList<String>();
+
+        try
+        {
+            for(; i < length_s ; i += 1)
+            {
+                if(s.charAt(i) == header.charAt(0) && s.charAt(i + length_h - 1) == header.charAt(length_h - 1))
+                {
+                    if(length_h <= 2)
+                    {
+                        flag = true;
+                    }
+
+                    for(j = 1 ; j < length_h - 1; j += 1)
+                    {
+                        if(s.charAt(i + j) != header.charAt(j))
+                        {
+                            break;
+                        }
+
+                        if(j + 1 == length_h - 1)
+                        {
+                            flag = true;
+                        }
+                    }
+
+                    if(flag)
+                    {
+                        for(k = i + length_h + 2 ; s.charAt(k) != ',' ; k +=1)
+                        {
+                            if(s.charAt(k + 1) == ',')
+                            {
+                                returnValue.add(s.substring(i + length_h + 2, k + 1));
+                                i = k + 1;
+                                flag = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (StringIndexOutOfBoundsException e)
+        {
+            return returnValue;
+        }
+
+        return returnValue;
+    }
+
+    /**
+     * check the specific String to specific header, and
+     * add the text into ArrayList
+     * @param header
+     * @param toCheck
+     * @param s
+     * @return
+     */
+    public static ArrayList<String> ifExistAndAdd(String header, String toCheck, String s)
+    {
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        boolean flag = false;
+        int length_s = s.length();
+        int length_h = header.length();
+        int length_t = toCheck.length();
+
+        ArrayList<String> returnValue = new ArrayList<String>();
+
+        try
+        {
+        for(; i < length_s ; i += 1)
+        {
+            if(s.charAt(i) == header.charAt(0) && s.charAt(i + length_h - 1) == header.charAt(length_h - 1))
+            {
+                if(length_h <= 2)
+                {
+                    flag = true;
+                }
+
+                for(j = 1 ; j < length_h - 1; j += 1)
+                {
+                    if(s.charAt(i + j) != header.charAt(j))
+                    {
+                        break;
+                    }
+
+                    if(j + 1 == length_h - 1)
+                    {
+                        flag = true;
+                    }
+                }
+
+                if(flag && s.charAt(i + length_h + 3) == toCheck.charAt(0) && s.charAt(i + length_h + 3 + length_t - 1) == toCheck.charAt(length_t - 1))
+                {
+                    if(length_t <= 2 && s.charAt(i + length_h + 3 + length_t) == '"')
+                    {
+                        returnValue.add(s.substring(i + length_h + 3, i + length_h + 3 + length_t));
+                        i = i + length_h + 4 + length_t;
+                        flag = false;
+                    }
+
+                    for(k = 1 ; k < length_t - 1 ; k +=1)
+                    {
+                        if(s.charAt(i  + length_h + 3 + k) != toCheck.charAt(k))
+                        {
+                            flag = false;
+                            break;
+                        }
+
+                        if(k + 1 == length_t - 1 && s.charAt(i + length_h + 3 + length_t) == '"')
+                        {
+                            returnValue.add(s.substring(i + length_h + 3, i + length_h + 3 + length_t));
+                            i = i + length_h + 4 + length_t;
+                            flag = false;
+                        }
+                    }
+                }
+            }
+        }
+        }
+        catch (StringIndexOutOfBoundsException e)
+        {
+            return returnValue;
+        }
+
+        return returnValue;
+    }
+
+    /**
      *
      *  move a View to the assigned place automatically
      *
@@ -61,10 +341,10 @@ public class Algorithm
         final int x_ONE = (right_X_start - left_X_start) / X_number - 10;
         final int y_ONE = (down_Y_start - up_Y_start) / Y_number - 50;
 
-        for(int i = index ; i < index + X_number * Y_number ; i += 1)
+        for(int i = index ; i < toAdd.length && i < index + X_number * Y_number ; i += 1)
         {
-            int scale_X = i % X_number;
-            int scale_Y = i / X_number;
+            int scale_X = (i - index) % X_number;
+            int scale_Y = (i - index) / X_number;
             Point p1 = new Point(left_X_start + scale_X * (x_ONE + 10),up_Y_start + scale_Y * (y_ONE + 50));
             Random r = new Random();
 
@@ -101,19 +381,22 @@ public class Algorithm
      * @param views_Tex
      */
     @SuppressLint("ClickableViewAccessibility")
-    public static void memberAddingProcess(final Object classDOTthis, Object Layout, int[] Zone1, int[] Zone2, final int X_number, final int Y_number,
+    public static void memberAddingProcess(final Object classDOTthis, Object Layout, final int[] Zone1, final int[] Zone2, final int X_number, final int Y_number,
                                            final User[] toAdd, final ArrayList<User> return_Value_toAdd, final ArrayList<ImageView> return_Value_Picture,
                                            final ArrayList<TextView> return_Value_Text, final ArrayList<ImageView> views_Pic, final ArrayList<TextView> views_Tex,
-                                           final ArrayList<シルヴァホルン> sheruns1,final ArrayList<シルヴァホルン> sheruns2, final int index1, final int index2)
+                                           final ArrayList<シルヴァホルン> sheruns1, final ArrayList<シルヴァホルン> sheruns2, final int index1, final int index2,
+                                           boolean chyet)
     {
-        final int left_X_start = Zone1[0];
-        final int right_X_start = Zone1[1];
-        final int up_Y_start = Zone1[2];
-        final int down_Y_start = Zone1[3];
-        final int left_X_end = Zone2[0];
-        final int right_X_end = Zone2[1];
-        final int up_Y_end = Zone2[2];
-        final int down_Y_end = Zone2[3];
+        final ConstraintLayout layout = (ConstraintLayout) Layout;
+
+        final int left_X_start = Zone1[0] + (int)layout.getX();
+        final int right_X_start = Zone1[1] + (int)layout.getX();
+        final int up_Y_start = Zone1[2] + (int)layout.getY();
+        final int down_Y_start = Zone1[3] + (int)layout.getY();
+        final int left_X_end = Zone2[0] + (int)layout.getX();
+        final int right_X_end = Zone2[1] + (int)layout.getX();
+        final int up_Y_end = Zone2[2] + (int)layout.getY();
+        final int down_Y_end = Zone2[3] + (int)layout.getY();
 
         final int x_ONE = (right_X_start - left_X_start) / X_number - 10;
         final int y_ONE = (down_Y_start - up_Y_start) / Y_number - 50;
@@ -124,9 +407,8 @@ public class Algorithm
         final ArrayList<ImageView> copy_Pic = new ArrayList<ImageView>();
         final ArrayList<TextView> copy_Tex = new ArrayList<>();
 
-        final ConstraintLayout layout = (ConstraintLayout) Layout;
-
-        for(int i = index1; i < index1 + X_number * Y_number ; i += 1) {
+        for(int i = 0; i < X_number * Y_number ; i += 1)
+        {
             //create zone,logic
             int scale_X = i % X_number;
             int scale_Y = i / X_number;
@@ -137,13 +419,24 @@ public class Algorithm
 
             sheruns1.add(new シルヴァホルン(new Point[]{p1, p2, p3, p4}));
 
-            copy_Pic.add(views_Pic.get(i));
-            copy_Tex.add(views_Tex.get(i));
-
-            //------------------------------
+            if(i >= toAdd.length)
+            {
+                sheruns1.get(i).if_Usable = false;
+            }
         }
 
-        for(int i = index2; i < index2 + x_endBy * y_endBy ; i += 1)
+        if(! chyet)
+        {
+            return;
+        }
+
+        for(int i = index1; i < Math.min(toAdd.length, index1 + X_number * Y_number) ; i += 1)
+        {
+            copy_Pic.add(views_Pic.get(i));
+            copy_Tex.add(views_Tex.get(i));
+        }
+
+        for(int i = 0; i < x_endBy * y_endBy ; i += 1)
         {
             int scale_X = i % x_endBy;
             int scale_Y = i / x_endBy;
@@ -174,6 +467,20 @@ public class Algorithm
 
                 sysTime = System.currentTimeMillis();
 
+                final int left_X_start = Zone1[0];
+                final int right_X_start = Zone1[1];
+                final int up_Y_start = Zone1[2];
+                final int down_Y_start = Zone1[3];
+                final int left_X_end = Zone2[0];
+                final int right_X_end = Zone2[1];
+                final int up_Y_end = Zone2[2];
+                final int down_Y_end = Zone2[3];
+
+                final int x_ONE = (right_X_start - left_X_start) / X_number - 10;
+                final int y_ONE = (down_Y_start - up_Y_start) / Y_number - 50;
+                final int x_endBy = (right_X_end - left_X_end) / (x_ONE + 10);
+                final int y_endBy = (down_Y_end - up_Y_end) / (y_ONE + 50);
+
                 for(int i = index1 ; i < Math.min(copy_User.size(), index1 + X_number * Y_number) ; i += 1)
                 {
                     if(sheruns1.get(i - index1).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
@@ -189,7 +496,6 @@ public class Algorithm
                         {
                             return false;
                         }
-
 
                         for(int j = 0; j < Math.min(copy_User.size(), index1 + X_number * Y_number) / X_number; j += 1)
                         {
@@ -484,7 +790,7 @@ public class Algorithm
             y_Proportion = y_Distance / (x_Distance + y_Distance);
 
             handler = new Handler();
-            t = new Thread();;
+            t = new Thread();
             t.run();
         }
 

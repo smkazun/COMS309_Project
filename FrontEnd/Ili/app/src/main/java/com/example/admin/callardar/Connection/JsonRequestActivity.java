@@ -17,7 +17,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.admin.callardar.Connection.AppController;;
+import com.example.admin.callardar.Connection.AppController;
+import com.example.admin.callardar.MainActivity;;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,9 +42,21 @@ public class JsonRequestActivity{
 
     public JsonRequestActivity(Context C)
     {
-        pDialog = new ProgressDialog(C);
-        pDialog.setCancelable(false);
-        pDialog.setMessage("aaaa");
+//        pDialog = new ProgressDialog(C);
+///        pDialog.setCancelable(false);
+ ///       pDialog.setMessage("aaaa");
+    }
+
+    public void makeJsonArryReq_TIME(final String URL, final AppController C, final ArrayList<String> s, final Thread Time_Control)
+    {
+         new Thread(new Runnable()
+         {
+             @Override
+             public void run()
+             {
+                 makeJsonArryReq(URL, C, s, Time_Control);
+             }
+         }).start();
     }
 
     /**
@@ -58,7 +71,7 @@ public class JsonRequestActivity{
      */
     public void makeJsonObjReq(String URL, JSONObject A, AppController C)
     {
-        pDialog.show();
+//        pDialog.show();
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.POST,
                URL, A,
@@ -66,13 +79,18 @@ public class JsonRequestActivity{
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        pDialog.hide();
+//                        pDialog.hide();
+                        System.out.println("正确！");
                     }
                 }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                pDialog.hide();
+//                pDialog.hide();
+//                Log.e("ERROR : ", error.getMessage(), error);
+//                byte[] htmlBodyBytes = error.networkResponse.data;
+//                Log.e("ERROR : ", new String(htmlBodyBytes), error);
+                System.out.println("错误！");
             };
         });
 
@@ -87,25 +105,29 @@ public class JsonRequestActivity{
      * @param s
      *  message to receive
      */
-    public void makeJsonArryReq(String URL, AppController C, final ArrayList<String> s)
+    public void makeJsonArryReq(String URL, AppController C, final ArrayList<String> s, final Thread Time_Control)
     {
-        pDialog.show();
+ //       pDialog.show();
 
         JsonArrayRequest req = new JsonArrayRequest(URL,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         s.add(response.toString());
-                        System.out.println(s.get(0));
+
                         System.out.println("正确！");
-                        pDialog.hide();
+                        Time_Control.interrupt();
+ //                       pDialog.hide();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
+//                Log.e("ERROR : ", error.getMessage(), error);
+//                byte[] htmlBodyBytes = error.networkResponse.data;
+//                Log.e("ERROR : ", new String(htmlBodyBytes), error);
                 System.out.println("错误！");
-                pDialog.hide();
+                Time_Control.interrupt();
+ //               pDialog.hide();
             }
         });
 

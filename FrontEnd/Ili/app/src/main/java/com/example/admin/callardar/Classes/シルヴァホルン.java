@@ -1,6 +1,8 @@
 package com.example.admin.callardar.Classes;
 
-import com.example.admin.callardar.Classes.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * This is a possible ex.
@@ -43,6 +45,34 @@ public class シルヴァホルン
         }
 
         pArr[pArr.length - 1].revise_Next_Point(pArr[0]);
+    }
+
+    public シルヴァホルン(String s)
+    {
+        Scanner scanner = new Scanner(s);
+        ArrayList<Point> pArr = new ArrayList<Point>();
+        if_Usable = true;
+
+        while(scanner.hasNextDouble())
+        {
+            pArr.add(new Point((int) Double.parseDouble(scanner.next()), (int) Double.parseDouble(scanner.next())));
+        }
+
+        scanner.close();
+
+        this.pArr = new Point[pArr.size()];
+
+        for(int i = 0 ; i < pArr.size() ; i += 1)
+        {
+            this.pArr[i] = pArr.get(i);
+        }
+
+        for(int i=0;i<this.pArr.length - 1;i++)
+        {
+            this.pArr[i].revise_Next_Point(this.pArr[i + 1]);
+        }
+
+        this.pArr[this.pArr.length - 1].revise_Next_Point(this.pArr[0]);
     }
 
     public boolean if_Exist(Point point_Check)

@@ -1,8 +1,11 @@
 package com.example.admin.callardar;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.PasswordTransformationMethod;
@@ -14,21 +17,30 @@ import android.widget.TextView;
 
 import com.example.admin.callardar.Classes.Algorithm;
 import com.example.admin.callardar.Classes.User;
+import com.example.admin.callardar.Classes.callenDar;
 import com.example.admin.callardar.Connection.AppController;
 import com.example.admin.callardar.Connection.JsonRequestActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class MainActivity extends AppCompatActivity {
 
+    protected static int X;
+    protected static int Y;
+
     private ConstraintLayout mainLayout;
 
+    private static Handler handler;
+
     private EditText account;
-    private EditText password;
+    private static EditText password;
     private EditText CREATE_account;
     private EditText CREATE_password;
 
@@ -36,11 +48,23 @@ public class MainActivity extends AppCompatActivity {
     private ConstraintLayout login;
     private ImageView transparent_CREATE_user;
 
-    private TextView wrongMessage;
+    private static TextView wrongMessage;
 
     protected static User user;
 
     private Button LOGIN;
+    protected static Thread TIME_CONTROL;
+
+//        Algorithm.Stop stop = new Algorithm.Stop(2000);
+//        FutureTask<Integer> task = new FutureTask<Integer>(stop);
+//        new Thread(task).start();
+//        try {
+//            task.get();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
     /**
      *  get from database to determine the current account
@@ -54,68 +78,141 @@ public class MainActivity extends AppCompatActivity {
      */
     private boolean ifExist(final String account, final String passWord)
     {
+        X = mainLayout.getWidth();
+        Y = (int) (mainLayout.getHeight() * 0.9);
+
         if(account.equals("") && passWord.equals(""))
         {
-            user = new User("test","@");
+            user = new User(100, "test","@");
 
             User[] arr = new User[15];
 
             for(int i = 0 ; i < 15 ; i += 1)
             {
-                arr[i] = new User("illiand" + i, "!");
+                arr[i] = new User(i, "illiand" + i, "!");
             }
 
             user.addFriends(arr);
+            user.addCalender(new callenDar(10,"TestCalldar", arr, arr));
 
             return true;
         }
 
-        String URL = "http://proj309-VC-03.misc.iastate.edu:8080/demo/users";
+        String URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/all";
         ArrayList<String> s = new ArrayList<String>();
         JsonRequestActivity a = new JsonRequestActivity(MainActivity.this);
         AppController C = new AppController(MainActivity.this);
-        a.makeJsonArryReq(URL, C, s);
+        a.makeJsonArryReq_TIME(URL, C, s, TIME_CONTROL);
 
-        Algorithm.Stop stop = new Algorithm.Stop(0);
-        FutureTask<Integer> task = new FutureTask<Integer>(stop);
-        new Thread(task).start();
+        try
+        {
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException e)
+        {
+
+        }
+
+        int id = 0;
 
         try
         {
             System.out.println(s.get(0));
+
+            String header = "name";
+            String toCheck = account;
+
+            if( ! Algorithm.ifExist(header, toCheck, s.get(0)))
+            {
+                return false;
+            }
         }
         catch (IndexOutOfBoundsException e)
         {
-            System.out.println("Time Out");
+            System.out.println("Time Out in log in");
             return false;
         }
 
-//        if(message.size() == 0)
-//        {
-//            return false;
-//        }
+        //toDO right ID
+        user = new User(new Random().nextInt(25550000) + 25555552, account, null);
 
         //toDO friend list
-        URL = null;
-        //message = new JSONObject();
+        URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/all";
+        s = new ArrayList<String>();
+        a = new JsonRequestActivity(MainActivity.this);
+        C = new AppController(MainActivity.this);
+        a.makeJsonArryReq_TIME(URL, C, s, TIME_CONTROL);
 
-   //     Method_Connection.makeJsonArrayReq_GET(URL, message);
-        user = new User(account, null);
+        try
+        {
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException e)
+        {
 
+        }
 
-  //      user.addFriends(new User[]{new User(message.get(i), null)});
+        String s0 = "";
 
+        try
+        {
+            s0 = s.get(0);
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            System.out.println("Time Out in adding friend list");
+            return false;
+        }
+
+        s = Algorithm.ifExistWithAdd("name", s0);
+        String[] arr = new String[s.size()];
+        User[] toAdd = new User[s.size()];
+
+        arr = s.toArray(arr);
+
+        for(int i = 0 ; i < arr.length ; i += 1)
+        {
+            toAdd[i] = new User(i, arr[i], "Default");
+        }
+
+        user.addFriends(toAdd);
 
         //toDO calladar list
-        URL = null;
-        //message = new JSONObject();
+        URL = "http://proj309-VC-03.misc.iastate.edu:8080/calendar/all";
+        s = new ArrayList<String>();
+        a = new JsonRequestActivity(MainActivity.this);
+        C = new AppController(MainActivity.this);
+        a.makeJsonArryReq_TIME(URL, C, s, TIME_CONTROL);
 
-    //    Method_Connection.makeJsonArrayReq_GET(URL, message);
+        try
+        {
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException e)
+        {
 
-//        for(int i = 0 ; i < message.size() ; i += 1)
-//        {
-//            //user.addCalender(new callenDar(message.get(i), message.get(i + 1), ));
-//        }
+        }
+
+        s0 = "";
+
+        try
+        {
+            s0 = s.get(0);
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            System.out.println("Time Out in adding calendar");
+            return false;
+        }
+
+        s = Algorithm.ifExistWithAdd("calendarName", s0);
+        arr = new String[s.size()];
+        arr = s.toArray(arr);
+
+        s = Algorithm.ifExistWithAdd_SpecialMode_INT("calendarId", s0);
+
+        for(int i = 0 ; i < arr.length ; i += 1)
+        user.addCalender(new callenDar(Integer.parseInt(s.get(i)), arr[i]));
 
         return true;
     }
@@ -145,15 +242,40 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v)
         {
-            if(ifExist( account.getText().toString(), password.getText().toString()))
+            TIME_CONTROL = new Thread(new Runnable()
             {
-                startActivity(new Intent(MainActivity.this,CalendarList.class));
-            }
-            else
+                @Override
+                public void run()
+                {
+                    if (ifExist(account.getText().toString(), password.getText().toString()))
+                    {
+                        startActivity(new Intent(MainActivity.this, CalendarList.class));
+                    }
+                    else
+                    {
+                        System.out.println(account.getText().toString() + " + " + password.getText().toString());
+                        Message message = new Message();
+                        message.what = 10;
+                        handler.sendMessage(message);
+                    }
+                }
+            });
+
+            TIME_CONTROL.start();
+        }
+    }
+
+    private static class inLeakHandle extends Handler
+    {
+        public void handleMessage(Message msg)
+        {
+            super.handleMessage(msg);
+
+            if(msg .what == 10)
             {
-                System.out.println(account.getText().toString() + " + " +password.getText().toString());
                 wrongMessage.setVisibility(View.VISIBLE);
-                password.setText(new char[]{},0,0);
+                password.setText(new char[]{}, 0, 0);
+                handler.removeCallbacksAndMessages(null);
             }
         }
     }
@@ -163,6 +285,21 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        handler = new inLeakHandle();
+//        {
+//            public void handleMessage(Message msg)
+//            {
+//                super.handleMessage(msg);
+//
+//                if(msg .what == 10)
+//                {
+//                    wrongMessage.setVisibility(View.VISIBLE);
+//                    password.setText(new char[]{}, 0, 0);
+//                    handler.removeCallbacksAndMessages(null);
+//                }
+//            }
+//        };
 
         mainLayout = findViewById(R.id.JFrame_activity_main);
         login = findViewById(R.id.LOGIN);
@@ -196,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                String URL = "http://proj309-VC-03.misc.iastate.edu:8080/demo/users/new";
+                String URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/new";
                 JSONObject message = new JSONObject();
                 AppController C = new AppController(MainActivity.this);
                 JsonRequestActivity a = new JsonRequestActivity(MainActivity.this);
@@ -219,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
                 mainLayout.removeView(CREATE_layout);
                 mainLayout.addView(login);
 
-                user = new User(account.toString(),"@");
+                user = new User(0, account.toString(),"@");
                 startActivity(new Intent(MainActivity.this,CalendarList.class));
             }
         });
