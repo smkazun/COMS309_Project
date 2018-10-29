@@ -21,12 +21,12 @@ import org.hibernate.annotations.NotFoundAction;
 import org.springframework.core.style.ToStringCreator;
 
 @Entity
-@Table(name = "Users")
+//@Table(name = "Users")
 public class Users {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer user_id;
+	private Integer Userid;
 	
 	private String name;
 
@@ -38,12 +38,12 @@ public class Users {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "Users")
 	private Set<Calendar> calendars = new HashSet<>();
     
-    	public Integer getuser_id() {
-			return user_id;
+    	public Integer getUserid() {
+			return Userid;
 		}	
 	
-		public void setuser_id(Integer id) {
-			this.user_id = id;
+		public void setUserid(Integer id) {
+			this.Userid = id;
 		}
 	
 		public String getName() {
