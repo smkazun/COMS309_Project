@@ -76,7 +76,7 @@ public class Calendar {
 		Set<Map<String,Object>> usersDTO = new HashSet<>();
 		for(Users u : users) {
 			Map<String,Object> usersMap = new HashMap<>();
-			usersMap.put("user_id", u.getId());
+			usersMap.put("user_id", u.getUserid());
 			usersDTO.add(usersMap);
 		}
 		map.put("Users", usersDTO);
