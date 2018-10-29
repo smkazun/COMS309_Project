@@ -40,15 +40,15 @@ public class Calendar {
 	@JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "AccessCalendar",
-			joinColumns = { @JoinColumn(name = "Calendar_id")},
-			inverseJoinColumns = { @JoinColumn(name = "User_id") })
+			joinColumns = { @JoinColumn(name = "calendarId")},
+			inverseJoinColumns = { @JoinColumn(name = "Userid") })
 	private Set<Users> users = new HashSet<>();
 	
-	public Integer getCalendarId() {
+	public Integer getcalendarId() {
 		return calendarId;
 	}
 	
-	public void setCalendarId(Integer calendarId) {
+	public void setcalendarId(Integer calendarId) {
 		this.calendarId = calendarId;
 	}
 	
@@ -71,12 +71,12 @@ public class Calendar {
 	public Map<String, Object> toDTO()
 	{
 		Map<String,Object> map = new HashMap<>();
-		map.put("Calendar_id", this.calendarId);
+		map.put("calendarId", this.calendarId);
 		
 		Set<Map<String,Object>> usersDTO = new HashSet<>();
 		for(Users u : users) {
 			Map<String,Object> usersMap = new HashMap<>();
-			usersMap.put("user_id", u.getUserid());
+			usersMap.put("Userid", u.getUserid());
 			usersDTO.add(usersMap);
 		}
 		map.put("Users", usersDTO);
