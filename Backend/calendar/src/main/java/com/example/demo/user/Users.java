@@ -21,7 +21,7 @@ import org.hibernate.annotations.NotFoundAction;
 import org.springframework.core.style.ToStringCreator;
 
 @Entity
-//@Table(name = "Users")
+@Table(name = "users")
 public class Users {
 	
 	@Id
