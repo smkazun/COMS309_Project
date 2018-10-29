@@ -1,6 +1,7 @@
 package com.example.demo.user;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,8 @@ public interface UserRepository extends CrudRepository<Users, Integer>{
 
 	@Query( value = "select * from users;", nativeQuery = true)
 	public List<Users> getAllUsers();
+	
+	//finds user
+	public Optional<Users> findByuser_id(Integer user_id);
+	
 }
