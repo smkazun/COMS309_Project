@@ -205,7 +205,7 @@ public class FriendList extends AppCompatActivity {
                 {
                     users = new ArrayList<User>();
 
-                    users.add(new User(255,enter + "1", ""));
+                    users.add(new User(255, enter + "1", ""));
                     users.add(new User(256, enter + "2", ""));
                 }
 

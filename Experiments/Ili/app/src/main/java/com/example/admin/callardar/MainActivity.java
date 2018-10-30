@@ -113,18 +113,22 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        int id = 0;
-
         try
         {
-            System.out.println(s.get(0));
+            ArrayList<String> ids = Algorithm.ifExistWithAdd_SpecialMode_INT("id", s.get(0));
+            ArrayList<String> names = Algorithm.ifExistWithAdd("name", s.get(0));
+            ArrayList<String> email = Algorithm.ifExistWithAdd("Email", s.get(0));
+            ArrayList<String> passs = Algorithm.ifExistWithAdd("passWord", s.get(0));
 
-            String header = "name";
-            String toCheck = account;
-
-            if( ! Algorithm.ifExist(header, toCheck, s.get(0)))
+            for(int i = 0 ; i < ids.size() ; i += 1)
             {
-                return false;
+                if( ! names.get(i).equals(account) || ! passs.get(i).equals(passWord))
+                {
+                    continue;
+                }
+
+                user = new User(Integer.parseInt(ids.get(i)), names.get(i), email.get(i));
+                break;
             }
         }
         catch (IndexOutOfBoundsException e)
@@ -132,9 +136,6 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Time Out in log in");
             return false;
         }
-
-        //toDO right ID
-        user = new User(new Random().nextInt(25550000) + 25555552, account, null);
 
         //toDO friend list
         URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/all";

@@ -22,6 +22,19 @@
         app:layout_constraintVertical_bias="0.51">
 
         <EditText
+            android:id="@+id/Calendar_des"
+            android:layout_width="wrap_content"
+            android:layout_height="101dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Des"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/show2" />
+
+        <EditText
             android:id="@+id/name_Calender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +66,7 @@
             android:id="@+id/show"
             android:layout_width="136dp"
             android:layout_height="30dp"
-            android:layout_marginBottom="200dp"
+            android:layout_marginBottom="280dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="64dp"
             android:contentDescription="peopleToAdd"
@@ -78,7 +91,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/JFrame_FriendList"
+        android:id="@+id/CalendarList_container"
         android:layout_width="309dp"
         android:layout_height="555dp"
         android:layout_marginEnd="8dp"
@@ -88,6 +101,19 @@
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/SortingSystem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:ems="10"
+            android:hint="SortingSystem"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/closeShow"
@@ -100,6 +126,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/JFrame_FriendList"
+            android:layout_width="303dp"
+            android:layout_height="504dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 
     <ImageView
