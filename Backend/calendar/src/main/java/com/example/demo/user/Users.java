@@ -26,7 +26,7 @@ public class Users {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer Userid;
+	private Integer userid;
 	
 	private String name;
 
@@ -39,11 +39,11 @@ public class Users {
 	private Set<Calendar> calendars = new HashSet<>();
     
     	public Integer getUserid() {
-			return Userid;
+			return userid;
 		}	
 	
 		public void setUserid(Integer id) {
-			this.Userid = id;
+			this.userid = id;
 		}
 	
 		public String getName() {
