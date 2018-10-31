@@ -502,7 +502,7 @@ public class Algorithm
                             HxC = left_X_start + (X_number - 1) * (x_ONE + 10);
                             HyC = up_Y_start + j * (y_ONE + 50);
 
-                            if(return_Value_Picture.size() >= 1 && Math.abs((copy_Pic.get((j + index1 + 1) * X_number - 1)).getX() - HxC) > j || Math.abs((copy_Pic.get((j + index1 + 1) * X_number - 1).getY() - HyC)) > j)
+                            if(return_Value_Picture.size() >= 1 && (Math.abs((copy_Pic.get((j + index1 + 1) * X_number - 1)).getX() - HxC) > j || Math.abs((copy_Pic.get((j + index1 + 1) * X_number - 1).getY() - HyC)) > j))
                             {
                                 return false;
                             }
@@ -617,7 +617,7 @@ public class Algorithm
                             HxC = left_X_end + (x_endBy - 1) * (x_ONE + 10);
                             HyC = up_Y_end + j * (y_ONE + 50);
 
-                            if(copy_Pic.size() >= 1 && Math.abs((return_Value_Picture.get((j + index2 + 1) * x_endBy - 1)).getX() - HxC) > j || Math.abs(return_Value_Picture.get((j + index2 + 1) * x_endBy - 1).getY() - HyC) > j)
+                            if(copy_Pic.size() >= 1 && (Math.abs((return_Value_Picture.get((j + index2 + 1) * x_endBy - 1)).getX() - HxC) > j || Math.abs(return_Value_Picture.get((j + index2 + 1) * x_endBy - 1).getY() - HyC) > j))
                             {
                                 return false;
                             }
@@ -691,11 +691,6 @@ public class Algorithm
                                 view_MOVE(new View[]{return_Value_Picture.get(j),return_Value_Text.get(j)}, moving_X, moving_Y);
                             }
                         }
-
-//                        if(j < return_Value_Picture.size())
-//                        {
-//                            view_MOVE(new View[]{return_Value_Picture.get(j), return_Value_Text.get(j)}, moving_X, moving_Y);
-//                        }
 
                         return_Value_Picture.remove(i);
                         return_Value_Text.remove(i);

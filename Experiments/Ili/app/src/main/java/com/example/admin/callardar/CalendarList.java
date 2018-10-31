@@ -588,22 +588,7 @@ public class CalendarList extends AppCompatActivity {
                             try
                             {
                                 input = sorting.getText().toString();
-                            }
-                            catch(IndexOutOfBoundsException e)
-                            {
-                                try
-                                {
-                                    input = this.input.substring(0, this.input.length() - 2);
-                                }
-                                catch (StringIndexOutOfBoundsException SIOBE)
-                                {
-                                    input = this.input.charAt(0) + "";
-                                }
-                            }
 
-                         //   System.out.println("input = " + input + " + " + this.input);
-                            try
-                            {
                                 if( ! input.equals(""))
                                 {
                                     sheruns2.get(Math.min(sheruns2.size() - 1, return_Pic.size() - 1)).if_Usable = false;
@@ -611,10 +596,10 @@ public class CalendarList extends AppCompatActivity {
                             }
                             catch(NullPointerException | IndexOutOfBoundsException e)
                             {
-                              //  continue;
+
                             }
 
-                            if( ! input.equals("") && (int)input.charAt(input.length() - 1) != 0  && ! input.equals(this.input))
+                            if(input != null && ! input.equals("") && (int)input.charAt(input.length() - 1) != 0  && ! input.equals(this.input))
                             {
                                 this.input = input;
                                 entered = true;
@@ -630,9 +615,6 @@ public class CalendarList extends AppCompatActivity {
                                 message.what = 15;
                                 message.obj = new Algorithm.Component("", u, null, null,return_Pic, return_Text, null, null);
                                 handler.sendMessage(message);
-
-                                sheruns1.clear();
-                                sheruns2.clear();
 
                                 for(int i = 0 ; i < friends.length ; i += 1)
                                 {
@@ -663,7 +645,7 @@ public class CalendarList extends AppCompatActivity {
                                 message.obj = new Algorithm.Component("", cur, pics, texs, return_Pic, return_Text, sheruns1, sheruns2);
                                 handler.sendMessage(message);
                             }
-                            else if(entered && input.equals(""))
+                            else if(entered && input != null && input.equals(""))
                             {
                                 entered = false;
                                 this.input = "";
@@ -782,6 +764,107 @@ public class CalendarList extends AppCompatActivity {
                         Algorithm.memberAddingProcess(CalendarList.this, friendList, zone1, zone2, L, H, peoples, admins, return_Pic, return_Text, pic, text, sheruns1, sheruns2, 0, 0, true);
                     }
                 }
+
+                //Sorting-System_Admin
+                Thread enterValue2 = new Thread(new Runnable()
+                {
+                    private String input;
+                    private boolean entered;
+
+                    @Override
+                    public void run()
+                    {
+                        User[] choosed = new User[people.size()];
+                        choosed = people.toArray(choosed);
+
+                        while(true)
+                        {
+                            String input = null;
+
+                            try
+                            {
+                                input = sorting.getText().toString();
+
+                                if( ! input.equals(""))
+                                {
+                                    sheruns2.get(Math.min(sheruns2.size() - 1, return_Pic.size() - 1)).if_Usable = false;
+                                }
+                            }
+                            catch(NullPointerException | IndexOutOfBoundsException e)
+                            {
+
+                            }
+
+                            if(input != null && ! input.equals("") && (int)input.charAt(input.length() - 1) != 0  && ! input.equals(this.input))
+                            {
+                                this.input = input;
+                                entered = true;
+
+                                ArrayList<User> users = new ArrayList<User>();
+                                ArrayList<ImageView> pics = new ArrayList<ImageView>();
+                                ArrayList<TextView> texs = new ArrayList<TextView>();
+
+                                User[] u = new User[admins.size()];
+                                u = admins.toArray(u);
+
+                                Message message = new Message();
+                                message.what = 15;
+                                message.obj = new Algorithm.Component("", u, null, null,return_Pic, return_Text, null, null);
+                                handler.sendMessage(message);
+
+
+                                for(int i = 0 ; i < choosed.length ; i += 1)
+                                {
+                                    if(input.length() > choosed[i].getName().length() || admins.contains(choosed[i]))
+                                    {
+                                        continue;
+                                    }
+
+                                    for(int j = 0 ; j < input.length() ; j += 1)
+                                    {
+                                        if(input.charAt(j) != choosed[i].getName().charAt(j))
+                                        {
+                                            break;
+                                        }
+
+                                        if(j + 1 == input.length())
+                                        {
+                                            users.add(choosed[i]);
+                                        }
+                                    }
+                                }
+
+                                User[] cur = new User[users.size()];
+                                cur = users.toArray(cur);
+
+                                message = new Message();
+                                message.what = 104;
+                                message.obj = new Algorithm.Component("", cur, pics, texs, return_Pic, return_Text, sheruns1, sheruns2);
+                                handler.sendMessage(message);
+                            }
+                            else if(entered && input != null && input.equals(""))
+                            {
+                                entered = false;
+                                this.input = "";
+
+                                User[] u = new User[admins.size()];
+                                u = admins.toArray(u);
+
+                                Message message = new Message();
+                                message.what = 10001;
+                                message.obj = new Algorithm.Component("", u, pic, text, return_Pic, return_Text, sheruns1, sheruns2);
+                                handler.sendMessage(message);
+                            }
+
+                            if(container.getVisibility() == View.INVISIBLE)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                });
+
+                enterValue2.start();
 
                 return false;
             }
@@ -954,11 +1037,25 @@ public class CalendarList extends AppCompatActivity {
                     break;
                 case 103:
                     obj = (Algorithm.Component)msg.obj;
+                    obj.sherun1.clear();
+                    obj.sherun2.clear();
 
                     int zone1[] = new int[]{0, friendList.getWidth(), 0, friendList.getHeight() / 2 - 50};
                     int zone2[] = new int[]{0, friendList.getWidth(), friendList.getHeight() / 2 + 50, friendList.getHeight()};
                     Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zone1, 4, 3, null, obj.users, obj.pics, obj.texs, 0);
                     Algorithm.memberAddingProcess(CalendarList.this, friendList, zone1, zone2, 4, 3, obj.users, people, obj.returnPic, obj.returnTex, obj.pics, obj.texs, obj.sherun1, obj.sherun2, 0, 0, true);
+
+                    break;
+
+                case 104:
+                    obj = (Algorithm.Component)msg.obj;
+                    obj.sherun1.clear();
+                    obj.sherun2.clear();
+
+                    zone1 = new int[]{0, friendList.getWidth(), 0, friendList.getHeight() / 2 - 50};
+                    zone2 = new int[]{0, friendList.getWidth(), friendList.getHeight() / 2 + 50, friendList.getHeight()};
+                    Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zone1, 4, 3, null, obj.users, obj.pics, obj.texs, 0);
+                    Algorithm.memberAddingProcess(CalendarList.this, friendList, zone1, zone2, 4, 3, obj.users, admins, obj.returnPic, obj.returnTex, obj.pics, obj.texs, obj.sherun1, obj.sherun2, 0, 0, true);
 
                     break;
 
@@ -1014,6 +1111,69 @@ public class CalendarList extends AppCompatActivity {
                                     for(int i = 0 ; i < people.size() && i < objV.sherun2.size() ; i += 1)
                                     {
                                         objV.sherun2.get(i).if_Usable = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+                    }).start();
+
+                    break;
+
+                case 10001:
+                    obj = (Algorithm.Component)msg.obj;
+
+                    friendList.removeAllViews();
+                    obj.sherun1.clear();
+                    obj.sherun2.clear();
+                    obj.pics.clear();
+                    obj.texs.clear();
+                    obj.returnPic.clear();
+                    obj.returnTex.clear();
+
+                    zone1 = new int[]{0, friendList.getWidth(), 0, friendList.getHeight() / 2 - 50};
+                    zone2 = new int[]{0, friendList.getWidth(), friendList.getHeight() / 2 + 50, friendList.getHeight()};
+
+                    users = new ArrayList<User>();
+                    all = new User[people.size()];
+                    all = people.toArray(all);
+
+                    for(int i = 0 ; i < all.length ; i += 1)
+                    {
+                        if( ! admins.contains(all[i]))
+                        {
+                            users.add(all[i]);
+                        }
+                    }
+
+                    all = new User[users.size()];
+                    all = users.toArray(all);
+
+                    Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zone1, 4, 3, null, all, obj.pics, obj.texs, 0);
+                    Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zone2, 4, 3, null, obj.users, obj.returnPic, obj.returnTex, 0);
+                    Algorithm.memberAddingProcess(CalendarList.this, friendList, zone1, zone2, 4, 3, all, admins, obj.returnPic, obj.returnTex, obj.pics, obj.texs, obj.sherun1, obj.sherun2, 0, 0, true);
+
+                    final Algorithm.Component objV2 = obj;
+                    final User[] allV2 = all;
+
+                    new Thread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            while(true)
+                            {
+                                if(objV2.sherun2.size() == 12)
+                                {
+                                    for(int i = 0 ; i < allV2.length && i < objV2.sherun1.size() ; i += 1)
+                                    {
+                                        objV2.sherun1.get(i).if_Usable = true;
+                                    }
+
+                                    for(int i = 0 ; i < admins.size() && i < objV2.sherun2.size() ; i += 1)
+                                    {
+                                        objV2.sherun2.get(i).if_Usable = true;
                                     }
 
                                     break;
