@@ -70,7 +70,8 @@ public class CalendarController {
 	
 	//gets all calendar
 	@RequestMapping(method = RequestMethod.GET, path = "/all")
-	public List<Calendar> getAllCalendars() {
+	@ResponseBody	
+		public List<Calendar> getAllcalendars() {
 		logger.info("Entered into Controller layer");
 		List<Calendar> results =  (List<Calendar>) calendarRepository.findAll();
 		logger.info("number of records fetched: " + results.size());
