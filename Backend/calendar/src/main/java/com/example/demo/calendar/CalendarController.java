@@ -42,17 +42,17 @@ public class CalendarController {
 		return "New Calendar " + calendar.getcalendarname() + " saved";
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/{calendarId}") //TODO
+	//gets a calendar by using its associated id
+	@RequestMapping(method = RequestMethod.GET, path = "/{calendarId}") //TODO is this how we want to implement this?
 	public @ResponseBody String getCalendarByCalendarId(@PathVariable("calendarId") int calendarId)
 	{
 		logger.info("Entered into CalendarController Layer");
 		Optional<Calendar> results = calendarRepository.findById(calendarId);
 
-		return results.toString();
-		
+		return results.toString();		
 	}
 	
-	//gets all calendar
+	//gets all calendars
 	@RequestMapping(method = RequestMethod.GET, path = "/all")
 	@ResponseBody	
 		public List<Calendar> getAllcalendars() {

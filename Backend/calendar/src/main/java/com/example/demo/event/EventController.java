@@ -56,7 +56,7 @@ public class EventController {
 	}
 	
 	//removes an event
-	@RequestMapping(method = RequestMethod.POST, path = "/remove")
+	@RequestMapping(method = RequestMethod.DELETE, path = "/remove") //TODO
 	@ResponseBody
 	public String removeEvent(Events event)
 	{
@@ -65,17 +65,17 @@ public class EventController {
 		return "Event " + eventId +" has been deleted";
 	}
 	
-	
+	//gets all the users
 	@RequestMapping(method = RequestMethod.GET, path = "/all")
 	@ResponseBody
 	public List<Events> getAllUsers(){
 		logger.info("Entered into Controller Layer");
-		List<Events> results = (List<Events>) eventRepository.findAll(); //?
+		List<Events> results = (List<Events>) eventRepository.findAll();
 		logger.info("Number of records fetched:" + results.size());
 		return results;
 	}
 
-		
+	//gets an event by its associated id
 	@RequestMapping(method = RequestMethod.GET, path = "/{eventId}")
 	@ResponseBody
 	public Optional<Events> findEventById(@PathVariable("eventId") int EventId){

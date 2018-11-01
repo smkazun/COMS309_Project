@@ -18,6 +18,7 @@ public class FriendsController {
 	
 	private final Logger logger = LoggerFactory.getLogger(FriendsController.class);
 	
+	//gets friendlist of a particular usser
 	@GetMapping(path = "/friendslist")
 	public List<Friends> getFriendsList()
 	{

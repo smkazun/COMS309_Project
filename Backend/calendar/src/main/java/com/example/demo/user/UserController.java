@@ -50,15 +50,6 @@ public class UserController {
 	
 	*/
 	
-	
-	//TODO This method can be in used in place of getAllUsers() or vice-versa
-	@GetMapping(path="/test")
-	public @ResponseBody Iterable<Users> getAllUsersTest() {
-		// This returns a JSON or XML with the users
-		return userRepository.findAll();
-		
-	}
-
 
 	
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -102,10 +93,11 @@ public class UserController {
 	}
 	*/
 	
+	//TODO RequestParam or PathVariable? currently not working (i know how to implement with path variable but no other way currently -sk)
 	//removes a user
-	@RequestMapping(method = RequestMethod.POST, path = "/remove") //TODO NOTE: This actually deletes by id
+	@RequestMapping(method = RequestMethod.DELETE, path = "/remove") //TODO NOTE: This actually deletes by id
 	@ResponseBody
-	public String removeUser(@RequestBody Users user)
+	public String removeUser(@RequestBody Users user) 
 	{
 		String deletedUsersName = user.getname();
 		logger.info("deleted person: " + deletedUsersName);
@@ -113,6 +105,7 @@ public class UserController {
 		return deletedUsersName +" has been deleted";
 	}
 	
+	//gets all calendars that are associated with a particular user
 	@RequestMapping(method = RequestMethod.GET, path = "/calendars/{Userid}")
 	@ResponseBody
 	Set<Map<String,Object>> getCalendarsForUser(@PathVariable Integer Userid)
