@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -25,6 +26,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.springframework.core.style.ToStringCreator;
 
+import com.example.demo.event.Events;
 import com.example.demo.user.*;
 
 @Entity
@@ -43,6 +45,10 @@ public class Calendar {
 			joinColumns = { @JoinColumn(name = "calendarid")},
 			inverseJoinColumns = { @JoinColumn(name = "userid") })
 	private Set<Users> users = new HashSet<>();
+	
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "calendarid")
+    private List<Events> events;
 	
 	public Integer getcalendarid() {
 		return calendarid;
@@ -67,6 +73,10 @@ public class Calendar {
 	public void setusers(Set<Users> users) {
 		this.users = users;
 	}
+	
+	public List<Events> getEvents() {
+        return events;
+    }
 	
 	public Map<String, Object> toDTO(int it)
 	{
