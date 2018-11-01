@@ -12,14 +12,4 @@ import com.example.demo.user.Users;
 @Repository
 public interface CalendarRepository extends CrudRepository<Calendar, Integer> {
 
-	@Query(value ="SELECT e.calendar_name, e.calendar_id \r\n" + 
-			"from calendar e, access_calander c\r\n" + 
-			"where e.calendar_id = c.calander_id\r\n" + 
-			"and c.client_id =\r\n" + 
-			"( \r\n" + 
-			"select id\r\n" + 
-			"from users b\r\n" + 
-			"where b.name = 1?);", nativeQuery = true)
-	public Optional<Calendar> getCalendarNames(String name);
-	
 }

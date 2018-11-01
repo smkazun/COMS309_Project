@@ -100,16 +100,6 @@ public class UserController {
 		
 	}
 	
-	//returns all calendars names connected to UserId.
-	@RequestMapping(method = RequestMethod.GET, path = "/getCalendars/{UserName}")
-	@ResponseBody
-	public Optional<Calendar> findUserByName1(@PathVariable("UserName") String name)
-	{
-		Optional<Calendar> results = calendarRepository.getCalendarNames(name);
-		return results;
-	}
-	
-	
 	//removes a user
 	@RequestMapping(method = RequestMethod.POST, path = "/remove") //TODO NOTE: This actually deletes by id
 	@ResponseBody
