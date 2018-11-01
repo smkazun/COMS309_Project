@@ -55,6 +55,11 @@ public class callenDar
 
     public User[] getCurrentUser()
     {
+        if(people == null)
+        {
+            return null;
+        }
+
         User[] arr = new User[people.size()];
 
         for(int i = 0 ; i < arr.length ; i += 1)
@@ -67,6 +72,11 @@ public class callenDar
 
     public User[] getAdmin()
     {
+        if(admins == null)
+        {
+            return null;
+        }
+
         User[] arr = new User[admins.size()];
 
         for(int i = 0 ; i < arr.length ;i += 1)

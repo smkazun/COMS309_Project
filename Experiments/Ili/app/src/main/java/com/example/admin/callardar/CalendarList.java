@@ -47,8 +47,11 @@ public class CalendarList extends AppCompatActivity {
     private static ConstraintLayout people_PreView;
     private ImageView people_show_pre_leftArrow;
     private ImageView people_show_pre_rightArrow;
+    private int curIndex;
     private ImageView people_show_pre_SortingSystem;
     private シルヴァホルン she3;
+
+    protected static int iem;
 
     //setting
     private ImageView goToSetting;
@@ -130,6 +133,7 @@ public class CalendarList extends AppCompatActivity {
         mainLayout.addView(Jpanel);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void callendarShow_preView()
     {
         calendar_PreView = findViewById(R.id.日历预览);calendar_PreView.setBackgroundColor(Color.BLUE);
@@ -137,6 +141,46 @@ public class CalendarList extends AppCompatActivity {
         people_show_pre_leftArrow = findViewById(R.id.成员预览_左箭头);Color.rgb(10,100,200);
         people_show_pre_rightArrow = findViewById(R.id.成员预览_右箭头);Color.rgb(10,100,200);
         people_show_pre_SortingSystem = findViewById(R.id.SortingSystem_PeopleShow_Pre);Color.rgb(30,10,150);
+
+        people_show_pre_leftArrow.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if(curIndex == 0)
+                {
+                    return false;
+                }
+
+                curIndex -= 10;
+                people_PreView.removeAllViews();
+
+                int[] zone = new int[]{0, people_PreView.getWidth(), 0, people_PreView.getHeight()};
+                Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[iem].getCurrentUser(), new ArrayList<ImageView>(), new ArrayList<TextView>(), curIndex);
+
+                return false;
+            }
+        });
+
+        people_show_pre_rightArrow.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if(curIndex + 10 >= MainActivity.user.getCalender()[iem].getCurrentUser().length)
+                {
+                    return false;
+                }
+
+                curIndex += 10;
+                people_PreView.removeAllViews();
+
+                int[] zone = new int[]{0, people_PreView.getWidth(), 0, people_PreView.getHeight()};
+                Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[iem].getCurrentUser(), new ArrayList<ImageView>(), new ArrayList<TextView>(), curIndex);
+
+                return false;
+            }
+        });
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -266,6 +310,7 @@ public class CalendarList extends AppCompatActivity {
             if(she3 != null && calendar_PreView.getY() == 0 && she3.if_Usable && ! she3.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
             {
                 Algorithm.view_MOVE(new View[]{calendar_PreView}, calendar_PreView.getX(), -calendar_PreView.getHeight());
+                curIndex = 0;
 
                 she3.if_Usable = false;
                 she1.if_Usable = true;
@@ -318,16 +363,16 @@ public class CalendarList extends AppCompatActivity {
             {
                 if(she_ca.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
                 {
-                    final int index = i;
+                    iem = i;
 
                     t = new Thread(new Runnable()
                     {
                         @Override
                         public void run()
                         {
-                            if(MainActivity.user.getCalender()[index].getCurrentUser() == null)
+                            if(MainActivity.user.getCalender()[iem].getCurrentUser() == null)
                             {
-                                getMessage_WithCalendar(index, t);
+                                getMessage_WithCalendar(iem, t);
                             }
                             else
                             {
@@ -344,23 +389,23 @@ public class CalendarList extends AppCompatActivity {
                             }
 
                             Message message = new Message();
-                            message.what = 1000 + index;
+                            message.what = 1000 + iem;
                             handler.sendMessage(message);
                         }
                     });
 
-                    if(MainActivity.user.getCalender()[index].getCurrentUser() == null)
+                    t.start();
+
+                    if(MainActivity.user.getCalender()[iem].getCurrentUser() == null)
                     {
                         return false;
                     }
                     else
                     {
                         Message message = new Message();
-                        message.what = 1000 + index;
+                        message.what = 1000 + iem;
                         handler.sendMessage(message);
                     }
-
-
                 }
             }
 
@@ -377,16 +422,16 @@ public class CalendarList extends AppCompatActivity {
             {
                 if(she_ca_going.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
                 {
-                    final int index = i;
+                    iem = i;
 
                     t = new Thread(new Runnable()
                     {
                         @Override
                         public void run()
                         {
-                            if(MainActivity.user.getCalender()[index].getCurrentUser() == null)
+                            if(MainActivity.user.getCalender()[iem].getCurrentUser() == null)
                             {
-                                getMessage_WithCalendar(index, t);
+                                getMessage_WithCalendar(iem, t);
 
                                 try
                                 {
@@ -395,6 +440,11 @@ public class CalendarList extends AppCompatActivity {
                                 catch (InterruptedException e)
                                 {
                                     e.printStackTrace();
+                                }
+
+                                if(MainActivity.user.getCalender()[iem].getCurrentUser() == null)
+                                {
+                                    //toDO if not found
                                 }
                             }
 
