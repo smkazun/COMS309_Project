@@ -12,6 +12,6 @@ import com.example.demo.user.Users;
 @Repository
 public interface CalendarRepository extends CrudRepository<Calendar, Integer> {
 
-	public Optional<Calendar> findBycalendarid(Integer Userid);
-
+	public Optional<Calendar> findBycalendarid(Integer calendarid);
+	
 }

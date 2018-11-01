@@ -72,18 +72,24 @@ public class CalendarController {
 	
 	//get all events to a calendar
 	@RequestMapping(method = RequestMethod.GET, path = "/events/{calendarid}")
-	public Optional <Events> getAllEvents(@PathVariable Integer calendarid){
-		Optional<Events> results = eventRepository.findBycalendarid(calendarid);
+	public List <Events> getAllEvents(@PathVariable Integer calendarid){
+		List<Events> results = eventRepository.findBycalendarid(calendarid);
 		return results;
 	}
 		
 	//get all users in a calendar
 	@RequestMapping(method = RequestMethod.GET, path = "/users/{calendarid}")
 	public List <Users> getAllusers(@PathVariable Integer calendarid){
-		Optional<Calendar> cal = calendarRepository.findBycalendarid(calendarid);
-		List <Users> result = null;
-		if(cal.isPresent()) {
-			result = (List<Users>) cal.get().getusers();
+	
+	Optional<Calendar> cal = calendarRepository.findBycalendarid(calendarid);
+		
+	List<Users> result = null;
+	
+		if(cal.isPresent())
+		{
+			for(Users u : cal.get().getusers())
+			{
+				result.add(u);			}
 		}
 		return result;
 	}
