@@ -70,7 +70,6 @@ public class CalendarController {
 		return results;
 	}
 	
-<<<<<<< HEAD
 	//get all events to a calendar
 	@RequestMapping(method = RequestMethod.GET, path = "/events/{calendarid}")
 	public Optional <Events> getAllEvents(@PathVariable Integer calendarid){
@@ -89,6 +88,4 @@ public class CalendarController {
 		return result;
 	}
 	
-=======
->>>>>>> 1819c245f479a8d6d752684c196fd15a8a617262
 }
