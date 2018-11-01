@@ -131,7 +131,7 @@ public class UserController {
 	@GetMapping("calendars/{user_id}")
 	public Set<Map<String,Object>> getCalendarsForUser(@PathVariable Integer Userid)
 	{
-		Optional<Users> user = userRepository.findByUserid(Userid);
+		Optional<Users> user = userRepository.findByuserid(Userid);
 		
 		Set<Map<String,Object>> calendars = new HashSet<Map<String,Object>>();
 		if(user.isPresent())
