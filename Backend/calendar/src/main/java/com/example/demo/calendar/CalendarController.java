@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.example.demo.calendar.CalendarRepository;
+import com.example.demo.event.EventRepository;
+import com.example.demo.event.Events;
 import com.example.demo.user.Users;
 import com.example.demo.calendar.Calendar;
 import com.example.demo.user.*;
@@ -30,6 +32,8 @@ public class CalendarController {
 	
 	@Autowired
 	private CalendarRepository calendarRepository;
+	@Autowired
+	private EventRepository eventRepository;
 	
 	private final Logger logger = LoggerFactory.getLogger(CalendarController.class);
 	
@@ -75,6 +79,13 @@ public class CalendarController {
 		logger.info("Entered into Controller layer");
 		List<Calendar> results =  (List<Calendar>) calendarRepository.findAll();
 		logger.info("number of records fetched: " + results.size());
+		return results;
+	}
+	
+	//get all events to a calendar
+	@RequestMapping(method = RequestMethod.GET, path = "/events/{calendarid}")
+	public Optional <Events> getAllEvents(@PathVariable Integer calendarid){
+		Optional<Events> results = eventRepository.findBycalendarid(calendarid);
 		return results;
 	}
 		
