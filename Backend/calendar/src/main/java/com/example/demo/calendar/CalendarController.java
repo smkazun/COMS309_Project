@@ -49,7 +49,7 @@ public class CalendarController {
 		return "New Calendar " + calendar.getcalendarname() + " saved";
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/view")
+	@RequestMapping(method = RequestMethod.GET, path = "/{calendarId}")
 	public @ResponseBody String getCalendarByCalendarId(@PathVariable("calendarId") int calendarId)
 	{
 		//Users u = new Users();
