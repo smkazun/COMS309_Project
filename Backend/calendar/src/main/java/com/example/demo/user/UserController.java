@@ -85,7 +85,7 @@ public class UserController {
 	@ResponseBody
 	public Optional<Users> findUserById(@PathVariable("userId") int id){
 		logger.info("Entered into Controller Layer");
-		Optional<Users> results = userRepository.findById(id);
+		Optional<Users> results = userRepository.findByuserid(id);
 		return results;
 	}
 	
@@ -111,7 +111,7 @@ public class UserController {
 		return deletedUsersName +" has been deleted";
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/calendars/{user_id}")
+	@RequestMapping(method = RequestMethod.GET, path = "/calendars/{Userid}")
 	@ResponseBody
 	Set<Map<String,Object>> getCalendarsForUser(@PathVariable Integer Userid)
 	{

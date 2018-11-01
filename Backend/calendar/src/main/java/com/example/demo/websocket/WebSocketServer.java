@@ -1,4 +1,4 @@
-package websocket;
+package com.example.demo.websocket;
 
 import java.io.IOException;
 import java.util.HashMap;
