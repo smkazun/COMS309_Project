@@ -68,16 +68,18 @@ public class Calendar {
 		this.users = users;
 	}
 	
-	public Map<String, Object> toDTO()
+	public Map<String, Object> toDTO(int it)
 	{
 		Map<String,Object> map = new HashMap<>();
 		map.put("calendarid", this.calendarid);
 		
 		Set<Map<String,Object>> usersDTO = new HashSet<>();
 		for(Users u : users) {
-			Map<String,Object> usersMap = new HashMap<>();
-			usersMap.put("userid", u.getuserid());
-			usersDTO.add(usersMap);
+			if(u.getuserid() == it) {
+				Map<String,Object> usersMap = new HashMap<>();
+				usersMap.put("userid", u.getuserid());
+				usersDTO.add(usersMap);
+			}
 		}
 		map.put("users", usersDTO);
 		

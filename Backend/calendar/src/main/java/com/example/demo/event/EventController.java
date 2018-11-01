@@ -52,7 +52,7 @@ public class EventController {
 	@ResponseBody
 	public String getAllEventInfo(@RequestBody Events event)
 	{	
-		return "calendarId: " + event.getCalendarId() + "\neventId: " + event.getEventId() + "\ntime: " + event.getTime();
+		return "calendarId: " + event.getcalendarid() + "\neventId: " + event.geteventid() + "\ntime: " + event.gettime();
 	}
 	
 	//removes an event
@@ -60,7 +60,7 @@ public class EventController {
 	@ResponseBody
 	public String removeEvent(Events event)
 	{
-		int eventId = event.getEventId();
+		int eventId = event.geteventid();
 		eventRepository.delete(event);
 		return "Event " + eventId +" has been deleted";
 	}

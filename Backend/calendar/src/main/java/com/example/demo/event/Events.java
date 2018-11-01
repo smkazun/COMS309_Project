@@ -16,51 +16,34 @@ import org.springframework.core.style.ToStringCreator;
 public class Events {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "EventId")
-	@NotFound(action = NotFoundAction.IGNORE)
-	private Integer EventId;
+	private Integer eventid;
 	
-	@Column(name = "CalendarId") //fix spelling TODO
-	@NotFound(action = NotFoundAction.IGNORE)
-	private Integer CalendarId;
+	private Integer calendarid;
 	
-	@Column(name =  "Time")
-	@NotFound(action = NotFoundAction.IGNORE)
-	private Integer Time;
+	private String time;
 	
-	public Integer getEventId() {
-		return EventId;
+	public Integer geteventid() {
+		return eventid;
 	}
 	
-	public Integer getCalendarId() {
-		return CalendarId;
+	public Integer getcalendarid() {
+		return calendarid;
 	}
 	
-	public Integer getTime() {
-		return Time;
+	public String gettime() {
+		return time;
 	}
 	
-	public void setTime (Integer Time) {
-		this.Time = Time;
+	public void settime (String Time) {
+		this.time = Time;
 	}
 	
-	public void setEventId(Integer Id) {
-		this.EventId = Id;
+	public void seteventid(Integer Id) {
+		this.eventid = Id;
 	}
 	
-	public void setCalendarId(Integer Id) {
-		this.CalendarId = Id;
-	}
-
-	@Override
-	public String toString() {
-		return new ToStringCreator(this)
-				
-				.append("EventId", this.getEventId())
-				.append("CalanderId", this.getCalendarId())
-				.append("Time", this.getTime()).toString();
-		
+	public void setcalendarid(Integer Id) {
+		this.calendarid = Id;
 	}
 	
 }
