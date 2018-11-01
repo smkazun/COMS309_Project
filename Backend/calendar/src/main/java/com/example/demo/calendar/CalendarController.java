@@ -45,36 +45,20 @@ public class CalendarController {
 	@RequestMapping(method = RequestMethod.POST, path = "/new")
 	public @ResponseBody String createNewCalendar(@RequestBody Calendar calendar) 
 	{
-		//String name = calendar.setCalendarName();
-		//int id = calendar.getCalendarId();
-		//String users = calendar.getCalendarUsers();
-		//Calendar c = new Calendar();
-		//c.setCalendarName(calendar.getCalendarName());
-		//c.setCalendarId(calendar.getCalendarId());
-		//c.setCalendarUsers(calendar.getCalendarUsers());
 		calendarRepository.save(calendar);
 		
 		return "New Calendar " + calendar.getcalendarname() + " saved";
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/view")
+	@RequestMapping(method = RequestMethod.GET, path = "/{calendarId}") //TODO
 	public @ResponseBody String getCalendarByCalendarId(@PathVariable("calendarId") int calendarId)
 	{
-		//Users u = new Users();
-		//u.setId(id);
-		
-		//UserController us = new UserController();
-		//us.findUserById(id);
-		
 		logger.info("Entered into CalendarController Layer");
 		Optional<Calendar> results = calendarRepository.findById(calendarId);
-		
-		//return results.get().getCalendarUsers().toString();
-		//String name = results.
+
 		return results.toString();
 		
 	}
-	
 	
 	//gets all calendar
 	@RequestMapping(method = RequestMethod.GET, path = "/all")
@@ -86,6 +70,7 @@ public class CalendarController {
 		return results;
 	}
 	
+<<<<<<< HEAD
 	//get all events to a calendar
 	@RequestMapping(method = RequestMethod.GET, path = "/events/{calendarid}")
 	public Optional <Events> getAllEvents(@PathVariable Integer calendarid){
@@ -104,4 +89,6 @@ public class CalendarController {
 		return result;
 	}
 	
+=======
+>>>>>>> 1819c245f479a8d6d752684c196fd15a8a617262
 }

@@ -89,6 +89,7 @@ public class UserController {
 		return results;
 	}
 	
+	/*
 	//find user by name
 	@RequestMapping(method = RequestMethod.GET, path = "/{userName}")
 	@ResponseBody
@@ -99,6 +100,7 @@ public class UserController {
 		return null;
 		
 	}
+	*/
 	
 	//removes a user
 	@RequestMapping(method = RequestMethod.POST, path = "/remove") //TODO NOTE: This actually deletes by id

@@ -10,6 +10,9 @@ import com.example.demo.event.Events;
 @Repository
 public interface EventRepository extends CrudRepository<Events, Integer> {
 
+<<<<<<< HEAD
 	public Optional<Events> findBycalendarid(Integer calendarid);
+=======
+>>>>>>> 1819c245f479a8d6d752684c196fd15a8a617262
 
 }
