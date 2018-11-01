@@ -7,6 +7,5 @@ import com.example.demo.event.Events;
 @Repository
 public interface EventRepository extends CrudRepository<Events, Integer> {
 
-	//void save(Events event);
 
 }
