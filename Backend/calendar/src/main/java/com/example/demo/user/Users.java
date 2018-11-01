@@ -38,7 +38,7 @@ public class Users {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "users")
 	private Set<Calendar> calendars = new HashSet<>();
     
-    	public Integer getUserid() {
+    	public Integer getuserid() {
 			return userid;
 		}	
 	

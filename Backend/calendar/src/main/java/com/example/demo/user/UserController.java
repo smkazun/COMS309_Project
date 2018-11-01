@@ -128,8 +128,9 @@ public class UserController {
 		return results;
 	}
 	
-	@GetMapping("calendars/{user_id}")
-	public Set<Map<String,Object>> getCalendarsForUser(@PathVariable Integer Userid)
+	@RequestMapping(method = RequestMethod.GET, path = "/calendars/{user_id}")
+	@ResponseBody
+	Set<Map<String,Object>> getCalendarsForUser(@PathVariable Integer Userid)
 	{
 		Optional<Users> user = userRepository.findByuserid(Userid);
 		
