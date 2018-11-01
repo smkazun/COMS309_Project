@@ -121,13 +121,6 @@ public class UserController {
 		return deletedUsersName +" has been deleted";
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/getAllUsers")
-	@ResponseBody
-	public List<Users> getUsers(){
-		List<Users> results = userRepository.getAllUsers();
-		return results;
-	}
-	
 	@RequestMapping(method = RequestMethod.GET, path = "/calendars/{user_id}")
 	@ResponseBody
 	Set<Map<String,Object>> getCalendarsForUser(@PathVariable Integer Userid)
