@@ -33,31 +33,31 @@ public class Calendar {
 
 
 	@Id
-	private Integer calendarId;
+	private Integer calendarid;
 
-	private String calendarName;
+	private String calendarname;
 	
 	@JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "AccessCalendar",
-			joinColumns = { @JoinColumn(name = "calendarId")},
+	@JoinTable(name = "accesscalendar",
+			joinColumns = { @JoinColumn(name = "calendarid")},
 			inverseJoinColumns = { @JoinColumn(name = "Userid") })
 	private Set<Users> users = new HashSet<>();
 	
-	public Integer getcalendarId() {
-		return calendarId;
+	public Integer getcalendarid() {
+		return calendarid;
 	}
 	
-	public void setcalendarId(Integer calendarId) {
-		this.calendarId = calendarId;
+	public void setcalendarid(Integer calendarId) {
+		this.calendarid = calendarId;
 	}
 	
-	public String getCalendarName() {
-		return calendarName;
+	public String getcalendarname() {
+		return calendarname;
 	}
 	
-	public void setCalendarName(String calendarName) {
-		this.calendarName = calendarName;
+	public void setcalendarname(String calendarName) {
+		this.calendarname = calendarName;
 	}
 	
 	public Set<Users> getUsers(){
@@ -71,7 +71,7 @@ public class Calendar {
 	public Map<String, Object> toDTO()
 	{
 		Map<String,Object> map = new HashMap<>();
-		map.put("calendarId", this.calendarId);
+		map.put("calendarId", this.calendarid);
 		
 		Set<Map<String,Object>> usersDTO = new HashSet<>();
 		for(Users u : users) {

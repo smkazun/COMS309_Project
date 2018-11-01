@@ -67,7 +67,7 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.POST, path = "/new")
 	public @ResponseBody String saveUser(@RequestBody Users user) {
 		userRepository.save(user);
-		return "New User " + user.getName() + " saved";
+		return "New User " + user.getname() + " saved";
 	}
 	
 	//return all user accounts
@@ -105,7 +105,7 @@ public class UserController {
 	@ResponseBody
 	public String removeUser(@RequestBody Users user)
 	{
-		String deletedUsersName = user.getName();
+		String deletedUsersName = user.getname();
 		logger.info("deleted person: " + deletedUsersName);
 		userRepository.delete(user);
 		return deletedUsersName +" has been deleted";
@@ -120,7 +120,7 @@ public class UserController {
 		Set<Map<String,Object>> calendars = new HashSet<Map<String,Object>>();
 		if(user.isPresent())
 		{
-			for(Calendar c : user.get().getCalendars())
+			for(Calendar c : user.get().getcalendars())
 			{
 				
 				calendars.add(c.toDTO());

@@ -32,7 +32,7 @@ public class Users {
 
 	private String email;
 
-	private String userType; //private UserType userType;
+	private String usertype; //private UserType userType;
 	
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "users")
@@ -42,39 +42,39 @@ public class Users {
 			return userid;
 		}	
 	
-		public void setUserid(Integer id) {
+		public void setuserid(Integer id) {
 			this.userid = id;
 		}
 	
-		public String getName() {
+		public String getname() {
 			return name;
 		}
 	
-		public void setName(String name) {
+		public void setname(String name) {
 			this.name = name;
 		}
 	
-		public String getEmail() {
+		public String getemail() {
 			return this.email;
 		}
 	
-		public void setEmail(String email) {
+		public void setemail(String email) {
 			this.email = email;
 		}
 	
-		public String getUserType() {
-			return this.userType;
+		public String getusertype() {
+			return this.usertype;
 		}
 	
-		public void setUserType(String userType) {
-			this.userType = userType;
+		public void setusertype(String userType) {
+			this.usertype = userType;
 		}
 		
-		public Set<Calendar> getCalendars(){
+		public Set<Calendar> getcalendars(){
 			return calendars;
 		}
 		
-		public void setCalendars(Set<Calendar> calendars) {
+		public void setcalendars(Set<Calendar> calendars) {
 			this.calendars = calendars;
 		}
 		

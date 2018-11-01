@@ -46,7 +46,7 @@ public class CalendarController {
 		//c.setCalendarUsers(calendar.getCalendarUsers());
 		calendarRepository.save(calendar);
 		
-		return "New Calendar " + calendar.getCalendarName() + " saved";
+		return "New Calendar " + calendar.getcalendarname() + " saved";
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, path = "/view")
