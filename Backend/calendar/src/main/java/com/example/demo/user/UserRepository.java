@@ -26,6 +26,6 @@ public interface UserRepository extends CrudRepository<Users, Integer>{
 	public List<Users> getAllUsers();
 	
 	//finds user
-	public Optional<Users> findByUserid(Integer Userid);
+	public Optional<Users> findByuserid(Integer Userid);
 	
 }
