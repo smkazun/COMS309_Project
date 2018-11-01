@@ -316,6 +316,46 @@ public class Algorithm
         new view_MOVE(v, v[0].getX(), v[0].getY(), x_TO, y_TO);
     }
 
+    public static void create_ImageAndTexts_fillMode(Object classDOTthis, Object Layout, int x_ONE, int y_ONE, int x_Max, String[] addForView, User[] toAdd, ArrayList<ImageView> views_Pic, ArrayList<TextView> views_Tex, ArrayList<シルヴァホルン> sheruns1)
+    {
+        ConstraintLayout layout = (ConstraintLayout) Layout;
+        views_Pic.clear();
+        views_Tex.clear();
+        sheruns1.clear();
+
+        int x_Cur = 0;
+        int y_Cur = 0;
+
+        for(int i = 0 ; i < toAdd.length ; i += 1)
+        {
+            Point p1 = new Point(x_Cur + (int)layout.getX(), y_Cur + (int)layout.getY());
+            Point p2 = new Point(x_Cur + x_ONE + (int)layout.getX(), y_Cur + (int)layout.getY());
+            Point p3 = new Point(x_Cur + x_ONE + (int)layout.getX(), y_Cur + y_ONE + (int)layout.getY());
+            Point p4 = new Point(x_Cur + (int)layout.getX(), y_Cur + y_ONE + (int)layout.getY());
+
+            Random r = new Random();
+            ImageView v = Algorithm.createJPanel((Context) classDOTthis, x_Cur, y_Cur, new RelativeLayout.LayoutParams(x_ONE, y_ONE - 40), Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255)), 1);
+            TextView v_text = Algorithm.createTextField((Context) classDOTthis, toAdd[i].getName(), x_Cur, y_Cur + y_ONE - 40, new RelativeLayout.LayoutParams(x_ONE, 40), Color.WHITE, 1);
+            sheruns1.add(new シルヴァホルン(new Point[]{p1, p2, p3, p4}));
+
+            views_Pic.add(v);
+            views_Tex.add(v_text);
+            layout.addView(v);
+            layout.addView(v_text);
+
+            if(x_Cur / (x_ONE + 10) <= x_Max)
+            {
+                x_Cur += x_ONE + 10;
+            }
+            else
+            {
+                x_Cur = 0;
+                y_Cur += y_ONE + 10;
+            }
+        }
+
+    }
+
     /**
      * call it when need it (Ver.2)
      * @param classDOTthis
