@@ -119,16 +119,15 @@ public class UserController {
 	{
 		Optional<Users> user = userRepository.findByuserid(Userid);
 		
-		Set<Map<String,Object>> calendars = new HashSet<Map<String,Object>>();
+		Set<Map<String,Object>> users = new HashSet<Map<String,Object>>();
 		if(user.isPresent())
 		{
 			for(Calendar c : user.get().getcalendars())
 			{
-				
-				calendars.add(c.toDTO());
+				users.add(c.toDTO(Userid));
 			}
 		}
-		return calendars;
+		return users;
 	}
 	
 }
