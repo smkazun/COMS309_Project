@@ -1,7 +1,10 @@
 package com.example.demo.calendar;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -21,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.calendar.CalendarRepository;
 import com.example.demo.event.EventRepository;
 import com.example.demo.event.Events;
-import com.example.demo.user.Users;
 import com.example.demo.calendar.Calendar;
 import com.example.demo.user.*;
 
@@ -34,6 +36,8 @@ public class CalendarController {
 	private CalendarRepository calendarRepository;
 	@Autowired
 	private EventRepository eventRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
 	private final Logger logger = LoggerFactory.getLogger(CalendarController.class);
 	
@@ -89,6 +93,15 @@ public class CalendarController {
 		return results;
 	}
 		
-	
+	//get all users in a calendar
+	@RequestMapping(method = RequestMethod.GET, path = "/users/{calendarid}")
+	public List <Users> getAllusers(@PathVariable Integer calendarid){
+		Optional<Calendar> cal = calendarRepository.findBycalendarid(calendarid);
+		List <Users> result = null;
+		if(cal.isPresent()) {
+			result = (List<Users>) cal.get().getusers();
+		}
+		return result;
+	}
 	
 }
