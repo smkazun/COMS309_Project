@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"WebSocket"})
+@ComponentScan(basePackages = {"WebSocket","com.example.demo"})
 public class CalenderApiApplication {
 
 	public static void main(String[] args) {
