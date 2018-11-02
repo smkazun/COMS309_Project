@@ -1,6 +1,8 @@
 package com.example.bansho.testingcard;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,22 +10,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-/**
- * Created by RinonymousRi on 1/11/2018.
- */
 
 public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
 
 
     private Context mContext;
     private ArrayList<Event> mList;
+    private CardView cardview;
     public EventAdapter(Context context, ArrayList<Event> list){
         mContext = context;
         mList = list;
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -55,6 +57,19 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.ViewHolder>
         item_price.setText(contact.getItem_price());
         item_img.setImageResource(contact.getItem_image());
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //implement onClick
+//                Intent i = new Intent(EventActivity.this, MainActivity.class);
+//                startActivity(i);
+
+                Toast.makeText(v.getContext(),"Don't Touch me", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),"Don't Touch me", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
     }
 
 
@@ -71,16 +86,17 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.ViewHolder>
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
+
         public ViewHolder(View itemView) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
-//
+
             item_image = itemView.findViewById(R.id.rv_item_img);
             item_name = itemView.findViewById(R.id.rv_item_name);
             item_place = itemView.findViewById(R.id.rv_item_place);
             item_price = itemView.findViewById(R.id.rv_item_price);
-
+            cardview = (CardView) itemView.findViewById(R.id.card_view);
         }
     }
 }

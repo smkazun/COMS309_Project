@@ -3,10 +3,13 @@ package com.example.bansho.testingcard;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -16,16 +19,25 @@ public class EventActivity extends AppCompatActivity {
 
     ArrayList<Event> eventItem;
 
+    CardView card_view;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
         recyclerView = findViewById(R.id.rv);
+        card_view = (CardView) findViewById(R.id.card_view);
 
+//        card_view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getApplicationContext(),"Don't Touch me", Toast.LENGTH_LONG).show();
+//            }
+//        });
         //イベント制作テスト
-        String[] names = {"Event_Title", "Event_Title", "Event_Title", "Event_Title"};
-        String[] places = {"Description", "Description", "Description", "Description"};
-        String[] prices = {"11/5", "11/10", "11/23", "11/25"};
+        String[] names = {"Event_Title", "Event_Title", "Event_Title", "Event_Title","Event_Title", "Event_Title", "Event_Title", "Event_Title"};
+        String[] places = {"Description", "Description", "Description", "Description","Description", "Description", "Description", "Description"};
+        String[] prices = {"11/5", "11/10", "11/23", "11/25","12/5", "12/10", "12/23", "12/25"};
         //int[] images = {R.drawable.//, R.drawable.//, R.drawable.//, R.drawable.//};
 
         eventItem = new ArrayList<>();
@@ -36,6 +48,8 @@ public class EventActivity extends AppCompatActivity {
             eventItem.add(new Event(names[i], places[i], prices[i]));
 
         }
+
+        //
 
 
 
@@ -49,6 +63,13 @@ public class EventActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
+
+//        card_view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getApplicationContext(),"Don't Touch me", Toast.LENGTH_LONG).show();
+//            }
+//        });
 
     }
 
