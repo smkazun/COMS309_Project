@@ -94,6 +94,11 @@ public class User implements Comparable<User>
         return arr;
     }
 
+    public void set_CurCalender(int index, callenDar newCalendar)
+    {
+        calenders.set(index, newCalendar);
+    }
+
     public void deleteCalender()
     {
         calenders = new ArrayList<callenDar>();

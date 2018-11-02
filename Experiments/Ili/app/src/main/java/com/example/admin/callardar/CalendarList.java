@@ -441,11 +441,6 @@ public class CalendarList extends AppCompatActivity {
                                 {
                                     e.printStackTrace();
                                 }
-
-                                if(MainActivity.user.getCalender()[iem].getCurrentUser() == null)
-                                {
-                                    //toDO if not found
-                                }
                             }
 
                             //toDO goTo the callendar, initilize event sitting
@@ -462,7 +457,7 @@ public class CalendarList extends AppCompatActivity {
         }
     }
 
-    private void getMessage_WithCalendar(int index, final Thread thread)
+    private void getMessage_WithCalendar(final int index, final Thread thread)
     {
         final int calendarID = MainActivity.user.getCalender()[index].getId();
 
@@ -477,28 +472,28 @@ public class CalendarList extends AppCompatActivity {
             @Override
             public void run()
             {
-                a.makeJsonArryReq_TIME(URL, C, s, MainActivity.TIME_CONTROL);
-
-                try
-                {
-                    Thread.sleep(5000);
-                }
-                catch (InterruptedException e)
-                {
-                    e.printStackTrace();
-                }
-
-                try
-                {
-                    s.get(0);
-                }
-                catch (IndexOutOfBoundsException e)
-                {
-                    System.out.println("TimeOut when getting data of Calendar --> " + calendarID);
-                }
+//                a.makeJsonArryReq_TIME(URL, C, s, MainActivity.TIME_CONTROL);
+//
+//                try
+//                {
+//                    Thread.sleep(5000);
+//                }
+//                catch (InterruptedException e)
+//                {
+//                    e.printStackTrace();
+//                }
+//
+//                try
+//                {
+//                    s.get(0);
+//                }
+//                catch (IndexOutOfBoundsException e)
+//                {
+//                    System.out.println("TimeOut when getting data of Calendar --> " + calendarID);
+//                }
 
                 //toDO
-                //MainActivity.user.getCalender()[index] = null;
+                // MainActivity.user.set_CurCalender(iem,
 
                 thread.interrupt();
             }
