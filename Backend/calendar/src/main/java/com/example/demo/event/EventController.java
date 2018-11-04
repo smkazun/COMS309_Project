@@ -52,7 +52,7 @@ public class EventController {
 	@ResponseBody
 	public String getAllEventInfo(@RequestBody Events event)
 	{	
-		return "calendarId: " + event.getcalendarid() + "\neventId: " + event.geteventid() + "\ntime: " + event.gettime();
+		return "calendarId: " + event.getcalendarid() + "\neventId: " + event.geteventid() + "\ntime: " + event.gettime(); //TODO add date
 	}
 	
 	//removes an event

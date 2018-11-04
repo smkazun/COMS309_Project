@@ -1,6 +1,8 @@
 package com.example.demo.calendar;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -27,6 +29,7 @@ import com.example.demo.event.Events;
 import com.example.demo.calendar.Calendar;
 import com.example.demo.user.*;
 
+import com.example.demo.user.UserController;
 
 @RestController
 @RequestMapping(path = "/calendar")
@@ -63,7 +66,8 @@ public class CalendarController {
 	//gets all calendars
 	@RequestMapping(method = RequestMethod.GET, path = "/all")
 	@ResponseBody	
-		public List<Calendar> getAllcalendars() {
+	public List<Calendar> getAllCalendars() 
+	{
 		logger.info("Entered into Controller layer");
 		List<Calendar> results =  (List<Calendar>) calendarRepository.findAll();
 		logger.info("number of records fetched: " + results.size());
@@ -72,8 +76,8 @@ public class CalendarController {
 	
 	//get all events to a calendar
 	@RequestMapping(method = RequestMethod.GET, path = "/events/{calendarid}")
-	public List <Events> getAllEvents(@PathVariable Integer calendarid){
-		List<Events> results = eventRepository.findBycalendarid(calendarid);
+	public Optional<Events> getAllEvents(@PathVariable Integer calendarid){ //TODO we want method to return as List
+		Optional<Events> results = eventRepository.findBycalendarid(calendarid); //TODO we want this to be a List
 		return results;
 	}
 		
@@ -81,9 +85,9 @@ public class CalendarController {
 	@RequestMapping(method = RequestMethod.GET, path = "/users/{calendarid}")
 	public List <Users> getAllusers(@PathVariable Integer calendarid){
 	
-	Optional<Calendar> cal = calendarRepository.findBycalendarid(calendarid);
+	Optional<Calendar> cal = calendarRepository.findByCalendarid(calendarid);
 		
-	List<Users> result = null;
+	List<Users> result = new ArrayList<Users>();
 	
 		if(cal.isPresent())
 		{
@@ -93,5 +97,22 @@ public class CalendarController {
 		}
 		return result;
 	}
+	
+	//returns the calendarId of the most recently created calendar for a particular user
+	@GetMapping(path = "/users/{userId}")
+	public int returnMostRecentCalendarByUserId(@PathVariable Integer userId)
+	{
+		Calendar c = new Calendar();
+		Optional<Users> user = userRepository.findById(userId);
+		Set<Calendar> usersCalendars = user.get().getcalendars();
+		List<Calendar> list = new ArrayList<Calendar>(usersCalendars);
+		
+		if(!usersCalendars.isEmpty())
+		{
+			c =  list.get(list.size() - 1);
+		}
+		return c.getcalendarid();
+	}
+	
 	
 }
