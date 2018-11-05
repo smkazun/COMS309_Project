@@ -84,7 +84,7 @@ public class EventController {
 		Optional<Events> results = eventRepository.findById(EventId);
 		return results;
 	}
-	
+
 	//returns the events associated with a users id
 	@GetMapping(path = "/user/{userId}")
 	@ResponseBody
