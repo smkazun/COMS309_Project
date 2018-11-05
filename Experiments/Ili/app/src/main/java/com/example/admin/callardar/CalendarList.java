@@ -372,7 +372,7 @@ public class CalendarList extends AppCompatActivity {
                         {
                             if(MainActivity.user.getCalender()[iem].getCurrentUser() == null)
                             {
-                                getMessage_WithCalendar(iem, t);
+                                getMessage_WithCalendar(t);
                             }
                             else
                             {
@@ -431,7 +431,7 @@ public class CalendarList extends AppCompatActivity {
                         {
                             if(MainActivity.user.getCalender()[iem].getCurrentUser() == null)
                             {
-                                getMessage_WithCalendar(iem, t);
+                                getMessage_WithCalendar(t);
 
                                 try
                                 {
@@ -457,9 +457,9 @@ public class CalendarList extends AppCompatActivity {
         }
     }
 
-    private void getMessage_WithCalendar(final int index, final Thread thread)
+    private void getMessage_WithCalendar(final Thread thread)
     {
-        final int calendarID = MainActivity.user.getCalender()[index].getId();
+        final int calendarID = MainActivity.user.getCalender()[iem].getId();
 
         //toDO
         final String URL = "";
@@ -472,25 +472,25 @@ public class CalendarList extends AppCompatActivity {
             @Override
             public void run()
             {
-//                a.makeJsonArryReq_TIME(URL, C, s, MainActivity.TIME_CONTROL);
-//
-//                try
-//                {
-//                    Thread.sleep(5000);
-//                }
-//                catch (InterruptedException e)
-//                {
-//                    e.printStackTrace();
-//                }
-//
-//                try
-//                {
-//                    s.get(0);
-//                }
-//                catch (IndexOutOfBoundsException e)
-//                {
-//                    System.out.println("TimeOut when getting data of Calendar --> " + calendarID);
-//                }
+                a.makeJsonArryReq_TIME(URL, C, s, MainActivity.TIME_CONTROL);
+
+                try
+                {
+                    Thread.sleep(5000);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+
+                try
+                {
+                    s.get(0);
+                }
+                catch (IndexOutOfBoundsException e)
+                {
+                    System.out.println("TimeOut when getting data of Calendar --> " + calendarID);
+                }
 
                 //toDO
                 // MainActivity.user.set_CurCalender(iem,

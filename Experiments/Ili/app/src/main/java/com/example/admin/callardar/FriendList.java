@@ -210,7 +210,7 @@ public class FriendList extends AppCompatActivity {
                     }
                 }
 
-                System.out.println(x + " " + y);
+          //      System.out.println(x + " " + y);
 
                 return true;
             }
@@ -426,7 +426,7 @@ public class FriendList extends AppCompatActivity {
                     pics.clear();
                     texts.clear();
 
-                    int x_Max = (int)(MainActivity.user.getFriends().length / (float)(container.getHeight() / 200));
+                    int x_Max = (int)(MainActivity.user.getFriends().length / (float)(container.getHeight() / 200)) + 1;
                     Algorithm.create_ImageAndTexts_fillMode(FriendList.this, container, 150, 200, x_Max, null, MainActivity.user.getFriends(), pics, texts, sheruns2);
             }
 

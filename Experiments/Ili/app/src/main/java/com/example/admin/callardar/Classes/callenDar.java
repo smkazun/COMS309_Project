@@ -112,4 +112,9 @@ public class callenDar
 
         return arr;
     }
+
+    public void deleteEvent(Event toDelete)
+    {
+        events.remove(toDelete);
+    }
 }
