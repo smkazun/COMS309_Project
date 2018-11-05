@@ -52,20 +52,17 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.ViewHolder>
         TextView item_price = holder.item_price;
         ImageView item_img = holder.item_image;
 
-        item_name.setText(contact.getItem_name());
-        item_place.setText(contact.getItem_place());
-        item_price.setText(contact.getItem_price());
+        item_name.setText(contact.getItem_title());
+        item_place.setText(contact.getItem_desc());
+        item_price.setText(contact.getItem_date());
         item_img.setImageResource(contact.getItem_image());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //implement onClick
-//                Intent i = new Intent(EventActivity.this, MainActivity.class);
-//                startActivity(i);
+                v.getId();
+                mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
 
-                Toast.makeText(v.getContext(),"Don't Touch me", Toast.LENGTH_LONG).show();
-//                Toast.makeText(getApplicationContext(),"Don't Touch me", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -93,9 +90,9 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.ViewHolder>
             super(itemView);
 
             item_image = itemView.findViewById(R.id.rv_item_img);
-            item_name = itemView.findViewById(R.id.rv_item_name);
-            item_place = itemView.findViewById(R.id.rv_item_place);
-            item_price = itemView.findViewById(R.id.rv_item_price);
+            item_name = itemView.findViewById(R.id.rv_Etitle);
+            item_place = itemView.findViewById(R.id.rv_Desc);
+            item_price = itemView.findViewById(R.id.rv_date);
             cardview = (CardView) itemView.findViewById(R.id.card_view);
         }
     }
