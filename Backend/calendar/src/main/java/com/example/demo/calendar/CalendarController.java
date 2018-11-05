@@ -99,7 +99,7 @@ public class CalendarController {
 	}
 	
 	//returns the calendarId of the most recently created calendar for a particular user
-	@GetMapping(path = "/users/{userId}")
+	@GetMapping(path = "/recent/{userId}")
 	public int returnMostRecentCalendarByUserId(@PathVariable Integer userId)
 	{
 		Calendar c = new Calendar();
