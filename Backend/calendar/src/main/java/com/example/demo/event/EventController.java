@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -81,6 +82,16 @@ public class EventController {
 	public Optional<Events> findEventById(@PathVariable("eventId") int EventId){
 		logger.info("Entered into Controller Layer");
 		Optional<Events> results = eventRepository.findById(EventId);
+		return results;
+	}
+	
+	//returns the events associated with a users id
+	@GetMapping(path = "/user/{userId}")
+	@ResponseBody
+	public Optional<Events> findEventByUserId(@PathVariable("userId") int userId)
+	{
+		logger.info("Entered into findEventByUserId method");
+		Optional<Events> results = eventRepository.findById(userId);
 		return results;
 	}
 	
