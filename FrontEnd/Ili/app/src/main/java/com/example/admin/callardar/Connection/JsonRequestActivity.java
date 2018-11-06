@@ -59,6 +59,18 @@ public class JsonRequestActivity{
          }).start();
     }
 
+    public void makeJsonArryReq_object_TIME(final String URL, final AppController C, final ArrayList<JSONArray> s, final Thread Time_Control)
+    {
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                makeJsonArryReq_object(URL, C, s, Time_Control);
+            }
+        }).start();
+    }
+
     /**
      *
      *  SEND message to the server
@@ -137,6 +149,32 @@ public class JsonRequestActivity{
 
         // Cancelling request
         // ApplicationController.getInstance().getRequestQueue().cancelAll(tag_json_arry);
+    }
+
+    public void makeJsonArryReq_object(String URL, AppController C, final ArrayList<JSONArray> arr, final Thread Time_Control)
+    {
+        JsonArrayRequest req = new JsonArrayRequest(URL,
+                new Response.Listener<JSONArray>()
+                {
+                    @Override
+                    public void onResponse(JSONArray response)
+                    {
+                        System.out.println("正确！");
+                        Time_Control.interrupt();
+                        arr.add(response);
+                    }
+                }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                System.out.println("错误！");
+                Time_Control.interrupt();
+            }
+        });
+
+        C.addToRequestQueue(req,
+                tag_json_arry);
     }
 
 }

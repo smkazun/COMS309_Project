@@ -21,6 +21,7 @@ import com.example.admin.callardar.Classes.callenDar;
 import com.example.admin.callardar.Connection.AppController;
 import com.example.admin.callardar.Connection.JsonRequestActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -113,18 +114,22 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        int id = 0;
-
         try
         {
-            System.out.println(s.get(0));
+            ArrayList<String> ids = Algorithm.ifExistWithAdd_SpecialMode_INT("userid", s.get(0));
+            ArrayList<String> names = Algorithm.ifExistWithAdd("name", s.get(0));
+            ArrayList<String> email = Algorithm.ifExistWithAdd("email", s.get(0));
+            ArrayList<String> passs = Algorithm.ifExistWithAdd("passWord", s.get(0));
 
-            String header = "name";
-            String toCheck = account;
-
-            if( ! Algorithm.ifExist(header, toCheck, s.get(0)))
+            for(int i = 0 ; i < ids.size() ; i += 1)
             {
-                return false;
+                if( ! names.get(i).equals(account))// || ! passs.get(i).equals(passWord))
+                {
+                    continue;
+                }
+
+                user = new User(Integer.parseInt(ids.get(i)), names.get(i), email.get(i));
+                break;
             }
         }
         catch (IndexOutOfBoundsException e)
@@ -132,9 +137,6 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Time Out in log in");
             return false;
         }
-
-        //toDO right ID
-        user = new User(new Random().nextInt(25550000) + 25555552, account, null);
 
         //toDO friend list
         URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/all";
@@ -178,11 +180,11 @@ public class MainActivity extends AppCompatActivity {
         user.addFriends(toAdd);
 
         //toDO calladar list
-        URL = "http://proj309-VC-03.misc.iastate.edu:8080/calendar/all";
-        s = new ArrayList<String>();
+        URL = "http://proj309-vc-03.misc.iastate.edu:8080/users/calendars/" + user.getID();
+        ArrayList<JSONArray> jArr = new ArrayList<JSONArray>();
         a = new JsonRequestActivity(MainActivity.this);
         C = new AppController(MainActivity.this);
-        a.makeJsonArryReq_TIME(URL, C, s, TIME_CONTROL);
+        a.makeJsonArryReq_object_TIME(URL, C, jArr, TIME_CONTROL);
 
         try
         {
@@ -197,7 +199,11 @@ public class MainActivity extends AppCompatActivity {
 
         try
         {
-            s0 = s.get(0);
+              System.out.println(jArr.get(0).toString());
+//            System.out.println(jArr.get(0).get(0).toString());
+//            System.out.println(jArr.get(0).getJSONObject(0).getJSONArray("users").toString());
+//            System.out.println(jArr.get(0).getJSONObject(0).getJSONArray("users").getJSONObject(0).getInt("userid"));
+
         }
         catch (IndexOutOfBoundsException e)
         {
@@ -205,14 +211,19 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
-        s = Algorithm.ifExistWithAdd("calendarName", s0);
-        arr = new String[s.size()];
-        arr = s.toArray(arr);
+        try
+        {
+            for(int i = 0 ; i < jArr.get(0).length() ; i += 1)
+            {
+                int id = jArr.get(0).getJSONObject(i).getInt("calendarid");
 
-        s = Algorithm.ifExistWithAdd_SpecialMode_INT("calendarId", s0);
-
-        for(int i = 0 ; i < arr.length ; i += 1)
-        user.addCalender(new callenDar(Integer.parseInt(s.get(i)), arr[i]));
+                user.addCalender(new callenDar(id, "Default"));
+            }
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
 
         return true;
     }

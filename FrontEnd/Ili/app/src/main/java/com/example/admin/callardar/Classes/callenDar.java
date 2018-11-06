@@ -55,6 +55,11 @@ public class callenDar
 
     public User[] getCurrentUser()
     {
+        if(people == null)
+        {
+            return null;
+        }
+
         User[] arr = new User[people.size()];
 
         for(int i = 0 ; i < arr.length ; i += 1)
@@ -67,6 +72,11 @@ public class callenDar
 
     public User[] getAdmin()
     {
+        if(admins == null)
+        {
+            return null;
+        }
+
         User[] arr = new User[admins.size()];
 
         for(int i = 0 ; i < arr.length ;i += 1)
@@ -88,7 +98,7 @@ public class callenDar
      */
     public void eventCreator(String name, String startDate, String endDate, String content, User admin, User[] toAdd)
         {
-        events.add(new Event(name, startDate, endDate, content, admin, toAdd));
+//        events.add(new Event(name, startDate, endDate, content, admin, toAdd));
 
         //toDo
         //draw the UI on real callendar
@@ -103,4 +113,8 @@ public class callenDar
         return arr;
     }
 
+    public void deleteEvent(Event toDelete)
+    {
+        events.remove(toDelete);
+    }
 }

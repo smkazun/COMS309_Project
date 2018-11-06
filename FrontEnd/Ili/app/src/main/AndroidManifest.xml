@@ -22,7 +22,11 @@
         <activity android:name=".MainActivity_Calendar" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".FriendList" />
-        <activity android:name=".AccountSetting"></activity>
+        <activity android:name=".AccountSetting"/>
+        <activity android:name=".EventActivity"/> >
+        <activity android:name=".EventDetailActivity"/> >
+        <activity android:name=".Classes.EventAdd">
+        </activity>
     </application>
 
 </manifest>

@@ -121,4 +121,7 @@ public class CalendarAdapter extends BaseAdapter {
         dateArray = mDateManager.getDays();
         this.notifyDataSetChanged();
     }
+
+
+
 }

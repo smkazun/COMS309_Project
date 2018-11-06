@@ -1,5 +1,4 @@
-package com.example.bansho.testingcard;
-
+package com.example.admin.callardar;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
@@ -10,8 +9,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+
+import com.example.admin.callardar.Classes.Event;
+import com.example.admin.callardar.Classes.EventAdapter;
+import com.example.admin.callardar.Classes.EventAdd;
 
 import java.util.ArrayList;
 
