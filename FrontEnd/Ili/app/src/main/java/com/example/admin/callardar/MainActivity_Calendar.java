@@ -4,6 +4,7 @@ package com.example.admin.callardar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -16,7 +17,7 @@ import com.example.admin.callardar.Classes.CalendarAdapter;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity_Calendar extends AppCompatActivity {
+public class MainActivity_Calendar extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
     private TextView titleText;
     private Button prevButton, nextButton, Event_B,list;
@@ -68,22 +69,31 @@ public class MainActivity_Calendar extends AppCompatActivity {
             }
         });
 
-        calendarGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-
-                int i = position;
-
-                Toast.makeText(getApplicationContext(),"its " + i, Toast.LENGTH_LONG).show();
-
-                // DO something
-
-            }
-        });
-
+//        calendarGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View v,
+//                                    int position, long id) {
+//
+//                int i = position;
+//
+//                Toast.makeText(getApplicationContext(),"its " + i, Toast.LENGTH_LONG).show();
+//                Intent k = new Intent(MainActivity_Calendar.this, EventActivity.class);
+//                startActivity(k);
+//                // DO something
+//
+//            }
+//        });
+        calendarGridView.setOnItemClickListener(this);
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        Log.d("position", String.valueOf(position));
+//        Log.d("date", mCalendarAdapter.getItem(position).toString());
+        Intent intent = new Intent(getApplicationContext(), DayActivity.class);
+        intent.putExtra("date", mCalendarAdapter.getItem(position).toString());
+        startActivity(intent);
+    }
 }
 
 

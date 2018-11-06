@@ -94,12 +94,12 @@ public class CalendarAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return dateArray.get(position);
     }
 
     //表示月を取得
