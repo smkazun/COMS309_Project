@@ -170,7 +170,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@android:drawable/screen_background_light_transparent" />
+            app:srcCompat="@android:drawable/ic_delete" />
 
         <ImageView
             android:id="@+id/账号设定"
@@ -182,7 +182,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@android:drawable/screen_background_light_transparent" />
+            app:srcCompat="@android:drawable/ic_menu_manage" />
 
         <ImageView
             android:id="@+id/AllFriends"
@@ -193,7 +193,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/头像"
-            app:srcCompat="@android:drawable/screen_background_light_transparent" />
+            app:srcCompat="@android:drawable/ic_menu_myplaces" />
     </android.support.constraint.ConstraintLayout>
 
     <ImageView
@@ -206,7 +206,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:drawable/screen_background_light" />
+        app:srcCompat="@android:drawable/star_on" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/日历预览"
@@ -251,7 +251,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.356"
-            app:srcCompat="@android:drawable/screen_background_light_transparent" />
+            app:srcCompat="@android:drawable/ic_media_previous" />
 
         <ImageView
             android:id="@+id/成员预览_右箭头"
@@ -265,7 +265,7 @@
             app:layout_constraintStart_toEndOf="@+id/成员预览_左箭头"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.356"
-            app:srcCompat="@android:drawable/screen_background_light_transparent" />
+            app:srcCompat="@android:drawable/ic_media_next" />
 
         <ImageView
             android:id="@+id/SortingSystem_PeopleShow_Pre"

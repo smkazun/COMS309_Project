@@ -343,7 +343,7 @@ public class Algorithm
             layout.addView(v);
             layout.addView(v_text);
 
-            if(x_Cur / (x_ONE + 10) <= x_Max)
+            if(x_Cur < (x_Max - 1) * (x_ONE + 10))
             {
                 x_Cur += x_ONE + 10;
             }

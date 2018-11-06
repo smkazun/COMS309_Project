@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
         {
             user = new User(100, "test","@");
 
-            User[] arr = new User[15];
+            User[] arr = new User[100];
 
-            for(int i = 0 ; i < 15 ; i += 1)
+            for(int i = 0 ; i < 100 ; i += 1)
             {
                 arr[i] = new User(i, "illiand" + i, "!");
             }

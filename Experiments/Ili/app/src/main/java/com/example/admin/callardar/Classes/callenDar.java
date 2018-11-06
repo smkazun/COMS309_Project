@@ -113,8 +113,8 @@ public class callenDar
         return arr;
     }
 
-    public void deleteEvent(Event toDelete)
+    public void deleteEvent(int index)
     {
-        events.remove(toDelete);
+        events.remove(index);
     }
 }

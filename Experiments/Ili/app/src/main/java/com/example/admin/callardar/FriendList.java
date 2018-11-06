@@ -88,17 +88,56 @@ public class FriendList extends AppCompatActivity {
 
                 float newX = v.getX() + event.getX();
 
+                final int xMax = Math.max(4, (int)(MainActivity.user.getFriends().length / (float)(container.getHeight() / 200)) + 1);
+
+                final int xOne = 160;
+
                 for(int i = 0 ; newX != oldX && i < pics.size() ; i += 1)
                 {
-                    pics.get(i).setX(iniXs[i] - (newX - oldX));
-                    texts.get(i).setX(iniXs[i] - (newX - oldX));
+                    int min = (i % xMax) * xOne - (xMax * xOne - container.getWidth());
+                    int max = (i % xMax) * xOne;
+
+                    if(xOne * xMax < container.getWidth())
+                    {
+
+                    }
+                    else if(iniXs[i] - (newX - oldX) < min)
+                    {
+                        pics.get(i).setX(min);
+                        texts.get(i).setX(min);
+                    }
+                    else if(iniXs[i] - (newX - oldX) > max)
+                    {
+                        pics.get(i).setX(max);
+                        texts.get(i).setX(max);
+                    }
+                    else
+                    {
+                        pics.get(i).setX(iniXs[i] - (newX - oldX));
+                        texts.get(i).setX(iniXs[i] - (newX - oldX));
+                    }
                 }
 
                 if(event.getAction() == MotionEvent.ACTION_UP)
                 {
-                    iem += (oldX - newX);
-                }
+                    if(xOne * xMax < container.getWidth())
+                    {
 
+                    }
+                    else if(iem > 0)
+                    {
+                        iem = 0;
+                    }
+                    else if(iem < -(xMax * xOne - container.getWidth()))
+                    {
+                        iem = -(xMax * xOne - container.getWidth());
+                    }
+                    else
+                    {
+                        iem += (oldX - newX);
+                    }
+                }
+System.out.println(iem);
                 if(event.getAction() == MotionEvent.ACTION_UP && newX == oldX)
                 {
                     boolean flag_oneturnout = true;
@@ -114,7 +153,11 @@ public class FriendList extends AppCompatActivity {
 
                         trans.setVisibility(View.INVISIBLE);
 
-                        sheruns1.clear();
+                        if(sheruns1 != null)
+                        {
+                            sheruns1.clear();
+                        }
+
                         she1.if_Usable = true;
                         she2.if_Usable = true;
                         she11.if_Usable = false;
@@ -426,7 +469,9 @@ public class FriendList extends AppCompatActivity {
                     pics.clear();
                     texts.clear();
 
-                    int x_Max = (int)(MainActivity.user.getFriends().length / (float)(container.getHeight() / 200)) + 1;
+                    int x_Max = Math.max(4, (int)(MainActivity.user.getFriends().length / (float)(container.getHeight() / 200)) + 1);
+
+                    iem = 0;
                     Algorithm.create_ImageAndTexts_fillMode(FriendList.this, container, 150, 200, x_Max, null, MainActivity.user.getFriends(), pics, texts, sheruns2);
             }
 

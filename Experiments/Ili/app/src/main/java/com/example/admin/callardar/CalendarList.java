@@ -92,6 +92,7 @@ public class CalendarList extends AppCompatActivity {
             mainLayout.addView(tf);
 
             Jpanel0 = Algorithm.createJPanel(CalendarList.this, 310, length, new RelativeLayout.LayoutParams(100, 100), Color.GREEN, (float)0.5);
+
             mainLayout.addView(Jpanel0);
             she_ca.add(new シルヴァホルン(new Point[]{new Point(310, length), new Point(410, length), new Point(410, length + 100), new Point(310, length + 100)}));
             she_ca_going.add(new シルヴァホルン(new Point[]{new Point(0,length), new Point(300,length),new Point(300,length + 100),new Point(0,length + 100)}));
