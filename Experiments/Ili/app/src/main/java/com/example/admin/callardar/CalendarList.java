@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.admin.callardar.Classes.Algorithm;
+import com.example.admin.callardar.Classes.Event;
 import com.example.admin.callardar.Classes.Point;
 import com.example.admin.callardar.Classes.User;
 import com.example.admin.callardar.Classes.callenDar;
@@ -24,6 +25,7 @@ import com.example.admin.callardar.Classes.シルヴァホルン;
 import com.example.admin.callardar.Connection.AppController;
 import com.example.admin.callardar.Connection.JsonRequestActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -462,17 +464,15 @@ public class CalendarList extends AppCompatActivity {
     {
         final int calendarID = MainActivity.user.getCalender()[iem].getId();
 
-        //toDO
-        final String URL = "";
-        final ArrayList<String> s = new ArrayList<String>();
-        final JsonRequestActivity a = new JsonRequestActivity(CalendarList.this);
-        final AppController C = new AppController(CalendarList.this);
-
         MainActivity.TIME_CONTROL = new Thread(new Runnable()
         {
             @Override
             public void run()
             {
+                String URL = "";
+                ArrayList<String> s = new ArrayList<String>();
+                JsonRequestActivity a = new JsonRequestActivity(CalendarList.this);
+                AppController C = new AppController(CalendarList.this);
                 a.makeJsonArryReq_TIME(URL, C, s, MainActivity.TIME_CONTROL);
 
                 try
@@ -495,6 +495,49 @@ public class CalendarList extends AppCompatActivity {
 
                 //toDO
                 // MainActivity.user.set_CurCalender(iem,
+
+
+                URL = "";
+                ArrayList<JSONArray> jArr = new ArrayList<JSONArray>();
+                a = new JsonRequestActivity(CalendarList.this);
+                C = new AppController(CalendarList.this);
+                a.makeJsonArryReq_object_TIME(URL, C, jArr, MainActivity.TIME_CONTROL);
+
+                try
+                {
+                    Thread.sleep(5000);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+
+                try
+                {
+                    s.get(0);
+                }
+                catch (IndexOutOfBoundsException e)
+                {
+                    System.out.println("TimeOut when getting data of Calendar --> " + calendarID);
+                }
+
+                try
+                {
+                    for(int i = 0 ; i < jArr.get(0).length() ; i += 1)
+                    {
+                        int id = jArr.get(0).getJSONObject(i).getInt("eventid");
+                        JSONArray events = jArr.get(0).getJSONObject(i).getJSONArray("events");
+
+                        for(int j = 0 ; j < events.length() ; j += 1)
+                        {
+                            MainActivity.user.getCalender()[iem].eventCreator(id, "", "", "Default", "NULL", null, MainActivity.user.getCalender()[iem].getCurrentUser());
+                        }
+                    }
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
 
                 thread.interrupt();
             }

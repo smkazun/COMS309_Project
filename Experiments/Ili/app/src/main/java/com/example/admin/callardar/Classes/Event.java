@@ -8,17 +8,19 @@ public class Event
 {
     private Time start;
     private Time end;
+    private int id;
     private String name;
     private String content;
 
     private User admin;
     private ArrayList<User> users;
 
-    public Event(String startDate, String endDate, String name, String content, User admin, User[] toAdd)
+    public Event(int id, String startDate, String endDate, String name, String content, User admin, User[] toAdd)
     {
         start = new Time(startDate);
         end = new Time(endDate);
 
+        this.id = id;
         this.content = content;
         this.admin = admin;
 
@@ -37,6 +39,8 @@ public class Event
     {
         return end;
     }
+
+    public int getId(){return id;}
 
     public String toString()
     {

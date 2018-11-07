@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -216,8 +217,9 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0 ; i < jArr.get(0).length() ; i += 1)
             {
                 int id = jArr.get(0).getJSONObject(i).getInt("calendarid");
+                String name = jArr.get(0).getJSONObject(i).getString("calendarname");
 
-                user.addCalender(new callenDar(id, "Default"));
+                user.addCalender(new callenDar(id, name));
             }
         }
         catch (JSONException e)
