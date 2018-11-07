@@ -34,7 +34,7 @@ public class Users {
 
 	private String usertype; //private UserType userType;
 	
-    @JsonIgnore
+    
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "users")
 	private Set<Calendar> calendars = new HashSet<>();
     
