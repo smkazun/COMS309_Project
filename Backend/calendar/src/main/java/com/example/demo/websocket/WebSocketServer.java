@@ -42,7 +42,8 @@ public class WebSocketServer {
         	broadcast(message);
 		
     }
- 
+    
+    //sends message to all other connected chats or to a particular user
     @OnMessage
     public void onMessage(Session session, String message) throws IOException 
     {
@@ -52,7 +53,7 @@ public class WebSocketServer {
     	
     	if (message.startsWith("@")) // Direct message to a user using the format "@username <message>"
     	{
-    		String destUsername = message.split(" ")[0].substring(1); // don't do this in your code!
+    		String destUsername = message.split(" ")[0].substring(1);
     		sendMessageToPArticularUser(destUsername, "[DM] " + username + ": " + message);
     		sendMessageToPArticularUser(username, "[DM] " + username + ": " + message);
     	}
@@ -82,6 +83,7 @@ public class WebSocketServer {
     	logger.info("Entered into Error");
     }
     
+    //handles sending of a message to a particular user
 	private void sendMessageToPArticularUser(String username, String message) 
     {	
     	try {
