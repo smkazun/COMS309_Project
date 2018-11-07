@@ -59,7 +59,7 @@ public class CalendarController {
 	
 	//add users to a calander
 	@RequestMapping(method = RequestMethod.POST, path = "/{calendarid}/{Userid}")
-	public @ResponseBody String createNewCalendar(@PathVariable ("calendarid") int cid, @PathVariable("Userid") int uid) 
+	public @ResponseBody String addUsersToExistingCalendar(@PathVariable ("calendarid") int cid, @PathVariable("Userid") int uid) 
 	{
 		Users users = userRepository.findByuserid(uid).get();
 		Calendar c = calendarRepository.findByCalendarid(cid).get();
