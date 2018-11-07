@@ -29,8 +29,6 @@ import com.example.demo.event.Events;
 import com.example.demo.calendar.Calendar;
 import com.example.demo.user.*;
 
-import com.example.demo.user.UserController;
-
 @RestController
 @RequestMapping(path = "/calendar")
 public class CalendarController {
@@ -45,12 +43,33 @@ public class CalendarController {
 	private final Logger logger = LoggerFactory.getLogger(CalendarController.class);
 	
 	//make new calendar: names that calendar and adds the users
-	@RequestMapping(method = RequestMethod.POST, path = "/new")
-	public @ResponseBody String createNewCalendar(@RequestBody Calendar calendar) 
+	@RequestMapping(method = RequestMethod.POST, path = "/new/{Userid}")
+	public @ResponseBody String createNewCalendar(@RequestBody Calendar calendar, @PathVariable("Userid") int id) 
 	{
-		calendarRepository.save(calendar);
+		Users users = (Users)userRepository.findByuserid(id).get();
+		Calendar c = calendar;
+		
+		users.getcalendars().add(c);
+		c.getusers().add(users);
+		
+		calendarRepository.save(c);
 		
 		return "New Calendar " + calendar.getcalendarname() + " saved";
+	}
+	
+	//add users to a calander
+	@RequestMapping(method = RequestMethod.POST, path = "/{calendarid}/{Userid}")
+	public @ResponseBody String createNewCalendar(@PathVariable ("calendarid") int cid, @PathVariable("Userid") int uid) 
+	{
+		Users users = userRepository.findByuserid(uid).get();
+		Calendar c = calendarRepository.findByCalendarid(cid).get();
+		
+		users.getcalendars().add(c);
+		c.getusers().add(users);
+		
+		calendarRepository.save(c);
+		
+		return "users for  " + c.getcalendarname() + " saved";
 	}
 	
 	//gets a calendar by using its associated id
