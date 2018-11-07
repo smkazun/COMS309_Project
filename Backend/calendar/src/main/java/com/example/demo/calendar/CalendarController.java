@@ -76,8 +76,8 @@ public class CalendarController {
 	
 	//get all events to a calendar
 	@RequestMapping(method = RequestMethod.GET, path = "/events/{calendarid}")
-	public Optional<Events> getAllEvents(@PathVariable Integer calendarid){ //TODO we want method to return as List
-		Optional<Events> results = eventRepository.findBycalendarid(calendarid); //TODO we want this to be a List
+	public List<Events> getAllEvents(@PathVariable Integer calendarid){ //TODO we want method to return as List
+		List<Events> results = eventRepository.findBycalendarid(calendarid); //TODO we want this to be a List
 		return results;
 	}
 		
