@@ -36,16 +36,22 @@ public class CalendarList extends AppCompatActivity {
 
     private ConstraintLayout screen_CalenderCreator;
     private ConstraintLayout mainLayout;
+    private ConstraintLayout container;
     private ConstraintLayout friendList;
     private static ImageView trans;
+    private Button b;
+    private EditText sorting;
 
     // pre View
     private ConstraintLayout calendar_PreView;
     private static ConstraintLayout people_PreView;
     private ImageView people_show_pre_leftArrow;
     private ImageView people_show_pre_rightArrow;
+    private int curIndex;
     private ImageView people_show_pre_SortingSystem;
     private シルヴァホルン she3;
+
+    protected static int iem;
 
     //setting
     private ImageView goToSetting;
@@ -127,6 +133,7 @@ public class CalendarList extends AppCompatActivity {
         mainLayout.addView(Jpanel);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void callendarShow_preView()
     {
         calendar_PreView = findViewById(R.id.日历预览);calendar_PreView.setBackgroundColor(Color.BLUE);
@@ -134,6 +141,46 @@ public class CalendarList extends AppCompatActivity {
         people_show_pre_leftArrow = findViewById(R.id.成员预览_左箭头);Color.rgb(10,100,200);
         people_show_pre_rightArrow = findViewById(R.id.成员预览_右箭头);Color.rgb(10,100,200);
         people_show_pre_SortingSystem = findViewById(R.id.SortingSystem_PeopleShow_Pre);Color.rgb(30,10,150);
+
+        people_show_pre_leftArrow.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if(curIndex == 0)
+                {
+                    return false;
+                }
+
+                curIndex -= 10;
+                people_PreView.removeAllViews();
+
+                int[] zone = new int[]{0, people_PreView.getWidth(), 0, people_PreView.getHeight()};
+                Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[iem].getCurrentUser(), new ArrayList<ImageView>(), new ArrayList<TextView>(), curIndex);
+
+                return false;
+            }
+        });
+
+        people_show_pre_rightArrow.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                if(curIndex + 10 >= MainActivity.user.getCalender()[iem].getCurrentUser().length)
+                {
+                    return false;
+                }
+
+                curIndex += 10;
+                people_PreView.removeAllViews();
+
+                int[] zone = new int[]{0, people_PreView.getWidth(), 0, people_PreView.getHeight()};
+                Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[iem].getCurrentUser(), new ArrayList<ImageView>(), new ArrayList<TextView>(), curIndex);
+
+                return false;
+            }
+        });
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -234,76 +281,6 @@ public class CalendarList extends AppCompatActivity {
         });
     }
 
-    private class inLeakHandle extends Handler
-    {
-        public void handleMessage(Message msg)
-        {
-            super.handleMessage(msg);
-
-            switch (msg.what)
-            {
-                case 10:
-                    trans.setVisibility(View.VISIBLE);
-                    break;
-                case 11:
-                    trans.setVisibility(View.INVISIBLE);
-                    people_PreView.removeAllViews();
-                    break;
-                default:
-                    int i = msg.what % 1000;
-
-                    she3 = new シルヴァホルン(new Point[]{new Point(mainLayout.getWidth() - calendar_PreView.getWidth(), 0), new Point(mainLayout.getWidth(), 0), new Point(mainLayout.getWidth(), mainLayout.getHeight()), new Point(mainLayout.getWidth() - people_PreView.getWidth(), mainLayout.getHeight())});
-
-                    she1.if_Usable = false;
-
-                    for(int j = 0 ; j < she_ca.size() ; j += 1)
-                    {
-                        she_ca.get(j).if_Usable = false;
-                    }
-
-                    int[] zone = new int[]{0, people_PreView.getWidth(), 0, people_PreView.getHeight()};
-                    ArrayList<ImageView> Pic = new ArrayList<ImageView>();
-                    ArrayList<TextView> Tex = new ArrayList<TextView>();
-
-                    mainLayout.removeView(trans);
-                    mainLayout.addView(trans);
-                    mainLayout.removeView(calendar_PreView);
-                    mainLayout.addView(calendar_PreView);
-
-                    if(MainActivity.user.getName().equals("test"))
-                    {
-                        Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[i].getCurrentUser(), Pic, Tex, 0);
-                    }
-                    else if(MainActivity.user.getCalender()[i].getCurrentUser() != null)
-                    {
-                        Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[i].getCurrentUser(), Pic, Tex, 0);
-                    }
-
-                    Algorithm.view_MOVE(new View[]{calendar_PreView}, mainLayout.getWidth() - people_PreView.getWidth(),0);
-
-                    new Thread(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            try
-                            {
-                                Thread.sleep(101);
-                            }
-                            catch (InterruptedException e)
-                            {
-                                e.printStackTrace();
-                            }
-
-                            Message message = new Message();
-                            message.what = 10;
-                            handler.sendMessage(message);
-                        }
-                    }).start();
-            }
-        }
-    }
-
     private class WindowMovement implements View.OnTouchListener
     {
         @Override
@@ -333,6 +310,7 @@ public class CalendarList extends AppCompatActivity {
             if(she3 != null && calendar_PreView.getY() == 0 && she3.if_Usable && ! she3.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
             {
                 Algorithm.view_MOVE(new View[]{calendar_PreView}, calendar_PreView.getX(), -calendar_PreView.getHeight());
+                curIndex = 0;
 
                 she3.if_Usable = false;
                 she1.if_Usable = true;
@@ -385,16 +363,16 @@ public class CalendarList extends AppCompatActivity {
             {
                 if(she_ca.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
                 {
-                    final int index = i;
+                    iem = i;
 
                     t = new Thread(new Runnable()
                     {
                         @Override
                         public void run()
                         {
-                            if(MainActivity.user.getCalender()[index].getCurrentUser() == null)
+                            if(MainActivity.user.getCalender()[iem].getCurrentUser() == null)
                             {
-                                getMessage_WithCalendar(index, t);
+                                getMessage_WithCalendar(t);
                             }
                             else
                             {
@@ -411,30 +389,30 @@ public class CalendarList extends AppCompatActivity {
                             }
 
                             Message message = new Message();
-                            message.what = 1000 + index;
+                            message.what = 1000 + iem;
                             handler.sendMessage(message);
                         }
                     });
 
-                    if(MainActivity.user.getCalender()[index].getCurrentUser() == null)
+                    t.start();
+
+                    if(MainActivity.user.getCalender()[iem].getCurrentUser() == null)
                     {
                         return false;
                     }
                     else
                     {
                         Message message = new Message();
-                        message.what = 1000 + index;
+                        message.what = 1000 + iem;
                         handler.sendMessage(message);
                     }
-
-
                 }
             }
 
             return false;
         }
     }
-    
+
     private class gotoCalendarListener implements View.OnTouchListener
     {
         @Override
@@ -444,16 +422,16 @@ public class CalendarList extends AppCompatActivity {
             {
                 if(she_ca_going.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
                 {
-                    final int index = i;
+                    iem = i;
 
                     t = new Thread(new Runnable()
                     {
                         @Override
                         public void run()
                         {
-                            if(MainActivity.user.getCalender()[index].getCurrentUser() == null)
+                            if(MainActivity.user.getCalender()[iem].getCurrentUser() == null)
                             {
-                                getMessage_WithCalendar(index, t);
+                                getMessage_WithCalendar(t);
 
                                 try
                                 {
@@ -479,9 +457,9 @@ public class CalendarList extends AppCompatActivity {
         }
     }
 
-    private void getMessage_WithCalendar(int index, final Thread thread)
+    private void getMessage_WithCalendar(final Thread thread)
     {
-        final int calendarID = MainActivity.user.getCalender()[index].getId();
+        final int calendarID = MainActivity.user.getCalender()[iem].getId();
 
         //toDO
         final String URL = "";
@@ -515,7 +493,7 @@ public class CalendarList extends AppCompatActivity {
                 }
 
                 //toDO
-                //MainActivity.user.getCalender()[index] = null;
+                // MainActivity.user.set_CurCalender(iem,
 
                 thread.interrupt();
             }
@@ -531,11 +509,13 @@ public class CalendarList extends AppCompatActivity {
         mainLayout = findViewById(R.id.JFrame_activity_calendar_list);
 
         mainLayout.setOnTouchListener(new WindowMovement());
+        b = findViewById(R.id.closeShow);
 
         settingSolution();
         callendarShow_preView();
 
         friendList = findViewById(R.id.JFrame_FriendList);
+        container = findViewById(R.id.CalendarList_container);
         trans = findViewById(R.id.Transparent);
         trans.setBackgroundColor(Color.BLACK);
         trans.setAlpha((float)0.8);
@@ -543,8 +523,10 @@ public class CalendarList extends AppCompatActivity {
 
         screen_CalenderCreator.setVisibility(View.INVISIBLE);
         screen_CalenderCreator.setBackgroundColor(Color.rgb(200,100,50));
-        friendList.setVisibility(View.INVISIBLE);
+        container.setVisibility(View.INVISIBLE);
+        container.setBackgroundColor(Color.rgb(100,200,50));
         friendList.setBackgroundColor(Color.rgb(200,100,20));
+        sorting = findViewById(R.id.SortingSystem);
 
         final ArrayList<TextView> text = new ArrayList<TextView>();
         final ArrayList<ImageView> pic = new ArrayList<ImageView>();
@@ -559,13 +541,12 @@ public class CalendarList extends AppCompatActivity {
         Button create = findViewById(R.id.createCalender);
         create.setOnClickListener(new OnClick());
 
-        final Button b = findViewById(R.id.closeShow);
         b.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                friendList.setVisibility(View.INVISIBLE);
+                container.setVisibility(View.INVISIBLE);
                 screen_CalenderCreator.setVisibility(View.VISIBLE);
 
                 she1_f.clear();
@@ -616,7 +597,7 @@ public class CalendarList extends AppCompatActivity {
 
                 she1.if_Usable = false;
 
-                friendList.setVisibility(View.VISIBLE);
+                container.setVisibility(View.VISIBLE);
                 screen_CalenderCreator.setVisibility(View.INVISIBLE);
 
                 for(int i = 0 ; i < sheruns1.size() ; i += 1)
@@ -634,13 +615,112 @@ public class CalendarList extends AppCompatActivity {
                     }
                 }
 
+                //Sorting-System_People
+                Thread enterValue = new Thread(new Runnable()
+                {
+                    private String input;
+                    private boolean entered;
+
+                    @Override
+                    public void run()
+                    {
+                        User[] friends = MainActivity.user.getFriends();
+
+                        while(true)
+                        {
+                            String input = null;
+
+                            try
+                            {
+                                input = sorting.getText().toString();
+
+                                if( ! input.equals(""))
+                                {
+                                    sheruns2.get(Math.min(sheruns2.size() - 1, return_Pic.size() - 1)).if_Usable = false;
+                                }
+                            }
+                            catch(NullPointerException | IndexOutOfBoundsException e)
+                            {
+
+                            }
+
+                            if(input != null && ! input.equals("") && (int)input.charAt(input.length() - 1) != 0  && ! input.equals(this.input))
+                            {
+                                this.input = input;
+                                entered = true;
+
+                                ArrayList<User> users = new ArrayList<User>();
+                                ArrayList<ImageView> pics = new ArrayList<ImageView>();
+                                ArrayList<TextView> texs = new ArrayList<TextView>();
+
+                                User[] u = new User[people.size()];
+                                u = people.toArray(u);
+
+                                Message message = new Message();
+                                message.what = 15;
+                                message.obj = new Algorithm.Component("", u, null, null,return_Pic, return_Text, null, null);
+                                handler.sendMessage(message);
+
+                                for(int i = 0 ; i < friends.length ; i += 1)
+                                {
+                                    if(input.length() > friends[i].getName().length() || people.contains(friends[i]))
+                                    {
+                                        continue;
+                                    }
+
+                                    for(int j = 0 ; j < input.length() ; j += 1)
+                                    {
+                                        if(input.charAt(j) != friends[i].getName().charAt(j))
+                                        {
+                                            break;
+                                        }
+
+                                        if(j + 1 == input.length())
+                                        {
+                                            users.add(friends[i]);
+                                        }
+                                    }
+                                }
+
+                                User[] cur = new User[users.size()];
+                                cur = users.toArray(cur);
+
+                                message = new Message();
+                                message.what = 103;
+                                message.obj = new Algorithm.Component("", cur, pics, texs, return_Pic, return_Text, sheruns1, sheruns2);
+                                handler.sendMessage(message);
+                            }
+                            else if(entered && input != null && input.equals(""))
+                            {
+                                entered = false;
+                                this.input = "";
+
+                                User[] u = new User[people.size()];
+                                u = people.toArray(u);
+
+                                Message message = new Message();
+                                message.what = 999;
+                                message.obj = new Algorithm.Component("", u, pic, text, return_Pic, return_Text, sheruns1, sheruns2);
+                                handler.sendMessage(message);
+                            }
+
+                            if(container.getVisibility() == View.INVISIBLE)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                });
+
+                enterValue.start();
+
                 if(people == null)
                 {
                     //mainLayout.setBackgroundColor(Color.BLACK);
                     people = new ArrayList<User>();
 
-                    mainLayout.removeView(friendList);
-                    mainLayout.addView(friendList);
+                    mainLayout.removeView(container);
+                    mainLayout.addView(container);
 
                     sheruns1.clear();
                     sheruns2.clear();
@@ -650,7 +730,6 @@ public class CalendarList extends AppCompatActivity {
                     return_Text.clear();
 
                     friendList.removeAllViews();
-                    friendList.addView(b);
 
                     int zone1[] = new int[]{0, friendList.getWidth(), 0, friendList.getHeight() / 2 - 50};
                     int zone2[] = new int[]{0, friendList.getWidth(), friendList.getHeight() / 2 + 50, friendList.getHeight()};
@@ -681,7 +760,7 @@ public class CalendarList extends AppCompatActivity {
 
                 she1.if_Usable = false;
 
-                friendList.setVisibility(View.VISIBLE);
+                container.setVisibility(View.VISIBLE);
                 screen_CalenderCreator.setVisibility(View.INVISIBLE);
 
                 for(int i = 0 ; i < sheruns1.size() ; i += 1)
@@ -704,8 +783,8 @@ public class CalendarList extends AppCompatActivity {
                     //mainLayout.setBackgroundColor(Color.BLACK);
                     admins = new ArrayList<User>();
 
-                    mainLayout.removeView(friendList);
-                    mainLayout.addView(friendList);
+                    mainLayout.removeView(container);
+                    mainLayout.addView(container);
 
                     sheruns1.clear();
                     sheruns2.clear();
@@ -715,7 +794,6 @@ public class CalendarList extends AppCompatActivity {
                     return_Text.clear();
 
                     friendList.removeAllViews();
-                    friendList.addView(b);
 
                     int zone1[] = new int[]{0, friendList.getWidth(), 0, friendList.getHeight() / 2 - 50};
                     int zone2[] = new int[]{0, friendList.getWidth(), friendList.getHeight() / 2 + 50, friendList.getHeight()};
@@ -731,6 +809,107 @@ public class CalendarList extends AppCompatActivity {
                         Algorithm.memberAddingProcess(CalendarList.this, friendList, zone1, zone2, L, H, peoples, admins, return_Pic, return_Text, pic, text, sheruns1, sheruns2, 0, 0, true);
                     }
                 }
+
+                //Sorting-System_Admin
+                Thread enterValue2 = new Thread(new Runnable()
+                {
+                    private String input;
+                    private boolean entered;
+
+                    @Override
+                    public void run()
+                    {
+                        User[] choosed = new User[people.size()];
+                        choosed = people.toArray(choosed);
+
+                        while(true)
+                        {
+                            String input = null;
+
+                            try
+                            {
+                                input = sorting.getText().toString();
+
+                                if( ! input.equals(""))
+                                {
+                                    sheruns2.get(Math.min(sheruns2.size() - 1, return_Pic.size() - 1)).if_Usable = false;
+                                }
+                            }
+                            catch(NullPointerException | IndexOutOfBoundsException e)
+                            {
+
+                            }
+
+                            if(input != null && ! input.equals("") && (int)input.charAt(input.length() - 1) != 0  && ! input.equals(this.input))
+                            {
+                                this.input = input;
+                                entered = true;
+
+                                ArrayList<User> users = new ArrayList<User>();
+                                ArrayList<ImageView> pics = new ArrayList<ImageView>();
+                                ArrayList<TextView> texs = new ArrayList<TextView>();
+
+                                User[] u = new User[admins.size()];
+                                u = admins.toArray(u);
+
+                                Message message = new Message();
+                                message.what = 15;
+                                message.obj = new Algorithm.Component("", u, null, null,return_Pic, return_Text, null, null);
+                                handler.sendMessage(message);
+
+
+                                for(int i = 0 ; i < choosed.length ; i += 1)
+                                {
+                                    if(input.length() > choosed[i].getName().length() || admins.contains(choosed[i]))
+                                    {
+                                        continue;
+                                    }
+
+                                    for(int j = 0 ; j < input.length() ; j += 1)
+                                    {
+                                        if(input.charAt(j) != choosed[i].getName().charAt(j))
+                                        {
+                                            break;
+                                        }
+
+                                        if(j + 1 == input.length())
+                                        {
+                                            users.add(choosed[i]);
+                                        }
+                                    }
+                                }
+
+                                User[] cur = new User[users.size()];
+                                cur = users.toArray(cur);
+
+                                message = new Message();
+                                message.what = 104;
+                                message.obj = new Algorithm.Component("", cur, pics, texs, return_Pic, return_Text, sheruns1, sheruns2);
+                                handler.sendMessage(message);
+                            }
+                            else if(entered && input != null && input.equals(""))
+                            {
+                                entered = false;
+                                this.input = "";
+
+                                User[] u = new User[admins.size()];
+                                u = admins.toArray(u);
+
+                                Message message = new Message();
+                                message.what = 10001;
+                                message.obj = new Algorithm.Component("", u, pic, text, return_Pic, return_Text, sheruns1, sheruns2);
+                                handler.sendMessage(message);
+                            }
+
+                            if(container.getVisibility() == View.INVISIBLE)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                });
+
+                enterValue2.start();
 
                 return false;
             }
@@ -869,6 +1048,239 @@ public class CalendarList extends AppCompatActivity {
         {
             //toDO
             return false;
+        }
+    }
+
+    private class inLeakHandle extends Handler
+    {
+        public void handleMessage(Message msg)
+        {
+            super.handleMessage(msg);
+            Algorithm.Component obj = null;
+
+            switch (msg.what)
+            {
+                case 10:
+                    trans.setVisibility(View.VISIBLE);
+
+                    break;
+                case 11:
+                    trans.setVisibility(View.INVISIBLE);
+                    people_PreView.removeAllViews();
+
+                    break;
+                case 15:
+                    obj = (Algorithm.Component)msg.obj;
+
+                    friendList.removeAllViews();
+                    obj.returnPic.clear();
+                    obj.returnTex.clear();
+
+                    int zoneDown[] = new int[]{0, friendList.getWidth(), friendList.getHeight() / 2 + 50, friendList.getHeight()};
+                    Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zoneDown, 4, 3, null, obj.users, obj.returnPic, obj.returnTex, 0);
+
+                    break;
+                case 103:
+                    obj = (Algorithm.Component)msg.obj;
+                    obj.sherun1.clear();
+                    obj.sherun2.clear();
+
+                    int zone1[] = new int[]{0, friendList.getWidth(), 0, friendList.getHeight() / 2 - 50};
+                    int zone2[] = new int[]{0, friendList.getWidth(), friendList.getHeight() / 2 + 50, friendList.getHeight()};
+                    Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zone1, 4, 3, null, obj.users, obj.pics, obj.texs, 0);
+                    Algorithm.memberAddingProcess(CalendarList.this, friendList, zone1, zone2, 4, 3, obj.users, people, obj.returnPic, obj.returnTex, obj.pics, obj.texs, obj.sherun1, obj.sherun2, 0, 0, true);
+
+                    break;
+
+                case 104:
+                    obj = (Algorithm.Component)msg.obj;
+                    obj.sherun1.clear();
+                    obj.sherun2.clear();
+
+                    zone1 = new int[]{0, friendList.getWidth(), 0, friendList.getHeight() / 2 - 50};
+                    zone2 = new int[]{0, friendList.getWidth(), friendList.getHeight() / 2 + 50, friendList.getHeight()};
+                    Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zone1, 4, 3, null, obj.users, obj.pics, obj.texs, 0);
+                    Algorithm.memberAddingProcess(CalendarList.this, friendList, zone1, zone2, 4, 3, obj.users, admins, obj.returnPic, obj.returnTex, obj.pics, obj.texs, obj.sherun1, obj.sherun2, 0, 0, true);
+
+                    break;
+
+                case 999:
+                    obj = (Algorithm.Component)msg.obj;
+
+                    friendList.removeAllViews();
+                    obj.sherun1.clear();
+                    obj.sherun2.clear();
+                    obj.pics.clear();
+                    obj.texs.clear();
+                    obj.returnPic.clear();
+                    obj.returnTex.clear();
+
+                    zone1 = new int[]{0, friendList.getWidth(), 0, friendList.getHeight() / 2 - 50};
+                    zone2 = new int[]{0, friendList.getWidth(), friendList.getHeight() / 2 + 50, friendList.getHeight()};
+
+                    ArrayList<User> users = new ArrayList<User>();
+                    User[] all =  MainActivity.user.getFriends();
+
+                    for(int i = 0 ; i < all.length ; i += 1)
+                    {
+                        if( ! people.contains(all[i]))
+                        {
+                            users.add(all[i]);
+                        }
+                    }
+
+                    all = new User[users.size()];
+                    all = users.toArray(all);
+
+                    Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zone1, 4, 3, null, all, obj.pics, obj.texs, 0);
+                    Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zone2, 4, 3, null, obj.users, obj.returnPic, obj.returnTex, 0);
+                    Algorithm.memberAddingProcess(CalendarList.this, friendList, zone1, zone2, 4, 3, all, people, obj.returnPic, obj.returnTex, obj.pics, obj.texs, obj.sherun1, obj.sherun2, 0, 0, true);
+
+                    final Algorithm.Component objV = obj;
+                    final User[] allV = all;
+
+                    new Thread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            while(true)
+                            {
+                                if(objV.sherun2.size() == 12)
+                                {
+                                    for(int i = 0 ; i < allV.length && i < objV.sherun1.size() ; i += 1)
+                                    {
+                                        objV.sherun1.get(i).if_Usable = true;
+                                    }
+
+                                    for(int i = 0 ; i < people.size() && i < objV.sherun2.size() ; i += 1)
+                                    {
+                                        objV.sherun2.get(i).if_Usable = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+                    }).start();
+
+                    break;
+
+                case 10001:
+                    obj = (Algorithm.Component)msg.obj;
+
+                    friendList.removeAllViews();
+                    obj.sherun1.clear();
+                    obj.sherun2.clear();
+                    obj.pics.clear();
+                    obj.texs.clear();
+                    obj.returnPic.clear();
+                    obj.returnTex.clear();
+
+                    zone1 = new int[]{0, friendList.getWidth(), 0, friendList.getHeight() / 2 - 50};
+                    zone2 = new int[]{0, friendList.getWidth(), friendList.getHeight() / 2 + 50, friendList.getHeight()};
+
+                    users = new ArrayList<User>();
+                    all = new User[people.size()];
+                    all = people.toArray(all);
+
+                    for(int i = 0 ; i < all.length ; i += 1)
+                    {
+                        if( ! admins.contains(all[i]))
+                        {
+                            users.add(all[i]);
+                        }
+                    }
+
+                    all = new User[users.size()];
+                    all = users.toArray(all);
+
+                    Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zone1, 4, 3, null, all, obj.pics, obj.texs, 0);
+                    Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zone2, 4, 3, null, obj.users, obj.returnPic, obj.returnTex, 0);
+                    Algorithm.memberAddingProcess(CalendarList.this, friendList, zone1, zone2, 4, 3, all, admins, obj.returnPic, obj.returnTex, obj.pics, obj.texs, obj.sherun1, obj.sherun2, 0, 0, true);
+
+                    final Algorithm.Component objV2 = obj;
+                    final User[] allV2 = all;
+
+                    new Thread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            while(true)
+                            {
+                                if(objV2.sherun2.size() == 12)
+                                {
+                                    for(int i = 0 ; i < allV2.length && i < objV2.sherun1.size() ; i += 1)
+                                    {
+                                        objV2.sherun1.get(i).if_Usable = true;
+                                    }
+
+                                    for(int i = 0 ; i < admins.size() && i < objV2.sherun2.size() ; i += 1)
+                                    {
+                                        objV2.sherun2.get(i).if_Usable = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+                    }).start();
+
+                    break;
+
+                default:
+                    int i = msg.what % 1000;
+
+                    she3 = new シルヴァホルン(new Point[]{new Point(mainLayout.getWidth() - calendar_PreView.getWidth(), 0), new Point(mainLayout.getWidth(), 0), new Point(mainLayout.getWidth(), mainLayout.getHeight()), new Point(mainLayout.getWidth() - people_PreView.getWidth(), mainLayout.getHeight())});
+
+                    she1.if_Usable = false;
+
+                    for(int j = 0 ; j < she_ca.size() ; j += 1)
+                    {
+                        she_ca.get(j).if_Usable = false;
+                    }
+
+                    int[] zone = new int[]{0, people_PreView.getWidth(), 0, people_PreView.getHeight()};
+                    ArrayList<ImageView> Pic = new ArrayList<ImageView>();
+                    ArrayList<TextView> Tex = new ArrayList<TextView>();
+
+                    mainLayout.removeView(trans);
+                    mainLayout.addView(trans);
+                    mainLayout.removeView(calendar_PreView);
+                    mainLayout.addView(calendar_PreView);
+
+                    if(MainActivity.user.getName().equals("test"))
+                    {
+                        Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[i].getCurrentUser(), Pic, Tex, 0);
+                    }
+                    else if(MainActivity.user.getCalender()[i].getCurrentUser() != null)
+                    {
+                        Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[i].getCurrentUser(), Pic, Tex, 0);
+                    }
+
+                    Algorithm.view_MOVE(new View[]{calendar_PreView}, mainLayout.getWidth() - people_PreView.getWidth(),0);
+
+                    new Thread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            try
+                            {
+                                Thread.sleep(101);
+                            }
+                            catch (InterruptedException e)
+                            {
+                                e.printStackTrace();
+                            }
+
+                            Message message = new Message();
+                            message.what = 10;
+                            handler.sendMessage(message);
+                        }
+                    }).start();
+            }
         }
     }
 

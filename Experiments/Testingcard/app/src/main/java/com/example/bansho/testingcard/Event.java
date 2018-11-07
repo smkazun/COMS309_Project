@@ -99,44 +99,53 @@ public class Event {
 //            this.year = year;
 //        }
 //    }
-    private String item_name,item_place,item_price;
+    private String item_title,item_desc,item_date, item_time;
     private int item_image;
 
-    public Event(String item_name, String item_place, String item_price) {
-        this.item_name = item_name;
-        this.item_place = item_place;
-        this.item_price = item_price;
+    public Event(String item_title, String item_desc, String item_date) {
+        this.item_title = item_title;
+        this.item_desc = item_desc;
+        this.item_date = item_date;
     }
 
-    public String getItem_name() {
-        return item_name;
+    public String getItem_title() {
+        return item_title;
     }
 
-    public void setItem_name(String item_name) {
-        this.item_name = item_name;
+    public void setItem_title(String item_title) {
+        this.item_title = item_title;
     }
 
-    public String getItem_place() {
-        return item_place;
+    public String getItem_desc() {
+        return item_desc;
     }
 
-    public void setItem_place(String item_place) {
-        this.item_place = item_place;
+    public void setItem_desc(String item_desc) {
+        this.item_desc = item_desc;
     }
 
-    public String getItem_price() {
-        return item_price;
+    public String getItem_date() {
+        return item_date;
     }
 
-    public void setItem_price(String item_price) {
-        this.item_price = item_price;
+    public void setItem_date(String item_date) {
+        this.item_date = item_date;
     }
 
+    public  String getItem_Time(String item_time){
+        return item_time;
+    }
+
+    public  void  setItem_time(String item_time){
+        this.item_time = item_time;
+    }
     public int getItem_image() {
         return item_image;
     }
 
     public void setItem_image(int item_image) {
+
         this.item_image = item_image;
     }
+
 }

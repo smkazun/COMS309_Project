@@ -316,6 +316,46 @@ public class Algorithm
         new view_MOVE(v, v[0].getX(), v[0].getY(), x_TO, y_TO);
     }
 
+    public static void create_ImageAndTexts_fillMode(Object classDOTthis, Object Layout, int x_ONE, int y_ONE, int x_Max, String[] addForView, User[] toAdd, ArrayList<ImageView> views_Pic, ArrayList<TextView> views_Tex, ArrayList<シルヴァホルン> sheruns1)
+    {
+        ConstraintLayout layout = (ConstraintLayout) Layout;
+        views_Pic.clear();
+        views_Tex.clear();
+        sheruns1.clear();
+
+        int x_Cur = 0;
+        int y_Cur = 0;
+
+        for(int i = 0 ; i < toAdd.length ; i += 1)
+        {
+            Point p1 = new Point(x_Cur + (int)layout.getX(), y_Cur + (int)layout.getY());
+            Point p2 = new Point(x_Cur + x_ONE + (int)layout.getX(), y_Cur + (int)layout.getY());
+            Point p3 = new Point(x_Cur + x_ONE + (int)layout.getX(), y_Cur + y_ONE + (int)layout.getY());
+            Point p4 = new Point(x_Cur + (int)layout.getX(), y_Cur + y_ONE + (int)layout.getY());
+
+            Random r = new Random();
+            ImageView v = Algorithm.createJPanel((Context) classDOTthis, x_Cur, y_Cur, new RelativeLayout.LayoutParams(x_ONE, y_ONE - 40), Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255)), 1);
+            TextView v_text = Algorithm.createTextField((Context) classDOTthis, toAdd[i].getName(), x_Cur, y_Cur + y_ONE - 40, new RelativeLayout.LayoutParams(x_ONE, 40), Color.WHITE, 1);
+            sheruns1.add(new シルヴァホルン(new Point[]{p1, p2, p3, p4}));
+
+            views_Pic.add(v);
+            views_Tex.add(v_text);
+            layout.addView(v);
+            layout.addView(v_text);
+
+            if(x_Cur / (x_ONE + 10) <= x_Max)
+            {
+                x_Cur += x_ONE + 10;
+            }
+            else
+            {
+                x_Cur = 0;
+                y_Cur += y_ONE + 10;
+            }
+        }
+
+    }
+
     /**
      * call it when need it (Ver.2)
      * @param classDOTthis
@@ -502,7 +542,7 @@ public class Algorithm
                             HxC = left_X_start + (X_number - 1) * (x_ONE + 10);
                             HyC = up_Y_start + j * (y_ONE + 50);
 
-                            if(return_Value_Picture.size() >= 1 && (copy_Pic.get((j + index1 + 1) * X_number - 1)).getX() != HxC || copy_Pic.get((j + index1 + 1) * X_number - 1).getY() != HyC)
+                            if(return_Value_Picture.size() >= 1 && (Math.abs((copy_Pic.get((j + index1 + 1) * X_number - 1)).getX() - HxC) > j || Math.abs((copy_Pic.get((j + index1 + 1) * X_number - 1).getY() - HyC)) > j))
                             {
                                 return false;
                             }
@@ -587,7 +627,7 @@ public class Algorithm
                         {
                             sheruns1.get(copy_User.size() - index1).if_Usable = false;
                         }
-                        if ( ! sheruns2.get(x_endBy * y_endBy - 1).if_Usable && ! sheruns2.get(return_Value_Picture.size() - 1 - index2).if_Usable)
+                        if (return_Value_Picture.size() <= x_endBy * y_endBy && ! sheruns2.get(x_endBy * y_endBy - 1).if_Usable && ! sheruns2.get(return_Value_Picture.size() - 1 - index2).if_Usable)
                         {
                             sheruns2.get(return_Value_Picture.size() - 1 - index2).if_Usable = true;
                         }
@@ -617,7 +657,7 @@ public class Algorithm
                             HxC = left_X_end + (x_endBy - 1) * (x_ONE + 10);
                             HyC = up_Y_end + j * (y_ONE + 50);
 
-                            if(copy_Pic.size() >= 1 && (return_Value_Picture.get((j + index2 + 1) * x_endBy - 1)).getX() != HxC || return_Value_Picture.get((j + index2 + 1) * x_endBy - 1).getY() != HyC)
+                            if(copy_Pic.size() >= 1 && (Math.abs((return_Value_Picture.get((j + index2 + 1) * x_endBy - 1)).getX() - HxC) > j || Math.abs(return_Value_Picture.get((j + index2 + 1) * x_endBy - 1).getY() - HyC) > j))
                             {
                                 return false;
                             }
@@ -671,11 +711,25 @@ public class Algorithm
                             moving_Y = moving_Y_cur;
                         }
 
-                        if(j < return_Value_Picture.size())
+                        if(j < return_Value_toAdd.size())
                         {
-                            Random r = new Random();
+                            if(return_Value_Picture.size() == j)
+                            {
+                                Random r = new Random();
+                                ImageView newImage = Algorithm.createJPanel((Context) classDOTthis, right_X_end, down_Y_end, new RelativeLayout.LayoutParams(x_ONE, y_ONE), Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255)), 1);
+                                TextView newText = Algorithm.createTextField((Context) classDOTthis, return_Value_toAdd.get(j).getName(), right_X_end, down_Y_end + y_ONE, new RelativeLayout.LayoutParams(x_ONE, 40), Color.WHITE, 1);
 
-                            view_MOVE(new View[]{return_Value_Picture.get(j), return_Value_Text.get(j)}, moving_X, moving_Y);
+                                view_MOVE(new View[]{newImage, newText}, moving_X, moving_Y);
+
+                                return_Value_Picture.add(newImage);
+                                return_Value_Text.add(newText);
+                                layout.addView(newImage);
+                                layout.addView(newText);
+                            }
+                            else
+                            {
+                                view_MOVE(new View[]{return_Value_Picture.get(j),return_Value_Text.get(j)}, moving_X, moving_Y);
+                            }
                         }
 
                         return_Value_Picture.remove(i);
@@ -691,7 +745,7 @@ public class Algorithm
                         {
                             sheruns1.get(0).if_Usable = true;
                         }
-                        else if ( ! sheruns1.get(X_number * Y_number - 1).if_Usable && ! sheruns1.get(copy_Pic.size() - 1 - index1).if_Usable)
+                        else if (copy_Pic.size() <= X_number * Y_number && ! sheruns1.get(X_number * Y_number - 1).if_Usable && ! sheruns1.get(copy_Pic.size() - 1 - index1).if_Usable)
                         {
                             sheruns1.get(copy_Pic.size() - 1 - index1).if_Usable = true;
                         }
@@ -701,6 +755,30 @@ public class Algorithm
                 return false;
             }
         });
+    }
+
+    public static class Component
+    {
+        public final String Input;
+        public final User[] users;
+        public final ArrayList<ImageView> pics;
+        public final ArrayList<TextView> texs;
+        public final ArrayList<ImageView> returnPic;
+        public final ArrayList<TextView> returnTex;
+        public final ArrayList<シルヴァホルン> sherun1;
+        public final ArrayList<シルヴァホルン> sherun2;
+
+        public Component(String Input, User[] users, ArrayList<ImageView> pics, ArrayList<TextView> texs, ArrayList<ImageView> returnPic, ArrayList<TextView> returnTex, ArrayList<シルヴァホルン> sherun1, ArrayList<シルヴァホルン> sherun2 )
+        {
+            this.Input = Input;
+            this.users = users;
+            this.pics = pics;
+            this.texs = texs;
+            this.returnPic = returnPic;
+            this.returnTex = returnTex;
+            this.sherun1 = sherun1;
+            this.sherun2 = sherun2;
+        }
     }
 
     /**

@@ -2,6 +2,7 @@ package com.example.admin.callardar;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
@@ -50,6 +51,9 @@ public class FriendList extends AppCompatActivity {
     private ArrayList<シルヴァホルン> sheruns1;
     private User arr[];
     private User sen;
+    private ArrayList<ImageView> pics;
+    private ArrayList<TextView> texts;
+    private float iem;
 
     private Thread loading;
     private Handler h;
@@ -62,122 +66,153 @@ public class FriendList extends AppCompatActivity {
 
         mainLayout.setOnTouchListener(new View.OnTouchListener()
         {
+            private float oldX;
+            private float[] iniXs;
+
             @Override
             public boolean onTouch(View v, MotionEvent event)
             {
-                float x =(v.getX() + event.getX());
+                float x = (v.getX() + event.getX());
                 float y = (v.getY() + event.getY());
 
-                boolean flag_oneturnout = true;
-
-                if(flag_oneturnout && addingprocess.getVisibility() == View.VISIBLE && ! she11.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
+                if(event.getAction() == MotionEvent.ACTION_DOWN)
                 {
-                    friends.setVisibility(View.VISIBLE);
-                    addingprocess.removeAllViews();
-                    addingprocess.setVisibility(View.INVISIBLE);
-                    addingprocess.addView(addingprocessEnter);
-                    addingprocess.addView(addingprocess_Sure);
-                    addingprocess.addView(addingprocessText);
+                    iniXs = new float[pics.size()];
+                    oldX = v.getX() + event.getX();
 
-                    trans.setVisibility(View.INVISIBLE);
-
-                    she1.if_Usable = true;
-                    she2.if_Usable = true;
-                    she11.if_Usable = false;
-                    flag_oneturnout = false;
-                }
-
-                if(flag_oneturnout && she1.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
-                {
-                    friends.setVisibility(View.INVISIBLE);
-                    addingprocess.setVisibility(View.VISIBLE);
-
-                    mainLayout.removeView(trans);
-                    mainLayout.addView(trans);
-                    trans.setVisibility(View.VISIBLE);
-
-                    mainLayout.removeView(addingprocess);
-                    mainLayout.addView(addingprocess);
-
-                    she1.if_Usable = false;
-                    she2.if_Usable = false;
-                    she11.if_Usable = true;
-                }
-
-                if(flag_oneturnout && deleto && ! she21.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
-                {
-                    trans.setVisibility(View.INVISIBLE);
-
-                    she1.if_Usable = true;
-                    she2.if_Usable = true;
-                    makesure_peopleshow.removeAllViews();
-                    makesure.setVisibility(View.INVISIBLE);
-
-                    deleto = false;
-                    flag_oneturnout = false;
-                }
-
-                if(flag_oneturnout && she2.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
-                {
-                    mainLayout.removeView(trans);
-                    mainLayout.addView(trans);
-                    trans.setVisibility(View.VISIBLE);
-
-                    mainLayout.removeView(friends);
-                    mainLayout.addView(friends);
-
-                    for(int i = 0 ; i < sheruns2.size() && i < MainActivity.user.getFriends().length; i += 1)
+                    for(int i = 0 ; i < pics.size() ; i += 1)
                     {
-                        sheruns2.get(i).if_Usable = true;
+                        iniXs[i] = pics.get(i).getX();
+                    }
+                }
+
+                float newX = v.getX() + event.getX();
+
+                for(int i = 0 ; newX != oldX && i < pics.size() ; i += 1)
+                {
+                    pics.get(i).setX(iniXs[i] - (newX - oldX));
+                    texts.get(i).setX(iniXs[i] - (newX - oldX));
+                }
+
+                if(event.getAction() == MotionEvent.ACTION_UP)
+                {
+                    iem += (oldX - newX);
+                }
+
+                if(event.getAction() == MotionEvent.ACTION_UP && newX == oldX)
+                {
+                    boolean flag_oneturnout = true;
+
+                    if(flag_oneturnout && addingprocess.getVisibility() == View.VISIBLE && ! she11.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
+                    {
+                        friends.setVisibility(View.VISIBLE);
+                        addingprocess.removeAllViews();
+                        addingprocess.setVisibility(View.INVISIBLE);
+                        addingprocess.addView(addingprocessEnter);
+                        addingprocess.addView(addingprocess_Sure);
+                        addingprocess.addView(addingprocessText);
+
+                        trans.setVisibility(View.INVISIBLE);
+
+                        sheruns1.clear();
+                        she1.if_Usable = true;
+                        she2.if_Usable = true;
+                        she11.if_Usable = false;
+                        flag_oneturnout = false;
                     }
 
-                    deleto = true;
-                    she1.if_Usable = false;
-                }
-
-                for(int i = 0 ; sheruns1 != null && i < sheruns1.size() ; i += 1)
-                {
-                    if(sheruns1.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
+                    if(flag_oneturnout && she1.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
                     {
-                        for(int j = 0 ; j < sheruns1.size() ; j += 1)
+                        friends.setVisibility(View.INVISIBLE);
+                        addingprocess.setVisibility(View.VISIBLE);
+
+                        mainLayout.removeView(trans);
+                        mainLayout.addView(trans);
+                        trans.setVisibility(View.VISIBLE);
+
+                        mainLayout.removeView(addingprocess);
+                        mainLayout.addView(addingprocess);
+
+                        she1.if_Usable = false;
+                        she2.if_Usable = false;
+                        she11.if_Usable = true;
+                    }
+
+                    if(flag_oneturnout && deleto && ! she21.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
+                    {
+                        trans.setVisibility(View.INVISIBLE);
+
+                        she1.if_Usable = true;
+                        she2.if_Usable = true;
+                        makesure_peopleshow.removeAllViews();
+                        makesure.setVisibility(View.INVISIBLE);
+
+                        deleto = false;
+                        flag_oneturnout = false;
+                    }
+
+                    if(flag_oneturnout && she2.if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
+                    {
+                        mainLayout.removeView(trans);
+                        mainLayout.addView(trans);
+                        trans.setVisibility(View.VISIBLE);
+
+                        mainLayout.removeView(friends);
+                        mainLayout.addView(friends);
+
+                        for(int i = 0 ; i < sheruns2.size() && i < MainActivity.user.getFriends().length; i += 1)
                         {
-                            sheruns1.get(j).if_Usable = false;
+                            sheruns2.get(i).if_Usable = true;
                         }
 
-                        sen = arr[i];
-                        int zone[] = new int[]{0, makesure_peopleshow.getWidth(), 0, makesure_peopleshow.getHeight()};
-                        Algorithm.create_ImageAndTexts(FriendList.this, makesure_peopleshow, zone, 1, 1, null, new User[]{sen}, new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);
-
-                        mainLayout.removeView(makesure);
-                        mainLayout.addView(makesure);
-                        makesure.setVisibility(View.VISIBLE);
-
-                        return false;
+                        deleto = true;
+                        she1.if_Usable = false;
                     }
-                }
 
-                for(int i = 0 ; deleto && i < sheruns2.size() ; i += 1)
-                {
-                    if(sheruns2.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
+                    for(int i = 0 ; sheruns1 != null && i < sheruns1.size() ; i += 1)
                     {
-                        for(int j = 0 ; j < sheruns2.size() ; j += 1)
+                        if(sheruns1.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX(),(int)v.getY() + (int)event.getY())))
                         {
-                            sheruns2.get(j).if_Usable = false;
+                            for(int j = 0 ; j < sheruns1.size() ; j += 1)
+                            {
+                                sheruns1.get(j).if_Usable = false;
+                            }
+
+                            sen = arr[i];
+                            int zone[] = new int[]{0, makesure_peopleshow.getWidth(), 0, makesure_peopleshow.getHeight()};
+                            Algorithm.create_ImageAndTexts(FriendList.this, makesure_peopleshow, zone, 1, 1, null, new User[]{sen}, new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);
+
+                            mainLayout.removeView(makesure);
+                            mainLayout.addView(makesure);
+                            makesure.setVisibility(View.VISIBLE);
+
+                            return false;
                         }
+                    }
 
-                        sen = MainActivity.user.getFriends()[i];
-                        int zone[] = new int[]{0, makesure_peopleshow.getWidth(), 0, makesure_peopleshow.getHeight()};
-                        Algorithm.create_ImageAndTexts(FriendList.this, makesure_peopleshow, zone, 1, 1, null, new User[]{sen}, new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);
+                    for(int i = 0 ; deleto && i < sheruns2.size() ; i += 1)
+                    {
+                        if(sheruns2.get(i).if_Exist(new Point((int)v.getX() + (int)event.getX() - (int)iem,(int)v.getY() + (int)event.getY())))
+                        {
+                            for(int j = 0 ; j < sheruns2.size() ; j += 1)
+                            {
+                                sheruns2.get(j).if_Usable = false;
+                            }
 
-                        mainLayout.removeView(makesure);
-                        mainLayout.addView(makesure);
-                        makesure.setVisibility(View.VISIBLE);
+                            sen = MainActivity.user.getFriends()[i];
+                            int zone[] = new int[]{0, makesure_peopleshow.getWidth(), 0, makesure_peopleshow.getHeight()};
+                            Algorithm.create_ImageAndTexts(FriendList.this, makesure_peopleshow, zone, 1, 1, null, new User[]{sen}, new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);
+
+                            mainLayout.removeView(makesure);
+                            mainLayout.addView(makesure);
+                            makesure.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
 
-                System.out.println(x + " " + y);
+          //      System.out.println(x + " " + y);
 
-                return false;
+                return true;
             }
         });
 
@@ -205,7 +240,7 @@ public class FriendList extends AppCompatActivity {
                 {
                     users = new ArrayList<User>();
 
-                    users.add(new User(255,enter + "1", ""));
+                    users.add(new User(255, enter + "1", ""));
                     users.add(new User(256, enter + "2", ""));
                 }
 
@@ -337,6 +372,9 @@ public class FriendList extends AppCompatActivity {
                 "769.6582 1588.7578 793.6853 1551.7852 827.73193 1498.7578 861.7456 1470.75 896.781 1427.6836 939.82544 1393.6992 976.87134 1372.6641 " +
                 "1022.91504 1335.6328 1066.9482 1313.6602 1075.946 1313.6602 1078.9453 1724.8711");
 
+        pics = new ArrayList<ImageView>();
+        texts = new ArrayList<TextView>();
+
         h = new LeakHandle();
 
         loading = new Thread(new Runnable()
@@ -385,8 +423,11 @@ public class FriendList extends AppCompatActivity {
                     she21 = new シルヴァホルン(new Point[]{new Point((int)friends.getX() + (int)container.getX(), (int)friends.getY() + (int)container.getY()), new Point((int)friends.getX() + (int)container.getX() + container.getWidth(), (int)friends.getY() + (int)container.getY()), new Point((int)friends.getX() + (int)container.getX() + container.getWidth(), (int)friends.getY() + (int)container.getY() + container.getHeight()), new Point((int)friends.getX() + (int)container.getX(), (int)friends.getY() + (int)container.getY() + container.getHeight())});
                     sheruns2 = new ArrayList<シルヴァホルン>();
 
-                    Algorithm.create_ImageAndTexts(FriendList.this, container, zone, 6, 10, null, MainActivity.user.getFriends(), new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);
-                    Algorithm.memberAddingProcess(FriendList.this, container, zone, zone, 6, 10, MainActivity.user.getFriends(), new ArrayList<User>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), sheruns2, new ArrayList<シルヴァホルン>(), 0, 0 , false);
+                    pics.clear();
+                    texts.clear();
+
+                    int x_Max = (int)(MainActivity.user.getFriends().length / (float)(container.getHeight() / 200)) + 1;
+                    Algorithm.create_ImageAndTexts_fillMode(FriendList.this, container, 150, 200, x_Max, null, MainActivity.user.getFriends(), pics, texts, sheruns2);
             }
 
             msg = null;
