@@ -123,16 +123,16 @@ public class CalendarController {
 	
 	//returns the calendarId of the most recently created calendar for a particular user
 	@GetMapping(path = "/recent/{userId}")
-	public @ResponseBody Calendar returnMostRecentCalendarByUserId(@PathVariable Integer userId)
+	public @ResponseBody List<Calendar> returnMostRecentCalendarByUserId(@PathVariable Integer userId)
 	{
-		Calendar c = new Calendar();
+		List <Calendar> c = (List<Calendar>) new Calendar();
 		Optional<Users> user = userRepository.findById(userId);
 		Set<Calendar> usersCalendars = user.get().getcalendars();
 		List<Calendar> list = new ArrayList<Calendar>(usersCalendars);
 		
 		if(!usersCalendars.isEmpty())
 		{
-			c =  list.get(list.size() - 1);
+			c =  (List<Calendar>) list.get(list.size() - 1);
 		}
 		
 		return c;
