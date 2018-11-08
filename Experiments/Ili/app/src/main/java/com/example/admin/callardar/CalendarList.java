@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.TimeoutException;
@@ -446,7 +447,7 @@ public class CalendarList extends AppCompatActivity {
                                 }
                             }
 
-                            //toDO goTo the callendar, initilize event sitting
+                            startActivity(new Intent(CalendarList.this, MainActivity_Calendar.class));
                         }
                     });
 
@@ -530,7 +531,7 @@ public class CalendarList extends AppCompatActivity {
 
                         for(int j = 0 ; j < events.length() ; j += 1)
                         {
-                            MainActivity.user.getCalender()[iem].eventCreator(id, "", "", "Default", "NULL", null, MainActivity.user.getCalender()[iem].getCurrentUser());
+                            //MainActivity.user.getCalender()[iem].eventCreator(id, "", "", "Default", "NULL", null, MainActivity.user.getCalender()[iem].getCurrentUser());
                         }
                     }
                 }
@@ -901,7 +902,6 @@ public class CalendarList extends AppCompatActivity {
                                 message.obj = new Algorithm.Component("", u, null, null,return_Pic, return_Text, null, null);
                                 handler.sendMessage(message);
 
-
                                 for(int i = 0 ; i < choosed.length ; i += 1)
                                 {
                                     if(input.length() > choosed[i].getName().length() || admins.contains(choosed[i]))
@@ -992,21 +992,137 @@ public class CalendarList extends AppCompatActivity {
         a.makeJsonObjReq(URL, message, C);
     }
 
-    private callenDar createCalendarNow(String name, User[] admins, User[] toAdd)
+    private void createCalendarNow(final String name, final User[] admin, final User[] toAdd)
     {
-        callenDar calenda = new callenDar(name, admins, toAdd);
+        if(MainActivity.user.getName().equals("test"))
+        {
+            MainActivity.user.addCalender(new callenDar(name, admin, toAdd));
+            Initialize();
+            startActivity(new Intent(CalendarList.this, MainActivity_Calendar.class));
+            return;
+        }
 
-        //goto callendar
-        //toDO
-        //this is a 仮
-        MainActivity.user.addCalender(calenda);
-        people = null;
-        this.admins = null;
-        Initialize();
-        startActivity(new Intent(CalendarList.this, MainActivity_Calendar.class));
-        mainLayout.setOnTouchListener(new WindowMovement());
+        MainActivity.TIME_CONTROL = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                String URL = "http://proj309-VC-03.misc.iastate.edu:8080/calendar/new/" + MainActivity.user.getID();
+                ArrayList<String> s = new ArrayList<String>();
+                JsonRequestActivity a = new JsonRequestActivity(CalendarList.this);
+                AppController C = new AppController(CalendarList.this);
 
-        return calenda;
+                JSONObject msg = new JSONObject();
+
+                try
+                {
+                    msg.put("calendarid",-1);
+                    msg.put("calendarname",tf.getText().toString());
+                    msg.put("events", null);
+                }
+                catch (JSONException e)
+                {
+
+                }
+
+                a.makeJsonObjReq__TIME(URL, msg, s, C, MainActivity.TIME_CONTROL);
+
+                try
+                {
+                    Thread.sleep(3000);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+
+                try
+                {
+                    //s.get(0);
+                }
+                catch (IndexOutOfBoundsException e)
+                {
+                    mainLayout.setOnTouchListener(new WindowMovement());
+                    System.out.println("Time out when creating new callendar");
+                    return;
+                }
+
+                URL = "http://proj309-VC-03.misc.iastate.edu:8080/calendar/recent/" + MainActivity.user.getID();
+                ArrayList<JSONArray> JArr = new ArrayList<JSONArray>();
+                a = new JsonRequestActivity(CalendarList.this);
+                C = new AppController(CalendarList.this);
+                a.makeJsonArryReq_object_TIME(URL, C, JArr, MainActivity.TIME_CONTROL);
+
+                try
+                {
+                    Thread.sleep(3000);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+
+                int id = 0;
+                callenDar calenda = null;
+
+                for(int i = 0 ; i < people.size() ; i += 1)
+                {
+                    URL = "http://proj309-VC-03.misc.iastate.edu:8080/calendar/" + id + "/" + toAdd[i].getID();
+                    s = new ArrayList<String>();
+                    a = new JsonRequestActivity(CalendarList.this);
+                    C = new AppController(CalendarList.this);
+
+                    try
+                    {
+                        msg.put("userid",toAdd[i].getID());
+                        msg.put("name",toAdd[i].getName());
+                        msg.put("email",toAdd[i].getEmail());
+                        msg.put("usertype", "ADMIN");
+                    }
+                    catch (JSONException e)
+                    {
+
+                    }
+
+                    a.makeJsonObjReq__TIME(URL, msg, s, C, MainActivity.TIME_CONTROL);
+
+                    try
+                    {
+                        Thread.sleep(3000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    try
+                    {
+                        s.get(0);
+                    }
+                    catch (IndexOutOfBoundsException e)
+                    {
+                        System.out.println("Time out when Adding people");
+                        mainLayout.setOnTouchListener(new WindowMovement());
+                        return;
+                    }
+                }
+
+                calenda = new callenDar(id, name, admin, toAdd);
+
+                MainActivity.user.addCalender(calenda);
+                people = null;
+                admins = null;
+
+                Message message = new Message();
+                message.what = 20;
+                handler.sendMessage(message);
+                System.out.println(id);
+                startActivity(new Intent(CalendarList.this, MainActivity_Calendar.class));
+                mainLayout.setOnTouchListener(new WindowMovement());
+            }
+        });
+
+        MainActivity.TIME_CONTROL.start();
     }
 
     private class OnClick implements View.OnClickListener {
@@ -1032,8 +1148,7 @@ public class CalendarList extends AppCompatActivity {
             screen_CalenderCreator.setVisibility(View.INVISIBLE);
             trans.setVisibility(View.INVISIBLE);
 
-            callenDar calender = createCalendarNow(name, user_Admin, user_ToAdd);
-            writeCalendar(calender);
+            createCalendarNow(name, user_Admin, user_ToAdd);
         }
     }
 
@@ -1122,6 +1237,10 @@ public class CalendarList extends AppCompatActivity {
 
                     int zoneDown[] = new int[]{0, friendList.getWidth(), friendList.getHeight() / 2 + 50, friendList.getHeight()};
                     Algorithm.create_ImageAndTexts(CalendarList.this, friendList, zoneDown, 4, 3, null, obj.users, obj.returnPic, obj.returnTex, 0);
+
+                    break;
+                case 20:
+                    Initialize();
 
                     break;
                 case 103:

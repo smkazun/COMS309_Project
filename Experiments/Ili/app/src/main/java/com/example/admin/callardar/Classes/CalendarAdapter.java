@@ -94,18 +94,27 @@ public class CalendarAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+
+        return position;
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+
+        return dateArray.get(position);
     }
 
     //表示月を取得
     public String getTitle(){
         SimpleDateFormat format = new SimpleDateFormat("yyyy.MM", Locale.US);
         return format.format(mDateManager.mCalendar.getTime());
+    }
+
+    //月日の表示
+    public String getMonthwithdate(){
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd", Locale.US);
+        return format.format(mDateManager.mCalendar.getTime());
+//        return format.format(mDateManager.mCalendar.getTime());
     }
 
     //翌月表示
@@ -121,4 +130,7 @@ public class CalendarAdapter extends BaseAdapter {
         dateArray = mDateManager.getDays();
         this.notifyDataSetChanged();
     }
+
+
+
 }

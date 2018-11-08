@@ -87,22 +87,26 @@ public class callenDar
         return arr;
     }
 
-    /**
-     *  create a event in current callendar
-     * @param startDate
-     *  should be format like 7 11 2018
-     *                        15 35
-     * @param endDate
-     * @param content
-     * @param toAdd
-     */
-    public void eventCreator(int id, String name, String startDate, String endDate, String content, User admin, User[] toAdd)
-        {
-        events.add(new Event(id, name, startDate, endDate, content, admin, toAdd));
-
-        //toDo
-        //draw the UI on real callendar
+    public void Event(String item_title, String item_desc, String item_date) {
+        events.add(new Event(item_title, item_desc, item_date));
     }
+
+//    /**
+//     *  create a event in current callendar
+//     * @param startDate
+//     *  should be format like 7 11 2018
+//     *                        15 35
+//     * @param endDate
+//     * @param content
+//     * @param toAdd
+//     */
+//    public void eventCreator(int id, String name, String startDate, String endDate, String content, User admin, User[] toAdd)
+//        {
+//        events.add(new Event(id, name, startDate, endDate, content, admin, toAdd));
+//
+//        //toDo
+//        //draw the UI on real callendar
+//    }
 
     public Event[] eventViewer()
     {

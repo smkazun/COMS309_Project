@@ -22,7 +22,13 @@
         <activity android:name=".MainActivity_Calendar" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".FriendList" />
-        <activity android:name=".AccountSetting"></activity>
+        <activity android:name=".AccountSetting" />
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".DayActivity" />
+        <activity android:name=".EventActivity" />
+        <activity android:name=".EventAdd" />
+        <activity android:name=".EventDetailActivity" />
+        <activity android:name=".Connection.EventDetailActivity"></activity>
     </application>
 
 </manifest>

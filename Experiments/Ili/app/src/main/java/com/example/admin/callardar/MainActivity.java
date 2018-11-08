@@ -126,9 +126,14 @@ public class MainActivity extends AppCompatActivity {
             {
                 if( ! names.get(i).equals(account))// || ! passs.get(i).equals(passWord))
                 {
+                    if(i + 1 == ids.size())
+                    {
+                        return false;
+                    }
+
                     continue;
                 }
-
+System.out.println(Integer.parseInt(ids.get(i)) + "+ " + names.get(i));
                 user = new User(Integer.parseInt(ids.get(i)), names.get(i), email.get(i));
                 break;
             }
