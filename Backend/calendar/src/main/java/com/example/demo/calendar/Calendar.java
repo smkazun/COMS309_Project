@@ -35,6 +35,7 @@ public class Calendar {
 
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer calendarid;
 
 	private String calendarname;

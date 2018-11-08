@@ -25,7 +25,7 @@ import org.springframework.core.style.ToStringCreator;
 public class Users {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer userid;
 	
 	private String name;

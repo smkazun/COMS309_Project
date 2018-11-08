@@ -46,7 +46,8 @@ public class CalendarController {
 	@RequestMapping(method = RequestMethod.POST, path = "/new/{Userid}")
 	public @ResponseBody String createNewCalendar(@RequestBody Calendar calendar, @PathVariable("Userid") int id) 
 	{
-		Users users = (Users)userRepository.findByuserid(id).get();
+		//calendarRepository.save(calendar);
+		Users users = userRepository.findByuserid(id).get();
 		Calendar c = calendar;
 		
 		users.getcalendars().add(c);
@@ -57,7 +58,7 @@ public class CalendarController {
 		return "New Calendar " + calendar.getcalendarname() + " saved";
 	}
 	
-	//add users to an existing calender
+	//add users to an existing calendar
 	@RequestMapping(method = RequestMethod.POST, path = "/{calendarid}/{Userid}")
 	public @ResponseBody String addUsersToExistingCalendar(@PathVariable ("calendarid") int cid, @PathVariable("Userid") int uid) 
 	{
@@ -122,7 +123,6 @@ public class CalendarController {
 	
 	//returns the calendarId of the most recently created calendar for a particular user
 	@GetMapping(path = "/recent/{userId}")
-
 	public @ResponseBody String returnMostRecentCalendarByUserId(@PathVariable Integer userId)
 	{
 		Calendar c = new Calendar();
