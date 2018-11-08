@@ -20,7 +20,7 @@ import java.util.List;
 public class MainActivity_Calendar extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
     private TextView titleText;
-    private Button prevButton, nextButton, Event_B,list;
+    private Button prevButton, nextButton, Event_B,Chat;
     private CalendarAdapter mCalendarAdapter;
     private GridView calendarGridView;
 
@@ -31,7 +31,7 @@ public class MainActivity_Calendar extends AppCompatActivity implements AdapterV
         setContentView(R.layout.activity_main_calendar);
 
         Event_B =  findViewById(R.id.Event);
-        list =  findViewById(R.id.list);
+        Chat =  findViewById(R.id.list);
         titleText = findViewById(R.id.titleText);
         prevButton = findViewById(R.id.prevButton);
         prevButton.setOnClickListener(new View.OnClickListener() {
@@ -54,10 +54,11 @@ public class MainActivity_Calendar extends AppCompatActivity implements AdapterV
         calendarGridView.setAdapter(mCalendarAdapter);
         titleText.setText(mCalendarAdapter.getTitle());
 
-        list.setOnClickListener(new View.OnClickListener() {
+        Chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Don't Touch me", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(MainActivity_Calendar.this, ChatActivity.class);
+                startActivity(i);
             }
         });
 
@@ -91,7 +92,7 @@ public class MainActivity_Calendar extends AppCompatActivity implements AdapterV
 //        Log.d("position", String.valueOf(position));
 //        Log.d("date", mCalendarAdapter.getItem(position).toString());
         Intent intent = new Intent(getApplicationContext(), DayActivity.class);
-        intent.putExtra("date", mCalendarAdapter.getItem(position).toString());
+        intent.putExtra("d", mCalendarAdapter.getItem(position).toString());
         startActivity(intent);
     }
 }

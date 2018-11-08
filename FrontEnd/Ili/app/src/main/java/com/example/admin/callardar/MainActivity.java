@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import java.util.Calendar;
+
 
 import com.example.admin.callardar.Classes.Algorithm;
 import com.example.admin.callardar.Classes.User;
@@ -216,9 +218,12 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0 ; i < jArr.get(0).length() ; i += 1)
             {
                 int id = jArr.get(0).getJSONObject(i).getInt("calendarid");
+                String name = jArr.get(0).getJSONObject(i).getString("calendarname");
 
                 user.addCalender(new callenDar(id, "Default"));
+                user.addCalender(new callenDar(id, name));
             }
+
         }
         catch (JSONException e)
         {

@@ -96,13 +96,20 @@ public class callenDar
      * @param content
      * @param toAdd
      */
-    public void eventCreator(String name, String startDate, String endDate, String content, User admin, User[] toAdd)
-        {
-//        events.add(new Event(name, startDate, endDate, content, admin, toAdd));
 
-        //toDo
-        //draw the UI on real callendar
+    public void Event(String item_title, String item_desc, String item_date) {
+        events.add(new Event(item_title, item_desc, item_date));
     }
+
+
+//    public void eventCreator(int id, String name, String startDate, String endDate, String content, User admin, User[] toAdd)
+//    {
+//        events.add(new Event(id, name, startDate, endDate, content, admin, toAdd));
+//
+//        eventItem.add(new Event(names[i], places[i], prices[i]));
+//        //toDo
+//        //draw the UI on real callendar
+//    }
 
     public Event[] eventViewer()
     {
@@ -113,8 +120,11 @@ public class callenDar
         return arr;
     }
 
-    public void deleteEvent(Event toDelete)
+    public void deleteEvent(int index)
     {
-        events.remove(toDelete);
+
+        events.remove(index);
     }
+
+
 }

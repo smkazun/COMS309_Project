@@ -9,14 +9,17 @@ public class DayActivity extends AppCompatActivity {
 
     private String currentDate;
     private TextView date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_day);
         date = findViewById(R.id.Date);
         Intent intent = getIntent();
-        currentDate = intent.getStringExtra("date");
+        currentDate = intent.getStringExtra("b");
         date.setText(currentDate);
+
+
     }
 }
 

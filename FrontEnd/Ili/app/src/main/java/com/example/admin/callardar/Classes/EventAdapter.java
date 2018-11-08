@@ -7,10 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.admin.callardar.DayActivity;
 import com.example.admin.callardar.EventDetailActivity;
 import com.example.admin.callardar.R;
 
@@ -52,13 +54,13 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.ViewHolder>
 
         // Set item views based on your views and data model
         TextView item_name = holder.item_name;
-        TextView item_place = holder.item_place;
-        TextView item_price = holder.item_price;
+        TextView item_time = holder.item_time;
+        TextView item_date = holder.item_date;
         ImageView item_img = holder.item_image;
 
         item_name.setText(contact.getItem_title());
-        item_place.setText(contact.getItem_desc());
-        item_price.setText(contact.getItem_date());
+        item_time.setText(contact.getItem_desc());
+        item_date.setText(contact.getItem_date());
         item_img.setImageResource(contact.getItem_image());
 
 //        holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +85,7 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.ViewHolder>
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         public ImageView item_image;
-        public TextView item_name,item_place,item_price;
+        public TextView item_name,item_time,item_date;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -95,17 +97,20 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.ViewHolder>
 
             item_image = itemView.findViewById(R.id.rv_item_img);
             item_name = itemView.findViewById(R.id.rv_Etitle);
-            item_place = itemView.findViewById(R.id.rv_Desc);
-            item_price = itemView.findViewById(R.id.rv_date);
+            item_time = itemView.findViewById(R.id.rv_Desc);
+            item_date = itemView.findViewById(R.id.rv_date);
             cardview = (CardView) itemView.findViewById(R.id.card_view);
+
+
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    Toast.makeText(mContext.getApplicationContext(),"Its "+ getAdapterPosition(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext.getApplicationContext(),"Its "+ position, Toast.LENGTH_LONG).show();
                     mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
+//                    mContext.startActivity(new Intent(mContext, EventDetailActivity.class).putExtra("e", position));
 
                 }
             });

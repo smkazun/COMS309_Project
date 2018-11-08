@@ -12,7 +12,6 @@ import android.view.View;
 
 import com.example.admin.callardar.Classes.Event;
 import com.example.admin.callardar.Classes.EventAdapter;
-import com.example.admin.callardar.Classes.EventAdd;
 
 import java.util.ArrayList;
 
@@ -24,7 +23,7 @@ public class EventActivity extends AppCompatActivity {
 
     CardView card_view;
 
-    FloatingActionButton fab;
+    FloatingActionButton fab,fab1;
 
 
     @Override
@@ -34,25 +33,30 @@ public class EventActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv);
         card_view = (CardView) findViewById(R.id.card_view);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab1 = (FloatingActionButton) findViewById(R.id.fab1);
+        eventItem = new ArrayList<Event>();
 
+        for(int i = 0 ; i < MainActivity.user.getCalender()[CalendarList.iem].eventViewer().length ; i += 1)
+        {
 
-
-
-        //イベント制作テスト
-        String[] names = {"Event_Title", "Event_Title", "Event_Title", "Event_Title","Event_Title", "Event_Title", "Event_Title", "Event_Title"};
-        String[] places = {"Description", "Description", "Description", "Description","Description", "Description", "Description", "Description"};
-        String[] prices = {"11/5", "11/10", "11/23", "11/25","12/5", "12/10", "12/23", "12/25"};
-        //int[] images = {R.drawable.//, R.drawable.//, R.drawable.//, R.drawable.//};
-
-        eventItem = new ArrayList<>();
-
-        for (int i = 0; i < names.length; i++) {
-
-            eventItem.add(new Event(names[i], places[i], prices[i]));
-
+            eventItem.add(MainActivity.user.getCalender()[CalendarList.iem].eventViewer()[i]);
         }
 
-        //
+
+//        //イベント制作テスト
+//        String[] names = {"Event_Title", "Event_Title", "Event_Title", "Event_Title","Event_Title", "Event_Title", "Event_Title", "Event_Title"};
+//        String[] places = {"Description", "Description", "Description", "Description","Description", "Description", "Description", "Description"};
+//        String[] prices = {"11/5", "11/10", "11/23", "11/25","12/5", "12/10", "12/23", "12/25"};
+//        //int[] images = {R.drawable.//, R.drawable.//, R.drawable.//, R.drawable.//};
+//
+//        eventItem = new ArrayList<>();
+//
+//        for (int i = 0; i < names.length; i++) {
+//
+//            eventItem.add(new Event(names[i], places[i], prices[i]));
+//
+//        }
+
 
 
 
@@ -71,17 +75,19 @@ public class EventActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //                Toast.makeText(getApplicationContext(),"Don't Touch me", Toast.LENGTH_LONG).show();
-                Intent i = new Intent(EventActivity.this, EventAdd.class);
+                Intent i = new Intent(EventActivity.this, MainActivity_Calendar.class);
                 startActivity(i);
             }
         });
 
-//        fab1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(EventActivity.this, EventAdd.class);
+                startActivity(i);
 //                Toast.makeText(getApplicationContext(),"Don't Touch me", Toast.LENGTH_LONG).show();
-//            }
-//        });
+            }
+        });
 
 //                Toast.makeText(getApplicationContext(),"Don't Touch me", Toast.LENGTH_LONG).show();
 
