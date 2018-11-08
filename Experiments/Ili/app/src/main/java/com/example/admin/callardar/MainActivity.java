@@ -101,10 +101,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/all";
-        ArrayList<String> s = new ArrayList<String>();
+        ArrayList<JSONArray> JArr = new ArrayList<JSONArray>();
+
         JsonRequestActivity a = new JsonRequestActivity(MainActivity.this);
         AppController C = new AppController(MainActivity.this);
-        a.makeJsonArryReq_TIME(URL, C, s, TIME_CONTROL);
+        a.makeJsonArryReq_object_TIME(URL, C, JArr, TIME_CONTROL);
 
         try
         {
@@ -117,28 +118,27 @@ public class MainActivity extends AppCompatActivity {
 
         try
         {
-            ArrayList<String> ids = Algorithm.ifExistWithAdd_SpecialMode_INT("userid", s.get(0));
-            ArrayList<String> names = Algorithm.ifExistWithAdd("name", s.get(0));
-            ArrayList<String> email = Algorithm.ifExistWithAdd("email", s.get(0));
-            ArrayList<String> passs = Algorithm.ifExistWithAdd("passWord", s.get(0));
-
-            for(int i = 0 ; i < ids.size() ; i += 1)
+            for(int i = 0 ; i < JArr.get(0).length() ; i += 1)
             {
-                if( ! names.get(i).equals(account))// || ! passs.get(i).equals(passWord))
+                int id = JArr.get(0).getJSONObject(i).getInt("userid");
+                String name = JArr.get(0).getJSONObject(i).getString("name");
+                String email = JArr.get(0).getJSONObject(i).getString("email");
+
+                if( ! name.equals(account))// || ! passs.get(i).equals(passWord))
                 {
-                    if(i + 1 == ids.size())
+                    if(i + 1 == JArr.get(0).length())
                     {
                         return false;
                     }
 
                     continue;
                 }
-System.out.println(Integer.parseInt(ids.get(i)) + "+ " + names.get(i));
-                user = new User(Integer.parseInt(ids.get(i)), names.get(i), email.get(i));
+System.out.println(id + "+ " + name);
+                user = new User(id, name, email);
                 break;
             }
         }
-        catch (IndexOutOfBoundsException e)
+        catch (IndexOutOfBoundsException | JSONException e)
         {
             System.out.println("Time Out in log in");
             return false;
@@ -146,10 +146,10 @@ System.out.println(Integer.parseInt(ids.get(i)) + "+ " + names.get(i));
 
         //toDO friend list
         URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/all";
-        s = new ArrayList<String>();
+        JArr = new ArrayList<JSONArray>();
         a = new JsonRequestActivity(MainActivity.this);
         C = new AppController(MainActivity.this);
-        a.makeJsonArryReq_TIME(URL, C, s, TIME_CONTROL);
+        a.makeJsonArryReq_object_TIME(URL, C, JArr, TIME_CONTROL);
 
         try
         {
@@ -160,11 +160,9 @@ System.out.println(Integer.parseInt(ids.get(i)) + "+ " + names.get(i));
 
         }
 
-        String s0 = "";
-
         try
         {
-            s0 = s.get(0);
+            JArr.get(0);
         }
         catch (IndexOutOfBoundsException e)
         {
@@ -172,15 +170,22 @@ System.out.println(Integer.parseInt(ids.get(i)) + "+ " + names.get(i));
             return false;
         }
 
-        s = Algorithm.ifExistWithAdd("name", s0);
-        String[] arr = new String[s.size()];
-        User[] toAdd = new User[s.size()];
+        User[] toAdd = new User[JArr.get(0).length()];
 
-        arr = s.toArray(arr);
-
-        for(int i = 0 ; i < arr.length ; i += 1)
+        try
         {
-            toAdd[i] = new User(i, arr[i], "Default");
+            for(int i = 0 ; i < toAdd.length ; i += 1)
+            {
+                int id = JArr.get(0).getJSONObject(i).getInt("userid");
+                String name = JArr.get(0).getJSONObject(i).getString("name");
+                String email = JArr.get(0).getJSONObject(i).getString("email");
+
+                toAdd[i] = new User(id, name, email);
+            }
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
         }
 
         user.addFriends(toAdd);
@@ -201,15 +206,9 @@ System.out.println(Integer.parseInt(ids.get(i)) + "+ " + names.get(i));
 
         }
 
-        s0 = "";
-
         try
         {
-              System.out.println(jArr.get(0).toString());
-//            System.out.println(jArr.get(0).get(0).toString());
-//            System.out.println(jArr.get(0).getJSONObject(0).getJSONArray("users").toString());
-//            System.out.println(jArr.get(0).getJSONObject(0).getJSONArray("users").getJSONObject(0).getInt("userid"));
-
+             jArr.get(0);
         }
         catch (IndexOutOfBoundsException e)
         {
@@ -222,9 +221,34 @@ System.out.println(Integer.parseInt(ids.get(i)) + "+ " + names.get(i));
             for(int i = 0 ; i < jArr.get(0).length() ; i += 1)
             {
                 int id = jArr.get(0).getJSONObject(i).getInt("calendarid");
-                String name = jArr.get(0).getJSONObject(i).getString("calendarname");
 
-                user.addCalender(new callenDar(id, name));
+                URL = "http://proj309-vc-03.misc.iastate.edu:8080/calendar/" + id;
+                ArrayList<JSONObject> JObj = new ArrayList<JSONObject>();
+                a = new JsonRequestActivity(MainActivity.this);
+                C = new AppController(MainActivity.this);
+
+                a.makeJsonObjReq_GET_TIME(URL, new JSONObject(), JObj, C, TIME_CONTROL);
+
+                try
+                {
+                    Thread.sleep(2000);
+                }
+                catch (InterruptedException e)
+                {
+
+                }
+
+                try
+                {
+                    String name = JObj.get(0).getString("calendarname");
+                    user.addCalender(new callenDar(id, name));
+                }
+                catch (IndexOutOfBoundsException e)
+                {
+                    user.addCalender(new callenDar(id, "DEFAULT"));
+                    System.out.println("Time Out in adding calendar --> process getting name");
+                    continue;
+                }
             }
         }
         catch (JSONException e)

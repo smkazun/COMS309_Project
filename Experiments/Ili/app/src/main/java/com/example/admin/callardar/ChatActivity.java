@@ -134,7 +134,7 @@ public class ChatActivity extends AppCompatActivity {
                 }
                 catch (Exception e)
                 {
-                    Log.d("ExceptionSendMessage:", e.getMessage().toString());
+                    //Log.d("ExceptionSendMessage:", e.getMessage().toString());
                 }
             }
         });

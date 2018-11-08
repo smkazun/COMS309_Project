@@ -115,8 +115,12 @@ public class callenDar
 
     public Event[] eventViewer()
     {
-        Event[] arr = new Event[events.size()];
+        if(events == null)
+        {
+            return new Event[]{};
+        }
 
+        Event[] arr = new Event[events.size()];
         arr = events.toArray(arr);
 
         return arr;

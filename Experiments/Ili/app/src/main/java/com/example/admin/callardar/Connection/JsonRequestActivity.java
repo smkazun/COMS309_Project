@@ -83,6 +83,35 @@ public class JsonRequestActivity{
         }).start();
     }
 
+    public void makeJsonObjReq_GET_TIME(String URL, JSONObject A, final ArrayList<JSONObject> JObj, AppController C, final Thread thread)
+    {
+//        pDialog.show();
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET,
+                URL, A,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        System.out.println("正确！");
+                        JObj.add(response);
+                        thread.interrupt();
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                System.out.println("错误！");
+                thread.interrupt();
+            };
+        });
+
+        C.addToRequestQueue(jsonObjReq,
+                tag_json_obj);
+    }
+
     /**
      *
      *  SEND message to the server

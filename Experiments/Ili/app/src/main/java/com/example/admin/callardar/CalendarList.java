@@ -98,13 +98,13 @@ public class CalendarList extends AppCompatActivity {
             Jpanel0 = Algorithm.createJPanel(CalendarList.this, 310, length, new RelativeLayout.LayoutParams(100, 100), Color.GREEN, (float)0.5);
 
             mainLayout.addView(Jpanel0);
-            she_ca.add(new シルヴァホルン(new Point[]{new Point(310, length), new Point(410, length), new Point(410, length + 100), new Point(310, length + 100)}));
-            she_ca_going.add(new シルヴァホルン(new Point[]{new Point(0,length), new Point(300,length),new Point(300,length + 100),new Point(0,length + 100)}));
+            she_ca.add(new シルヴァホルン(new Point[]{new Point(310, length), new Point(410, length), new Point(410, length + 110), new Point(310, length + 110)}));
+            she_ca_going.add(new シルヴァホルン(new Point[]{new Point(0,length), new Point(300,length),new Point(300,length + 110),new Point(0,length + 110)}));
 
             Jpanel0.setOnTouchListener(new CalendarListener());
             tf.setOnTouchListener(new gotoCalendarListener());
 
-            length += 100;
+            length += 110;
         }
 
 //        if(Jpanel0 != null)
@@ -520,6 +520,11 @@ public class CalendarList extends AppCompatActivity {
                 {
                     e.printStackTrace();
                 }
+
+                User[] arr = new User[users.size()];
+                arr = users.toArray(arr);
+
+                MainActivity.user.set_CurCalender(iem, new callenDar(calendarID, MainActivity.user.getCalender()[iem].toString(), arr, arr));
 
                 URL = "http://proj309-vc-03.misc.iastate.edu:8080/calendar/events/" + calendarID;
                 JArr = new ArrayList<JSONArray>();
@@ -1069,7 +1074,46 @@ public class CalendarList extends AppCompatActivity {
                     return;
                 }
 
-                URL = "http://proj309-VC-03.misc.iastate.edu:8080/calendar/recent/" + MainActivity.user.getID();
+//                URL = "http://proj309-VC-03.misc.iastate.edu:8080/calendar/recent/" + MainActivity.user.getID();
+//                ArrayList<JSONArray> JArr = new ArrayList<JSONArray>();
+//                a = new JsonRequestActivity(CalendarList.this);
+//                C = new AppController(CalendarList.this);
+//                a.makeJsonArryReq_object_TIME(URL, C, JArr, MainActivity.TIME_CONTROL);
+//
+//                try
+//                {
+//                    Thread.sleep(3000);
+//                }
+//                catch (InterruptedException e)
+//                {
+//                    e.printStackTrace();
+//                }
+//
+//                try
+//                {
+//                    JArr.get(0);
+//                }
+//                catch (IndexOutOfBoundsException e)
+//                {
+//                    System.out.println("Time out when Getting calendar ID of the calendar just created ");
+//                    mainLayout.setOnTouchListener(new WindowMovement());
+//                    return;
+//                }
+//
+//                int id = 0;
+//
+//                try
+//                {
+//                    id = JArr.get(0).getJSONObject(0).getInt("calendarid");
+//                }
+//                catch (JSONException e)
+//                {
+//                    e.printStackTrace();
+//                }
+//
+//                callenDar calenda = null;
+
+                URL = "http://proj309-vc-03.misc.iastate.edu:8080/calendar/all";
                 ArrayList<JSONArray> JArr = new ArrayList<JSONArray>();
                 a = new JsonRequestActivity(CalendarList.this);
                 C = new AppController(CalendarList.this);
@@ -1084,7 +1128,28 @@ public class CalendarList extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                try
+                {
+                    JArr.get(0);
+                }
+                catch (IndexOutOfBoundsException e)
+                {
+                    System.out.println("Time out when Getting calendar ID of the calendar just created ");
+                    mainLayout.setOnTouchListener(new WindowMovement());
+                    return;
+                }
+
                 int id = 0;
+
+                try
+                {
+                    id = JArr.get(0).getJSONObject(JArr.get(0).length() - 1).getInt("calendarid");
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+
                 callenDar calenda = null;
 
                 for(int i = 0 ; i < people.size() ; i += 1)
@@ -1119,7 +1184,7 @@ public class CalendarList extends AppCompatActivity {
 
                     try
                     {
-                        s.get(0);
+                        //s.get(0);
                     }
                     catch (IndexOutOfBoundsException e)
                     {
@@ -1141,6 +1206,7 @@ public class CalendarList extends AppCompatActivity {
                 System.out.println(id);
                 startActivity(new Intent(CalendarList.this, MainActivity_Calendar.class));
                 mainLayout.setOnTouchListener(new WindowMovement());
+                iem = MainActivity.user.getCalender().length - 1;
             }
         });
 
@@ -1160,6 +1226,7 @@ public class CalendarList extends AppCompatActivity {
 
             String name = tf.getText().toString();
 
+            people.add(MainActivity.user);
             User[] user_ToAdd = new User[people.size()];
             user_ToAdd = people.toArray(user_ToAdd);
 
