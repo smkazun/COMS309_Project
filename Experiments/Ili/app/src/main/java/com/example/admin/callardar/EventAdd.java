@@ -8,8 +8,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.admin.callardar.Connection.AppController;
+import com.example.admin.callardar.Connection.JsonRequestActivity;
 import com.example.admin.callardar.MainActivity;
 import com.example.admin.callardar.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class EventAdd extends AppCompatActivity {
     private Button select;
@@ -28,6 +35,24 @@ public class EventAdd extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 MainActivity.user.getCalender()[CalendarList.iem].Event(title.getText().toString(), date.getText().toString(), time.getText().toString());
+
+                String URL = "http://proj309-VC-03.misc.iastate.edu:8080/event/new/" + MainActivity.user.getCalender()[CalendarList.iem].getId();
+                ArrayList<String> s = new ArrayList<String>();
+                JsonRequestActivity a = new JsonRequestActivity(EventAdd.this);
+                AppController C = new AppController(EventAdd.this);
+
+                JSONObject msg = new JSONObject();
+
+                try
+                {
+                    msg.put("name", title.getText().toString());
+                }
+                catch (JSONException e)
+                {
+
+                }
+
+                a.makeJsonObjReq(URL, msg, C);
 
                 Intent i = new Intent(EventAdd.this, EventActivity.class);
                 startActivity(i);

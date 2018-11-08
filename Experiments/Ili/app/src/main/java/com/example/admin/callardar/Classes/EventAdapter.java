@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
 
-
+    public static int position;
     private Context mContext;
     private ArrayList<Event> mList;
     private CardView cardview;
@@ -107,7 +107,7 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.ViewHolder>
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = getAdapterPosition();
+                    position = getAdapterPosition();
                     Toast.makeText(mContext.getApplicationContext(),"Its "+ position, Toast.LENGTH_LONG).show();
                     mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
 //                    mContext.startActivity(new Intent(mContext, EventDetailActivity.class).putExtra("e", position));
