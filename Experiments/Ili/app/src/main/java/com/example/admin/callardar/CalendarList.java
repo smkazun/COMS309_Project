@@ -20,6 +20,7 @@ import com.example.admin.callardar.Classes.Algorithm;
 import com.example.admin.callardar.Classes.Event;
 import com.example.admin.callardar.Classes.Point;
 import com.example.admin.callardar.Classes.User;
+import com.example.admin.callardar.Classes.UserType;
 import com.example.admin.callardar.Classes.callenDar;
 import com.example.admin.callardar.Classes.シルヴァホルン;
 import com.example.admin.callardar.Connection.AppController;
@@ -470,11 +471,11 @@ public class CalendarList extends AppCompatActivity {
             @Override
             public void run()
             {
-                String URL = "";
-                ArrayList<String> s = new ArrayList<String>();
+                String URL = "http://proj309-vc-03.misc.iastate.edu:8080/calendar/users/" + calendarID;
+                ArrayList<JSONArray> JArr = new ArrayList<JSONArray>();
                 JsonRequestActivity a = new JsonRequestActivity(CalendarList.this);
                 AppController C = new AppController(CalendarList.this);
-                a.makeJsonArryReq_TIME(URL, C, s, MainActivity.TIME_CONTROL);
+                a.makeJsonArryReq_object_TIME(URL, C, JArr, MainActivity.TIME_CONTROL);
 
                 try
                 {
@@ -487,22 +488,44 @@ public class CalendarList extends AppCompatActivity {
 
                 try
                 {
-                    s.get(0);
+                    JArr.get(0);
                 }
                 catch (IndexOutOfBoundsException e)
                 {
                     System.out.println("TimeOut when getting data of Calendar --> " + calendarID);
                 }
 
-                //toDO
-                // MainActivity.user.set_CurCalender(iem,
+                ArrayList<User> users = new ArrayList<User>();
 
+                try
+                {
+                    for(int i = 0 ; i < JArr.get(0).length() ; i += 1)
+                    {
+                        int id = JArr.get(0).getJSONObject(i).getInt("userid");
+                        String name = JArr.get(0).getJSONObject(i).getString("name");
+                        String email = JArr.get(0).getJSONObject(i).getString("email");
+                        String usertype = JArr.get(0).getJSONObject(i).getString("usertype");
 
-                URL = "";
-                ArrayList<JSONArray> jArr = new ArrayList<JSONArray>();
+                        if(usertype.equals("admin"))
+                        {
+                            users.add(new User(id, name, email, UserType.Admin));
+                        }
+                        else
+                        {
+                            users.add(new User(id, name, email, UserType.normal));
+                        }
+                    }
+                }
+                catch(JSONException e)
+                {
+                    e.printStackTrace();
+                }
+
+                URL = "http://proj309-vc-03.misc.iastate.edu:8080/calendar/events/" + calendarID;
+                JArr = new ArrayList<JSONArray>();
                 a = new JsonRequestActivity(CalendarList.this);
                 C = new AppController(CalendarList.this);
-                a.makeJsonArryReq_object_TIME(URL, C, jArr, MainActivity.TIME_CONTROL);
+                a.makeJsonArryReq_object_TIME(URL, C, JArr, MainActivity.TIME_CONTROL);
 
                 try
                 {
@@ -515,7 +538,7 @@ public class CalendarList extends AppCompatActivity {
 
                 try
                 {
-                    s.get(0);
+                    JArr.get(0);
                 }
                 catch (IndexOutOfBoundsException e)
                 {
@@ -524,15 +547,14 @@ public class CalendarList extends AppCompatActivity {
 
                 try
                 {
-                    for(int i = 0 ; i < jArr.get(0).length() ; i += 1)
+                    for(int i = 0 ; i < JArr.get(0).length() ; i += 1)
                     {
-                        int id = jArr.get(0).getJSONObject(i).getInt("eventid");
-                        JSONArray events = jArr.get(0).getJSONObject(i).getJSONArray("events");
+                        int id = JArr.get(0).getJSONObject(i).getInt("eventid");
+                        String name = JArr.get(0).getJSONObject(i).getString("eventname");
+                        String date = JArr.get(0).getJSONObject(i).getString("date");
+                        String time = JArr.get(0).getJSONObject(i).getString("time");
 
-                        for(int j = 0 ; j < events.length() ; j += 1)
-                        {
-                            //MainActivity.user.getCalender()[iem].eventCreator(id, "", "", "Default", "NULL", null, MainActivity.user.getCalender()[iem].getCurrentUser());
-                        }
+                        MainActivity.user.getCalender()[iem].Event(id, "", "", name);
                     }
                 }
                 catch (JSONException e)

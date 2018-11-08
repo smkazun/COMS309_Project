@@ -7,11 +7,23 @@ import java.util.Scanner;
 public class Event {
     private String item_title,item_desc,item_date, item_time;
     private int item_image;
+    public final int id;
 
     public Event(String item_title, String item_desc, String item_date) {
         this.item_title = item_title;
         this.item_desc = item_desc;
         this.item_date = item_date;
+
+        id = -1;
+    }
+
+    public Event(int id, String item_title, String item_desc, String item_date)
+    {
+        this.item_title = item_title;
+        this.item_desc = item_desc;
+        this.item_date = item_date;
+
+        this.id = id;
     }
 
     public String getItem_title() {

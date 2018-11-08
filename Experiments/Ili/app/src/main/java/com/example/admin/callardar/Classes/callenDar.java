@@ -91,6 +91,11 @@ public class callenDar
         events.add(new Event(item_title, item_desc, item_date));
     }
 
+    public void Event(int id, String item_title, String item_desc, String item_date)
+    {
+        events.add(new Event(id, item_title, item_desc, item_date));
+    }
+
 //    /**
 //     *  create a event in current callendar
 //     * @param startDate
