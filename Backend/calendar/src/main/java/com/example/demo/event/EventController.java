@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.event.Events;
+import com.example.demo.user.Users;
+import com.example.demo.calendar.Calendar;
+import com.example.demo.calendar.CalendarRepository;
 import com.example.demo.event.EventRepository;
 
 
@@ -26,15 +29,25 @@ public class EventController {
 	
 	@Autowired
 	private EventRepository eventRepository;
+	@Autowired
+	private CalendarRepository calendarRepository;
 	
 	private final Logger logger = LoggerFactory.getLogger(EventController.class);
 	
 	//save new event
-	@RequestMapping(method = RequestMethod.POST, path = "/new")
-	public @ResponseBody String saveEvent(@RequestBody Events event) {
-		eventRepository.save(event);
+	@RequestMapping(method = RequestMethod.POST, path = "/new/{Calendarid}")
+	public @ResponseBody String saveEvent(@RequestBody Events event, @PathVariable("Calendarid") int id) 
+	{
+		Calendar c = calendarRepository.findByCalendarid(id).get();
+		Events e = eventRepository.findById(id).get();
+		
+		c.getEvents().add(e);
+		
+		eventRepository.save(e);
 		return "New event saved";
 	}
+	
+	
 	/*
 	//different save event implementation
 	@RequestMapping(method = RequestMethod.POST, path = "/new2") //fix mapping TODO

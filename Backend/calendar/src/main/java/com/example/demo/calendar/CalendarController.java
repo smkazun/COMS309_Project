@@ -102,9 +102,12 @@ public class CalendarController {
 		
 	//get all users in a calendar
 	@RequestMapping(method = RequestMethod.GET, path = "/users/{calendarid}")
-	public List <Users> getAllusers(@PathVariable Integer calendarid){
+	@ResponseBody
+	public Set <Users> getAllusers(@PathVariable Integer calendarid){
 	
 	Optional<Calendar> cal = calendarRepository.findByCalendarid(calendarid);
+	
+	Set<Users> a = calendarRepository.findByCalendarid(calendarid).get().getusers();
 		
 	List<Users> result = new ArrayList<Users>();
 	
@@ -114,11 +117,12 @@ public class CalendarController {
 			{
 				result.add(u);			}
 		}
-		return result;
+		return a;
 	}
 	
 	//returns the calendarId of the most recently created calendar for a particular user
 	@GetMapping(path = "/recent/{userId}")
+
 	public @ResponseBody String returnMostRecentCalendarByUserId(@PathVariable Integer userId)
 	{
 		Calendar c = new Calendar();

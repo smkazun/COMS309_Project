@@ -20,6 +20,10 @@ public class Events {
 	
 	private Integer calendarid;
 	
+	private String eventname;
+	
+	private String date;
+	
 	private String time;
 	
 	public Integer geteventid() {
@@ -30,8 +34,24 @@ public class Events {
 		return calendarid;
 	}
 	
+	public String geteventname() {
+		return eventname;
+	}
+	
+	public String getdate() {
+		return date;
+	}
+	
 	public String gettime() {
 		return time;
+	}
+	
+	public void seteventname(String name) {
+		this.eventname = name;
+	}
+	
+	public void setdate(String date) {
+		this.date = date;
 	}
 	
 	public void settime (String Time) {
