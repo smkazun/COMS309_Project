@@ -16,6 +16,7 @@ import org.springframework.core.style.ToStringCreator;
 public class Events {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer eventid;
 	
 	private Integer calendarid;
