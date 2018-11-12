@@ -39,11 +39,13 @@ public class EventController {
 	public @ResponseBody String saveEvent(@RequestBody Events event, @PathVariable("Calendarid") int id) 
 	{
 		Calendar c = calendarRepository.findByCalendarid(id).get();
-		Events e = eventRepository.findById(id).get();
+		Events e = event;
 		
 		c.getEvents().add(e);
 		
+		calendarRepository.save(c);
 		eventRepository.save(e);
+		
 		return "New event saved";
 	}
 	
