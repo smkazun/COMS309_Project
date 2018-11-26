@@ -42,13 +42,13 @@ public class CalendarList extends AppCompatActivity {
     private ConstraintLayout mainLayout;
     private ConstraintLayout container;
     private ConstraintLayout friendList;
-    private static ImageView trans;
+    private ImageView trans;
     private Button b;
     private EditText sorting;
 
     // pre View
     private ConstraintLayout calendar_PreView;
-    private static ConstraintLayout people_PreView;
+    private ConstraintLayout people_PreView;
     private ImageView people_show_pre_leftArrow;
     private ImageView people_show_pre_rightArrow;
     private int curIndex;
@@ -79,6 +79,11 @@ public class CalendarList extends AppCompatActivity {
     private ArrayList<シルヴァホルン> she_ca;
     private ArrayList<シルヴァホルン> she_ca_going;
 
+    /**
+     *
+     * refresh the screen whenever new calendar is added
+     *
+     */
     @SuppressLint("ClickableViewAccessibility")
     private void Initialize()
     {
@@ -107,10 +112,6 @@ public class CalendarList extends AppCompatActivity {
             length += 110;
         }
 
-//        if(Jpanel0 != null)
-//        {
-//        }
-
         final TextView Jpanel = Algorithm.createTextField(CalendarList.this,"Create new calendar", 0, length , new RelativeLayout.LayoutParams(300, 100), Color.rgb(150,100,15), (float)0.9);
 
         she1 = new シルヴァホルン(new Point[]{new Point(0,length), new Point(300,length),new Point(300,length + 100),new Point(0,length + 100)});
@@ -138,6 +139,11 @@ public class CalendarList extends AppCompatActivity {
         mainLayout.addView(Jpanel);
     }
 
+    /**
+     *
+     * Initialize calendar preview
+     *
+     */
     @SuppressLint("ClickableViewAccessibility")
     private void callendarShow_preView()
     {
@@ -187,6 +193,12 @@ public class CalendarList extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     *
+     * Initialize setting
+     *
+     */
 
     @SuppressLint("ClickableViewAccessibility")
     private void settingSolution()
@@ -286,6 +298,12 @@ public class CalendarList extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     * Initialize open-setting
+     *
+     */
+
     private class WindowMovement implements View.OnTouchListener
     {
         @Override
@@ -354,6 +372,12 @@ public class CalendarList extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * The lisitener for calendar preview clicker
+     *
+     */
+
     private class CalendarListener implements View.OnTouchListener
     {
         @Override
@@ -418,6 +442,12 @@ public class CalendarList extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     *  The listener for gotoCalendar
+     *
+     */
+
     private class gotoCalendarListener implements View.OnTouchListener
     {
         @Override
@@ -462,6 +492,15 @@ public class CalendarList extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * The method for getting calendar from Database
+     *
+     * 1. get the user from the calendar that clicked
+     * 2. get the event from the calendar that clicked
+     *
+     * @param thread
+     */
     private void getMessage_WithCalendar(final Thread thread)
     {
         final int calendarID = MainActivity.user.getCalender()[iem].getId();
@@ -495,7 +534,9 @@ public class CalendarList extends AppCompatActivity {
                     System.out.println("TimeOut when getting data of Calendar --> " + calendarID);
                 }
 
+                ArrayList<User> admins = new ArrayList<User>();
                 ArrayList<User> users = new ArrayList<User>();
+                User holder = null;
 
                 try
                 {
@@ -508,11 +549,18 @@ public class CalendarList extends AppCompatActivity {
 
                         if(usertype.equals("admin"))
                         {
-                            users.add(new User(id, name, email, UserType.Admin));
+                            User cur = new User(id, name, email, UserType.Admin);
+                            admins.add(cur);
+                            users.add(cur);
+                        }
+                        else if(usertype.equals("Holder"))
+                        {
+                            holder = new User(id, name, email, UserType.Holder);
+                            users.add(holder);
                         }
                         else
                         {
-                            users.add(new User(id, name, email, UserType.normal));
+                            users.add(new User(id, name, email, UserType.Normal));
                         }
                     }
                 }
@@ -521,10 +569,12 @@ public class CalendarList extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                User[] arr = new User[users.size()];
-                arr = users.toArray(arr);
+                User[] cur_Normal = new User[users.size()];
+                cur_Normal = users.toArray(cur_Normal);
+                User[] cur_Admin = new User[admins.size()];
+                cur_Admin = admins.toArray(cur_Admin);
 
-                MainActivity.user.set_CurCalender(iem, new callenDar(calendarID, MainActivity.user.getCalender()[iem].toString(), arr, arr));
+                MainActivity.user.set_CurCalender(iem, new callenDar(calendarID, MainActivity.user.getCalender()[iem].toString(), holder, cur_Admin, cur_Normal));
 
                 URL = "http://proj309-vc-03.misc.iastate.edu:8080/calendar/events/" + calendarID;
                 JArr = new ArrayList<JSONArray>();
@@ -573,6 +623,15 @@ public class CalendarList extends AppCompatActivity {
 
         MainActivity.TIME_CONTROL.start();
     }
+
+    /**
+     *
+     *  Main initializer
+     *
+     *      Also initialize the logic for creating
+     *      new calendar
+     *
+     */
 
     @SuppressLint("ClickableViewAccessibility")
     private void SetComponent()
@@ -988,42 +1047,18 @@ public class CalendarList extends AppCompatActivity {
     }
 
     /**
-     *
-     * write the current Calendar in to database.
-     *
+     *  create new calendar with 2 arrays
+     * @param name
+     * @param admin
+     *  The admin for that calendar
+     * @param toAdd
+     *  The all people(with admin) for that calendar
      */
-    private void writeCalendar(callenDar current)
-    {
-        //toDO
-        //open a new screen to create the calendar
-        //add people in
-        //when it is done
-        String URL = "http://proj309-vc-03.misc.iastate.edu:8080/calendar/new";
-        ArrayList<String> s = new ArrayList<String>();
-        JsonRequestActivity a = new JsonRequestActivity(CalendarList.this);
-        AppController C = new AppController(CalendarList.this);
-
-        JSONObject message = new JSONObject();
-
-        try
-        {
-            message.put("id",0);
-            message.put("calendarName",tf.getText().toString());
-//            message.put("users",current.getCurrentUser().toString());
-        }
-        catch (JSONException e)
-        {
-
-        }
-
-        a.makeJsonObjReq(URL, message, C);
-    }
-
     private void createCalendarNow(final String name, final User[] admin, final User[] toAdd)
     {
         if(MainActivity.user.getName().equals("test"))
         {
-            MainActivity.user.addCalender(new callenDar(name, admin, toAdd));
+            MainActivity.user.addCalender(new callenDar(name, MainActivity.user, admin, toAdd));
             Initialize();
             startActivity(new Intent(CalendarList.this, MainActivity_Calendar.class));
             return;
@@ -1194,7 +1229,7 @@ public class CalendarList extends AppCompatActivity {
                     }
                 }
 
-                calenda = new callenDar(id, name, admin, toAdd);
+                calenda = new callenDar(id, name, MainActivity.user, admin, toAdd);
 
                 MainActivity.user.addCalender(calenda);
                 people = null;
@@ -1213,6 +1248,11 @@ public class CalendarList extends AppCompatActivity {
         MainActivity.TIME_CONTROL.start();
     }
 
+    /**
+     *
+     *  Make sure button for new calendar
+     *
+     */
     private class OnClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -1221,7 +1261,6 @@ public class CalendarList extends AppCompatActivity {
                 return;
             }
 
-            //todo add user and people
             tf = findViewById(R.id.name_Calender);
 
             String name = tf.getText().toString();
@@ -1241,64 +1280,11 @@ public class CalendarList extends AppCompatActivity {
         }
     }
 
-    private class changeTOnext implements View.OnTouchListener
-    {
-        private int index;
-        private boolean way;
-        private boolean isRunning;
-
-        private final int count;
-
-        private changeTOnext(boolean way, int ONE)
-        {
-            this.way = way;
-            count = ONE;
-            isRunning = true;
-        }
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event)
-        {
-            if( ! isRunning)
-            {
-                return false;
-            }
-
-            if(way)
-            {
-                index += count;
-            }
-            else
-            {
-                index = Math.max(0, index - count);
-            }
-
-            return false;
-        }
-
-        public void setRunning(boolean run)
-        {
-            isRunning = run;
-        }
-    }
-
-    public class OnTouch implements View.OnTouchListener
-    {
-        /**
-         * using for drag screen to view bottom event
-         * @param v
-         * @param event
-         * @return
-         */
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event)
-        {
-            //toDO
-            return false;
-        }
-    }
-
+    /**
+     *
+     * Message handle in main thread
+     *
+     */
     private class inLeakHandle extends Handler
     {
         public void handleMessage(Message msg)

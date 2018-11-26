@@ -6,6 +6,7 @@ public class callenDar
 {
     private int id;
     private String name;
+    private User holder;
 
     private ArrayList<User> people;
     private ArrayList<User> admins;
@@ -17,7 +18,7 @@ public class callenDar
         name = Name;
     }
 
-    public callenDar(String Name, User[] admins, User[] toAdd)
+    public callenDar(String Name, User holder, User[] admins, User[] toAdd)
     {
         name = Name;
         people = new ArrayList<User>();
@@ -37,9 +38,9 @@ public class callenDar
         id = -1;
     }
 
-    public callenDar(int id, String Name, User[] admins, User[] toAdd)
+    public callenDar(int id, String Name, User holder, User[] admins, User[] toAdd)
     {
-        this(Name, admins, toAdd);
+        this(Name, holder, admins, toAdd);
         this.id = id;
     }
 
@@ -51,6 +52,11 @@ public class callenDar
     public String toString()
     {
         return name;
+    }
+
+    public User getHolder()
+    {
+        return holder;
     }
 
     public User[] getCurrentUser()

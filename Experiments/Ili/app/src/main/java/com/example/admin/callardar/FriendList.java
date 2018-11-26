@@ -137,7 +137,7 @@ public class FriendList extends AppCompatActivity {
                         iem += (oldX - newX);
                     }
                 }
-System.out.println(iem);
+
                 if(event.getAction() == MotionEvent.ACTION_UP && newX == oldX)
                 {
                     boolean flag_oneturnout = true;
