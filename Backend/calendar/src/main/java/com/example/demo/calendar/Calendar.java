@@ -47,6 +47,8 @@ public class Calendar {
 			inverseJoinColumns = { @JoinColumn(name = "userid") })
 	private Set<Users> users = new HashSet<>();
 	
+	private Set<Events> events;
+	
 	public Integer getcalendarid() {
 		return calendarid;
 	}
