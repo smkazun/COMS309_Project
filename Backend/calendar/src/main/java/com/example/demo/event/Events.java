@@ -2,9 +2,12 @@ package com.example.demo.event;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.NotFound;
@@ -26,6 +29,9 @@ public class Events {
 	private String date;
 	
 	private String time;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "calendarid")
 	
 	public Integer geteventid() {
 		return eventid;

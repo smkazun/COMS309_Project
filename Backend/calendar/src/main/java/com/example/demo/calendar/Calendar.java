@@ -40,6 +40,8 @@ public class Calendar {
 
 	private String calendarname;
 	
+	private Set<Events> events;
+	
 	@JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "accesscalendar",
@@ -47,9 +49,9 @@ public class Calendar {
 			inverseJoinColumns = { @JoinColumn(name = "userid") })
 	private Set<Users> users = new HashSet<>();
 	
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "calendarid")
-    private List<Events> events;
+    public Set<Events> getevents(){
+    	return events;
+    }
 	
 	public Integer getcalendarid() {
 		return calendarid;
@@ -75,9 +77,13 @@ public class Calendar {
 		this.users = users;
 	}
 	
-	public List<Events> getEvents() {
+	public Set<Events> getEvents() {
         return events;
     }
+	
+	public void setEvent(Set<Events> events) {
+		this.events = events;
+	}
 	
 	public Map<String, Object> toDTO(int it)
 	{
