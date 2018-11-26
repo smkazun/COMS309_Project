@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -34,6 +36,14 @@ public class Users {
 
 	private String usertype; //private UserType userType;
 	
+	@ManyToMany(cascade= {CascadeType.ALL})
+	@JoinTable(name="friendlist",
+		joinColumns= {@JoinColumn(name = "userid")},
+		inverseJoinColumns= {@JoinColumn(name="friend")})
+	private Set<Users> friends = new HashSet<Users>();
+	
+	@ManyToMany(mappedBy = "friends")
+	private Set<Users> userfriends = new HashSet<Users>();
     
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "users")
 	private Set<Calendar> calendars = new HashSet<>();
@@ -76,7 +86,7 @@ public class Users {
 		
 		public void setcalendars(Set<Calendar> calendars) {
 			this.calendars = calendars;
-		}
+		}				
 		
 }
 	
