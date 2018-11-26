@@ -41,7 +41,7 @@ public class EventController {
 		Calendar c = calendarRepository.findByCalendarid(id).get();
 		Events e = event;
 		
-		e.setcalendarid;
+		eventRepository.save(e);
 		
 		return "New event saved";
 	}
