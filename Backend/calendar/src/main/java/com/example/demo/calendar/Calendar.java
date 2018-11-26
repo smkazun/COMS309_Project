@@ -39,19 +39,13 @@ public class Calendar {
 	private Integer calendarid;
 
 	private String calendarname;
-	
-	private Set<Events> events;
-	
+		
 	@JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "accesscalendar",
 			joinColumns = { @JoinColumn(name = "calendarid")},
 			inverseJoinColumns = { @JoinColumn(name = "userid") })
 	private Set<Users> users = new HashSet<>();
-	
-    public Set<Events> getevents(){
-    	return events;
-    }
 	
 	public Integer getcalendarid() {
 		return calendarid;
