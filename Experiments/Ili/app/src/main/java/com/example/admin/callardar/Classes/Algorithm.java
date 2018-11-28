@@ -2,6 +2,7 @@ package com.example.admin.callardar.Classes;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -21,6 +22,11 @@ public class Algorithm
     private Algorithm()
     {
         //do nothing
+    }
+
+    public static void create_Fire()
+    {
+
     }
 
     /**
@@ -922,6 +928,21 @@ public class Algorithm
                     }
                 }
             }
+        }
+    }
+
+    private static class Fire
+    {
+        private Context classT;
+        private ConstraintLayout layout;
+        private int[][] matrix;
+
+        private Fire(Bitmap pic, Context classDOTThis, ConstraintLayout layout)
+        {
+            classT = classDOTThis;
+            this.layout = layout;
+
+            matrix = new int[layout.getWidth()][layout.getHeight()];
         }
     }
 
