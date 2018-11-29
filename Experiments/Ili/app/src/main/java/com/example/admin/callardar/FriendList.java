@@ -18,6 +18,11 @@ import com.example.admin.callardar.Classes.Algorithm;
 import com.example.admin.callardar.Classes.Point;
 import com.example.admin.callardar.Classes.User;
 import com.example.admin.callardar.Classes.シルヴァホルン;
+import com.example.admin.callardar.Connection.AppController;
+import com.example.admin.callardar.Connection.JsonRequestActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -32,6 +37,7 @@ public class FriendList extends AppCompatActivity {
     private EditText addingprocessEnter;
     private TextView addingprocessText;
     private ImageView addingprocess_Sure;
+    private TextView addingprocess_Nomatch;
 
     private ConstraintLayout makesure;
     private ConstraintLayout makesure_peopleshow;
@@ -150,6 +156,7 @@ public class FriendList extends AppCompatActivity {
                         addingprocess.addView(addingprocessEnter);
                         addingprocess.addView(addingprocess_Sure);
                         addingprocess.addView(addingprocessText);
+                        addingprocessEnter.setText("");
 
                         trans.setVisibility(View.INVISIBLE);
 
@@ -268,40 +275,120 @@ public class FriendList extends AppCompatActivity {
         addingprocessText = findViewById(R.id.adding_process_view);
         addingprocess_Sure = findViewById(R.id.adding_process_enter_sure);
         addingprocess_Sure.setBackgroundColor(Color.GREEN);
+        addingprocess_Nomatch = findViewById(R.id.adding_process_nomatch);
+        addingprocess_Nomatch.setVisibility(View.INVISIBLE);
 
         addingprocess_Sure.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
             public boolean onTouch(View v, MotionEvent event)
             {
-                String enter = addingprocessEnter.getText().toString();
+                final String enter = addingprocessEnter.getText().toString();
 
-                //todo
-                ArrayList<User> users = null;
-
-                if(MainActivity.user.getName().equals("test"))
-                {
-                    users = new ArrayList<User>();
-
-                    users.add(new User(255, enter + "1", ""));
-                    users.add(new User(256, enter + "2", ""));
-                }
-
-                if(users != null && users.size() == 0)
+                if(enter.equals(""))
                 {
                     return false;
                 }
 
-                arr = new User[users.size()];
-                arr = users.toArray(arr);
-                sheruns1 = new ArrayList<シルヴァホルン>();
+                if(MainActivity.user.getName().equals("test"))
+                {
+                    addingprocessEnter.setText("");
 
-                addingprocess.removeAllViews();
+                    ArrayList<User> users = new ArrayList<User>();
 
-                int zone[] = new int[]{0, addingprocess.getWidth(), 0, addingprocess.getHeight()};
+                    users.add(new User(255, enter + "1", ""));
+                    users.add(new User(256, enter + "2", ""));
 
-                Algorithm.create_ImageAndTexts(FriendList.this, addingprocess, zone, 4,3, null, arr, new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);
-                Algorithm.memberAddingProcess(FriendList.this, addingprocess, zone, zone, 4, 3, arr, new ArrayList<User>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), sheruns1, new ArrayList<シルヴァホルン>(), 0, 0, false);
+                    arr = new User[users.size()];
+                    arr = users.toArray(arr);
+                    sheruns1 = new ArrayList<シルヴァホルン>();
+
+                    addingprocess.removeAllViews();
+
+                    int zone[] = new int[]{0, addingprocess.getWidth(), 0, addingprocess.getHeight()};
+
+                    Algorithm.create_ImageAndTexts(FriendList.this, addingprocess, zone, 4,3, null, arr, new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);
+                    Algorithm.memberAddingProcess(FriendList.this, addingprocess, zone, zone, 4, 3, arr, new ArrayList<User>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), sheruns1, new ArrayList<シルヴァホルン>(), 0, 0, false);
+
+                    return false;
+                }
+
+                MainActivity.TIME_CONTROL = new Thread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        String URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/all";
+                        ArrayList<JSONArray> JArr = new ArrayList<JSONArray>();
+
+                        JsonRequestActivity a = new JsonRequestActivity(FriendList.this);
+                        AppController C = new AppController(FriendList.this);
+                        a.makeJsonArryReq_object_TIME(URL, C, JArr, MainActivity.TIME_CONTROL);
+
+                        try
+                        {
+                            Thread.sleep(2000);
+                        }
+                        catch (InterruptedException e)
+                        {
+
+                        }
+
+                        try
+                        {
+                            JArr.get(0);
+                        }
+                        catch (IndexOutOfBoundsException e)
+                        {
+
+                        }
+
+                        ArrayList<User> users = new ArrayList<User>();
+
+                        try
+                        {
+                            for(int i = 0 ; i < JArr.get(0).length() ; i += 1)
+                            {
+                                String name = JArr.get(0).getJSONObject(i).getString("name");
+
+                                if(enter.length() > name.length())
+                                {
+                                    continue;
+                                }
+
+                                for(int j = 0 ; j < enter.length() ; j += 1)
+                                {
+                                    if(enter.charAt(j) != name.charAt(j))
+                                    {
+                                        break;
+                                    }
+
+                                    if(j + 1 == enter.length())
+                                    {
+                                        int id = JArr.get(0).getJSONObject(i).getInt("userid");
+                                        String email = JArr.get(0).getJSONObject(i).getString("email");
+
+                                        users.add(new User(id, name, email));
+                                    }
+                                }
+                            }
+                        }
+                        catch(JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                        arr = new User[users.size()];
+                        arr = users.toArray(arr);
+                        sheruns1 = new ArrayList<シルヴァホルン>();
+
+                        Message message = new Message();
+                        message.what = 15;
+                        h.sendMessage(message);
+                    }
+                });
+
+                MainActivity.TIME_CONTROL.start();
 
                 return false;
             }
@@ -473,6 +560,24 @@ public class FriendList extends AppCompatActivity {
 
                     iem = 0;
                     Algorithm.create_ImageAndTexts_fillMode(FriendList.this, container, 150, 200, x_Max, null, MainActivity.user.getFriends(), pics, texts, sheruns2);
+
+                    break;
+                case 15:
+                    addingprocess.removeAllViews();
+                    addingprocessEnter.setText("");
+
+                    zone= new int[]{0, addingprocess.getWidth(), 0, addingprocess.getHeight()};
+
+                    Algorithm.create_ImageAndTexts(FriendList.this, addingprocess, zone, 4,3, null, arr, new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);
+                    Algorithm.memberAddingProcess(FriendList.this, addingprocess, zone, zone, 4, 3, arr, new ArrayList<User>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), sheruns1, new ArrayList<シルヴァホルン>(), 0, 0, false);
+
+                    if(arr.length == 0)
+                    {
+                        addingprocess.addView(addingprocess_Nomatch);
+                        addingprocess_Nomatch.setVisibility(View.VISIBLE);
+                    }
+
+                    break;
             }
 
             msg = null;

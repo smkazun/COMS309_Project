@@ -918,7 +918,7 @@ public class CalendarList extends AppCompatActivity {
                     return false;
                 }
 
-                showFriendList.setBackgroundColor(Color.YELLOW);
+                showFriendList.setBackgroundColor(Color.RED);
 
                 she1.if_Usable = false;
 
@@ -1078,11 +1078,11 @@ public class CalendarList extends AppCompatActivity {
             }
         });
 
-        close.setBackgroundColor(Color.RED);
-        clear.setBackgroundColor(Color.RED);
+        close.setBackgroundColor(Color.YELLOW);
+        clear.setBackgroundColor(Color.YELLOW);
         showFriendList.setBackgroundColor(Color.GREEN);
-        showFriendList2.setBackgroundColor(Color.YELLOW);
-        create.setBackgroundColor(Color.YELLOW);
+        showFriendList2.setBackgroundColor(Color.RED);
+        create.setBackgroundColor(Color.RED);
 
         close.setOnTouchListener(new View.OnTouchListener()
         {
@@ -1140,8 +1140,8 @@ public class CalendarList extends AppCompatActivity {
                         friendList.removeAllViews();
 
                         showFriendList.setBackgroundColor(Color.GREEN);
-                        showFriendList2.setBackgroundColor(Color.YELLOW);
-                        create.setBackgroundColor(Color.YELLOW);
+                        showFriendList2.setBackgroundColor(Color.RED);
+                        create.setBackgroundColor(Color.RED);
                     }
                 }
 

@@ -88,12 +88,14 @@ public class ChatActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onOpen(ServerHandshake handshake) {
+                public void onOpen(ServerHandshake handshake)
+                {
                     Log.d("OPEN", "run() returned: " + "is connecting");
                 }
 
                 @Override
-                public void onClose(int code, String reason, boolean remote) {
+                public void onClose(int code, String reason, boolean remote)
+                {
                     Log.d("CLOSE", "onClose() returned: " + reason);
                 }
 
