@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             user.addFriends(arr);
-            user.addCalender(new callenDar(10,"TestCalldar", arr, arr));
+            user.addCalender(new callenDar(10, "TestCalldar",user, arr, arr));
 
             return true;
         }

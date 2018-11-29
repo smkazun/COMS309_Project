@@ -1,9 +1,12 @@
 package com.example.admin.callardar;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,32 +17,31 @@ public class AccountSetting extends AppCompatActivity
 {
     private ConstraintLayout mainLayout;
 
-    private ImageView pic;
-    private EditText name;
     private TextView accountName;
     private TextView id;
     private TextView email;
 
     private void Initialize()
     {
-        mainLayout = findViewById(R.id.setting_mainLayout);
-        mainLayout.setBackgroundColor(Color.BLUE);
-
-        pic = findViewById(R.id.setting_PICofUSER);
-        name = findViewById(R.id.setting_Name);
         accountName = findViewById(R.id.setting_AccoutName);
         id = findViewById(R.id.setting_ID);
         email = findViewById(R.id.setting_Email);
 
-        Random r = new Random();
-        pic.setBackgroundColor(Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
+        accountName.setText("UserName : " + MainActivity.user.getName());
+        id.setText("id : " + MainActivity.user.getID() + "");
+        email.setText("Email : " + MainActivity.user.getEmail());
 
-        //toDO get the real name
-        name.setText("DEFAULT");
+        Button b = findViewById(R.id.Logout);
+        b.setBackgroundColor(Color.RED);
 
-        accountName.setText(MainActivity.user.getName());
-        id.setText((MainActivity.user.getID() + ""));
-        email.setText(MainActivity.user.getEmail());
+        b.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                startActivity(new Intent(AccountSetting.this, MainActivity.class));
+            }
+        });
     }
 
     @Override
