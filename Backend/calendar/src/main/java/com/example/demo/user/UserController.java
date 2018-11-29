@@ -6,12 +6,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +30,12 @@ import com.example.demo.user.UserRepository;
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
+	
+	
+	enum UserType {
+		ADMIN, USER
+	}
+	
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -122,5 +130,53 @@ public class UserController {
 		}
 		return users;
 	}
+	
+	
+	//returns the userType
+		@GetMapping(path = "/userType/{id}")
+		@ResponseBody
+		public String getUserTypeById(@PathVariable("id") int id)
+		{
+			logger.info("entered usertype");
+			Optional<Users> user = userRepository.findById(id);
+			String userType = user.get().getusertype();
+			
+			return userType;
+		}
+		
+	
+		
+		//methods for FriendsList --where to implement?
+		/*
+		//returns all friends of a particular user
+		@GetMapping(path = "/friendslist")
+		public Optional<Friends> getFriendsList(@PathVariable int id)
+		{
+			logger.info("Entered FriendsController. Method: getFriendsList()");
+			
+			Optional<Friends> list = friendsRepository.findById(id);
+			return list;
+		}
+		
+		//adds new friend to friendlist
+		@PostMapping(path = "/add")
+		public @ResponseBody String addFriend(@RequestBody Friends friend)
+		{
+			friendsRepository.save(friend);
+			return "New Friend has been added";
+			
+		}
+		
+		@RequestMapping(method = RequestMethod.DELETE, path = "/remove") //TODO NOTE: This actually deletes by id
+		@ResponseBody
+		public String removeFriend(@RequestBody Friends user) 
+		{
+			logger.info("delete friend method");
+			friendsRepository.delete(user);
+			return " has been deleted";
+		}
+		
+		*/
+	
 	
 }
