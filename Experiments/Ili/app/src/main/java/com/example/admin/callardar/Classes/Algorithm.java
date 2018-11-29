@@ -24,11 +24,6 @@ public class Algorithm
         //do nothing
     }
 
-    public static void create_Fire()
-    {
-
-    }
-
     /**
      * check the specific text in specific header
      * @param header
@@ -931,19 +926,17 @@ public class Algorithm
         }
     }
 
-    private static class Fire
+    public static int setTransparent(float A, int fromLook, int toLook)
     {
-        private Context classT;
-        private ConstraintLayout layout;
-        private int[][] matrix;
+        float R = (1 - A) * Color.red(fromLook) + A * Color.red(toLook);
+        float G = (1 - A) * Color.green(fromLook) + A * Color.green(toLook);
+        float B = (1 - A) * Color.blue(fromLook) + A * Color.blue(toLook);
 
-        private Fire(Bitmap pic, Context classDOTThis, ConstraintLayout layout)
-        {
-            classT = classDOTThis;
-            this.layout = layout;
-
-            matrix = new int[layout.getWidth()][layout.getHeight()];
-        }
+        //COPY FROM Color.rgb(float R, float G, float B)
+        return 0xff000000 |
+                ((int) (R   * 255.0f + 0.5f) << 16) |
+                ((int) (G * 255.0f + 0.5f) <<  8) |
+                (int) (B  * 255.0f + 0.5f);
     }
 
     public static class Stop implements Callable<Integer>
