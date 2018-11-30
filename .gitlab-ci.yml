@@ -41,7 +41,7 @@ autoDeploy:
     - cd Backend/calendar
     - mvn package
     - sudo mv target/*.jar /var/www/html/system-web-demo.jar 
-    - sudo systemctl stop systemd-web-demo
+    
     - sudo systemctl start systemd-web-demo
 
     
