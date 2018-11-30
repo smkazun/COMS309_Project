@@ -42,7 +42,7 @@ autoDeploy:
     - mvn package
     - sudo mv target/*.jar /var/www/html/system-web-demo.jar 
     
-    - sudo systemctl start systemd-web-demo
+    - sudo systemctl start system-web-demo
 
     
 # To build android projects
