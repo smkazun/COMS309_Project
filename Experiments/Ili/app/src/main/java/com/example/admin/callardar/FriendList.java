@@ -352,7 +352,7 @@ public class FriendList extends AppCompatActivity {
                         }
                         catch (IndexOutOfBoundsException e)
                         {
-
+                            return;
                         }
 
                         ArrayList<User> users = new ArrayList<User>();

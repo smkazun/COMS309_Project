@@ -1,5 +1,7 @@
 package com.example.admin.callardar.Classes;
 
+import com.example.admin.callardar.CalendarList;
+
 import java.util.ArrayList;
 
 public class callenDar
@@ -16,6 +18,7 @@ public class callenDar
     {
         this.id = id;
         name = Name;
+        events = new ArrayList<Event>();
     }
 
     public callenDar(String Name, User holder, User[] admins, User[] toAdd)
@@ -93,6 +96,20 @@ public class callenDar
         return arr;
     }
 
+    public void addUser(User toAdd, UserType type)
+    {
+        if(type == UserType.Normal)
+        {
+            people.add(toAdd);
+        }
+
+        if(type == UserType.Admin)
+        {
+            people.add(toAdd);
+            admins.add(toAdd);
+        }
+    }
+
     public void Event(String item_title, String item_desc, String item_date) {
         events.add(new Event(item_title, item_desc, item_date));
     }
@@ -101,23 +118,6 @@ public class callenDar
     {
         events.add(new Event(id, item_title, item_desc, item_date));
     }
-
-//    /**
-//     *  create a event in current callendar
-//     * @param startDate
-//     *  should be format like 7 11 2018
-//     *                        15 35
-//     * @param endDate
-//     * @param content
-//     * @param toAdd
-//     */
-//    public void eventCreator(int id, String name, String startDate, String endDate, String content, User admin, User[] toAdd)
-//        {
-//        events.add(new Event(id, name, startDate, endDate, content, admin, toAdd));
-//
-//        //toDo
-//        //draw the UI on real callendar
-//    }
 
     public Event[] eventViewer()
     {
@@ -135,5 +135,28 @@ public class callenDar
     public void deleteEvent(int index)
     {
         events.remove(index);
+    }
+
+    public int equals(callenDar obj)
+    {
+        if( id != obj.id || ! name.equals(obj.name))
+        {
+            return 1;
+        }
+
+        for(int i = 0 ; i < events.size() ; i += 1)
+        {
+            if(events.size() != obj.events.size())
+            {
+                return 2;
+            }
+
+            if( ! events.contains(obj.events.get(i)))
+            {
+                return 2;
+            }
+        }
+
+        return 0;
     }
 }

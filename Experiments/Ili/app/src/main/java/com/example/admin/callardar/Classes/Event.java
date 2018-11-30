@@ -66,6 +66,11 @@ public class Event {
         this.item_image = item_image;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        return item_title.equals(((Event)obj).item_title) && item_desc.equals(((Event)obj).item_desc) && item_date.equals(((Event)obj).item_date);
+    }
 }
 
 

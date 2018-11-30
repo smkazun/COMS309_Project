@@ -87,6 +87,7 @@ public class CalendarList extends AppCompatActivity {
     private Handler handler;
     private Thread t;
 
+    private ArrayList<View> views;
     private ArrayList<シルヴァホルン> she_ca;
     private ArrayList<シルヴァホルン> she_ca_going;
 
@@ -98,6 +99,13 @@ public class CalendarList extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     private void Initialize()
     {
+        for(int i = 0; views != null && i < views.size() ; i += 1)
+        {
+            mainLayout.removeView(views.get(i));
+        }
+
+        views = new ArrayList<View>();
+
         int length = 172;
 
         callenDar[] arr = MainActivity.user.getCalender();
@@ -114,11 +122,13 @@ public class CalendarList extends AppCompatActivity {
         for(int i = 0 ; i < arr.length ; i += 1)
         {
             tf = Algorithm.createTextField(CalendarList.this, arr[i].toString(),0, length,new RelativeLayout.LayoutParams(300,100), Color.YELLOW,(float)0.9);
+            views.add(tf);
             mainLayout.addView(tf);
 
             Jpanel0 = Algorithm.createJPanel(CalendarList.this, 310, length, new RelativeLayout.LayoutParams(100, 100), Color.GREEN, (float)0.5);
-
+            views.add(Jpanel0);
             mainLayout.addView(Jpanel0);
+
             she_ca.add(new シルヴァホルン(new Point[]{new Point(310, length), new Point(410, length), new Point(410, length + 110), new Point(310, length + 110)}));
             she_ca_going.add(new シルヴァホルン(new Point[]{new Point(0,length), new Point(300,length),new Point(300,length + 110),new Point(0,length + 110)}));
 
@@ -128,7 +138,7 @@ public class CalendarList extends AppCompatActivity {
             length += 110;
         }
 
-        final TextView Jpanel = Algorithm.createTextField(CalendarList.this,"Create new calendar", 0, length , new RelativeLayout.LayoutParams(300, 100), Color.rgb(150,100,15), (float)0.9);
+        TextView Jpanel = Algorithm.createTextField(CalendarList.this,"Create new calendar", 0, length , new RelativeLayout.LayoutParams(300, 100), Color.rgb(150,100,15), (float)0.9);
 
         she1 = new シルヴァホルン(new Point[]{new Point(0,length), new Point(300,length),new Point(300,length + 100),new Point(0,length + 100)});
 
@@ -150,6 +160,7 @@ public class CalendarList extends AppCompatActivity {
                                   }
         );
 
+        views.add(Jpanel);
         mainLayout.addView(Jpanel);
         mainLayout.removeView(trans);
         mainLayout.addView(trans);
@@ -1155,6 +1166,25 @@ public class CalendarList extends AppCompatActivity {
                 }
 
                 return true;
+            }
+        });
+
+        TextView refresh = findViewById(R.id.刷新);
+        refresh.setBackgroundColor(Color.BLUE);
+        refresh.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                Initialize();
+                mainLayout.removeView(trans);
+                mainLayout.addView(trans);
+                mainLayout.removeView(goToSetting);
+                mainLayout.addView(goToSetting);
+                mainLayout.removeView(settingSolution);
+                mainLayout.addView(settingSolution);
+
+                return false;
             }
         });
     }

@@ -1,6 +1,8 @@
 package com.example.admin.callardar;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,13 +11,16 @@ import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.PasswordTransformationMethod;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.admin.callardar.Classes.Algorithm;
+import com.example.admin.callardar.Classes.Event;
 import com.example.admin.callardar.Classes.User;
 import com.example.admin.callardar.Classes.callenDar;
 import com.example.admin.callardar.Connection.AppController;
@@ -29,6 +34,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -39,23 +45,26 @@ public class MainActivity extends AppCompatActivity {
 
     private ConstraintLayout mainLayout;
 
-    private static Handler handler;
+    private Handler handler;
+    private Handler handler_Message;
 
     private EditText account;
-    private static EditText password;
+    private EditText password;
     private EditText CREATE_account;
     private EditText CREATE_password;
+    private EditText CREATE_email;
 
     private ConstraintLayout CREATE_layout;
     private ConstraintLayout login;
     private ImageView transparent_CREATE_user;
 
-    private static TextView wrongMessage;
+    private TextView wrongMessage;
 
     protected static User user;
 
     private Button LOGIN;
     protected static Thread TIME_CONTROL;
+    private Thread ToKoShiE;
 
 //        Algorithm.Stop stop = new Algorithm.Stop(2000);
 //        FutureTask<Integer> task = new FutureTask<Integer>(stop);
@@ -190,7 +199,6 @@ System.out.println(id + "+ " + name);
 
         user.addFriends(toAdd);
 
-        //toDO calladar list
         URL = "http://proj309-vc-03.misc.iastate.edu:8080/users/calendars/" + user.getID();
         ArrayList<JSONArray> jArr = new ArrayList<JSONArray>();
         a = new JsonRequestActivity(MainActivity.this);
@@ -266,10 +274,11 @@ System.out.println(id + "+ " + name);
         {
             mainLayout.removeView(transparent_CREATE_user);
             mainLayout.addView(transparent_CREATE_user);
-
             transparent_CREATE_user.setVisibility(View.VISIBLE);
-            mainLayout.removeView(login);
+
+            mainLayout.removeView(CREATE_layout);
             mainLayout.addView(CREATE_layout);
+            CREATE_layout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -292,6 +301,10 @@ System.out.println(id + "+ " + name);
                     if (ifExist(account.getText().toString(), password.getText().toString()))
                     {
                         startActivity(new Intent(MainActivity.this, CalendarList.class));
+
+                        Message message = new Message();
+                        message.what = 17;
+                        handler.sendMessage(message);
                     }
                     else
                     {
@@ -307,7 +320,7 @@ System.out.println(id + "+ " + name);
         }
     }
 
-    private static class inLeakHandle extends Handler
+    private class inLeakHandle extends Handler
     {
         public void handleMessage(Message msg)
         {
@@ -319,9 +332,148 @@ System.out.println(id + "+ " + name);
                 password.setText(new char[]{}, 0, 0);
                 handler.removeCallbacksAndMessages(null);
             }
+            else if(msg.what == 17)
+            {
+                UnStopped_Message_Thread();
+            }
         }
     }
 
+    private void UnStopped_Message_Thread()
+    {
+        if(user.getName().equals("test"))
+        {
+            return;
+        }
+
+        ToKoShiE = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                while (true)
+                {
+                    ArrayList<callenDar> calendar = new ArrayList<callenDar>();
+
+                    String URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/" + user.getID();
+                    ArrayList<JSONObject> JObj = new ArrayList<JSONObject>();
+
+                    JsonRequestActivity a = new JsonRequestActivity(MainActivity.this);
+                    AppController C = new AppController(MainActivity.this);
+                    a.makeJsonObjReq_GET_TIME(URL,new JSONObject(), JObj, C, ToKoShiE);
+
+                    try
+                    {
+                        Thread.sleep(2000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    try
+                    {
+                        JObj.get(0);
+                    }
+                    catch (IndexOutOfBoundsException e)
+                    {
+                        continue;
+                    }
+
+                    try
+                    {
+                        JSONArray arr = JObj.get(0).getJSONArray("calendars");
+
+                        for(int i = 0 ; i < arr.length() ; i += 1)
+                        {
+                            int cid = arr.getJSONObject(i).getInt("calendarid");
+                            String cname = arr.getJSONObject(i).getString("calendarname");
+                            JSONArray events = arr.getJSONObject(i).getJSONArray("events");
+
+                            callenDar cal = new callenDar(cid, cname);
+
+                            for(int j = 0 ; j < events.length() ; j += 1)
+                            {
+                                int eid = events.getJSONObject(j).getInt("id");
+                                String ename = events.getJSONObject(j).getString("name");
+
+                                cal.Event(eid, ename,"N/A", "N/A");
+                            }
+
+                            calendar.add(cal);
+                        }
+
+                        for(int i = 0 ; i < calendar.size() ; i += 1)
+                        {
+                            for(int j = 0 ; j < user.getCalender().length ; j += 1)
+                            {
+                                if(calendar.get(i).equals(user.getCalender()[j]) == 0)
+                                {
+                                    break;
+                                }
+
+                                if(calendar.get(i).equals(user.getCalender()[j]) == 1)
+                                {
+                                    if(j + 1 != user.getCalender().length)
+                                    {
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        user.addCalender(calendar.get(i));
+
+                                        Message message = new Message();
+                                        message.what = 1;
+                                        message.obj = calendar.get(i).toString();
+                                        handler.sendMessage(message);
+                                        break;
+                                    }
+                                }
+
+                                if(calendar.get(i).equals(user.getCalender()[j]) == 2)
+                                {
+                                    for(; user.getCalender()[j].eventViewer().length != 0 ;)
+                                    {
+                                        user.getCalender()[j].deleteEvent(0);
+                                    }
+
+                                    for(int k = 0 ; k < calendar.get(i).eventViewer().length ; k += 1)
+                                    {
+                                        Event toAdd = calendar.get(i).eventViewer()[k];
+
+                                        user.getCalender()[j].Event(toAdd.id, toAdd.getItem_title(), toAdd.getItem_desc(), toAdd.getItem_date());
+                                    }
+
+                                    Message message = new Message();
+                                    message.what = 2;
+                                    message.obj = calendar.get(i).toString();
+                                    handler.sendMessage(message);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    try
+                    {
+                        Thread.sleep(5000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        ToKoShiE.start();
+    }
+
+    @SuppressLint({"ClickableViewAccessibility", "HandlerLeak"})
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -329,19 +481,6 @@ System.out.println(id + "+ " + name);
         setContentView(R.layout.activity_main);
 
         handler = new inLeakHandle();
-//        {
-//            public void handleMessage(Message msg)
-//            {
-//                super.handleMessage(msg);
-//
-//                if(msg .what == 10)
-//                {
-//                    wrongMessage.setVisibility(View.VISIBLE);
-//                    password.setText(new char[]{}, 0, 0);
-//                    handler.removeCallbacksAndMessages(null);
-//                }
-//            }
-//        };
 
         mainLayout = findViewById(R.id.JFrame_activity_main);
         login = findViewById(R.id.LOGIN);
@@ -358,9 +497,12 @@ System.out.println(id + "+ " + name);
 
         CREATE_account = findViewById(R.id.CREATE_User_Name);
         CREATE_password = findViewById(R.id.CREATE_User_Password);
+        CREATE_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        CREATE_email = findViewById(R.id.CREATE_User_Email);
 
         CREATE_layout = findViewById(R.id.createNewUser);
         CREATE_layout.setBackgroundColor(Color.rgb(200,150,50));
+        CREATE_layout.setVisibility(View.INVISIBLE);
 
         transparent_CREATE_user = findViewById(R.id.transparent_CREATE_User);
         transparent_CREATE_user.setBackgroundColor(Color.BLACK);
@@ -384,8 +526,8 @@ System.out.println(id + "+ " + name);
                 {
                     message.put("id",0);
                     message.put("name",CREATE_account.getText().toString());
-                    message.put("email","1111");
-                    message.put("userType","1111");
+                    message.put("password",CREATE_password.getText().toString());
+                    message.put("email",CREATE_email.getText().toString());
                 }
                 catch (JSONException e)
                 {
@@ -403,6 +545,76 @@ System.out.println(id + "+ " + name);
             }
         });
 
-        mainLayout.removeView(CREATE_layout);
+        TextView close = findViewById(R.id.CREATE_close);
+        close.setBackgroundColor(Color.GREEN);
+        close.setOnTouchListener(new View.OnTouchListener()
+        {
+            private float x;
+            private float y;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                x = event.getX();
+                y = event.getY();
+
+                if(event.getAction() == MotionEvent.ACTION_UP)
+                {
+                    if(event.getX() == x && event.getY() == y)
+                    {
+                        CREATE_account.setText("");
+                        CREATE_password.setText("");
+                        CREATE_email.setText("");
+                        CREATE_layout.setVisibility(View.INVISIBLE);
+                        transparent_CREATE_user.setVisibility(View.INVISIBLE);
+                    }
+                }
+
+                return true;
+            }
+        });
+
+        handler_Message = new Handler()
+        {
+            public void handleMessage(Message msg)
+            {
+                switch(msg.what)
+                {
+                    case 1:
+                        Notification.Builder notifybuider = new Notification.Builder(MainActivity.this);
+                        notifybuider.setContentTitle("New Calendar has been created")
+                                .setSubText((String)msg.obj)
+                                .setTicker("New calendar")
+                                .setWhen(System.currentTimeMillis())
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
+                                .setAutoCancel(true);
+
+                        Notification notify = notifybuider.build();
+                        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        manager.notify(1,notify);
+
+                        break;
+                    case 2:
+                        notifybuider = new Notification.Builder(MainActivity.this);
+
+                        notifybuider.setContentTitle("New Event has been added")
+                                .setSubText("In " + (String) msg.obj)
+                                .setTicker("New Event")
+                                .setWhen(System.currentTimeMillis())
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
+                                .setAutoCancel(true);
+
+                        notify = notifybuider.build();
+                        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        manager.notify(1,notify);
+
+                        break;
+                }
+
+                msg = null;
+            }
+        };
     }
 }
