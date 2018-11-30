@@ -44,6 +44,10 @@ public class CalendarList extends AppCompatActivity {
     private ConstraintLayout container;
     private ConstraintLayout friendList;
 
+    private TextView showFriendList;
+    private TextView showFriendList2;
+    private Button create;
+
     private TextView peopleadded;
 
     private TextView close;
@@ -101,6 +105,11 @@ public class CalendarList extends AppCompatActivity {
         she_ca_going = new ArrayList<シルヴァホルン>();
         TextView tf = null;
         ImageView Jpanel0 = null;
+
+        showFriendList.setBackgroundColor(Color.GREEN);
+        showFriendList2.setBackgroundColor(Color.RED);
+        create.setBackgroundColor(Color.RED);
+
 
         for(int i = 0 ; i < arr.length ; i += 1)
         {
@@ -664,6 +673,9 @@ public class CalendarList extends AppCompatActivity {
         trans.setAlpha((float)0.8);
         trans.setVisibility(View.INVISIBLE);
 
+        showFriendList = findViewById(R.id.show);
+        showFriendList2 = findViewById(R.id.show2);
+
         screen_CalenderCreator.setVisibility(View.INVISIBLE);
         screen_CalenderCreator.setBackgroundColor(Color.rgb(200,100,50));
         container.setVisibility(View.INVISIBLE);
@@ -683,11 +695,8 @@ public class CalendarList extends AppCompatActivity {
         final ArrayList<Integer> she1_f = new ArrayList<Integer>();
         final ArrayList<Integer> she2_f = new ArrayList<Integer>();
 
-        final Button create = findViewById(R.id.createCalender);
+        create = findViewById(R.id.createCalender);
         create.setOnClickListener(new OnClick());
-
-        final TextView showFriendList = findViewById(R.id.show);
-        final TextView showFriendList2 = findViewById(R.id.show2);
 
         b.setOnClickListener(new View.OnClickListener()
         {
@@ -1164,6 +1173,8 @@ public class CalendarList extends AppCompatActivity {
         {
             MainActivity.user.addCalender(new callenDar(name, MainActivity.user, admin, toAdd));
             Initialize();
+            people = null;
+            admins = null;
             startActivity(new Intent(CalendarList.this, MainActivity_Calendar.class));
             return;
         }

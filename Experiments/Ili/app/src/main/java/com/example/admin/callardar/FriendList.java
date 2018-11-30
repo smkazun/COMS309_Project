@@ -1,6 +1,7 @@
 package com.example.admin.callardar;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Handler;
@@ -277,6 +278,17 @@ public class FriendList extends AppCompatActivity {
         addingprocess_Sure.setBackgroundColor(Color.GREEN);
         addingprocess_Nomatch = findViewById(R.id.adding_process_nomatch);
         addingprocess_Nomatch.setVisibility(View.INVISIBLE);
+
+        TextView back = findViewById(R.id.FriendList_back);
+        back.setBackgroundColor(Color.GREEN);
+        back.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                startActivity(new Intent(FriendList.this, CalendarList.class));
+            }
+        });
 
         addingprocess_Sure.setOnTouchListener(new View.OnTouchListener()
         {
