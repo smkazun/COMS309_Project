@@ -41,7 +41,7 @@ autoDeploy:
     - cd Backend/calendar
     - mvn package
     - sudo mv target/*.jar /var/www/html/system-web-demo.jar 
-    
+    - sudo systemctl stop system-web-demo
     - sudo systemctl start system-web-demo
 
     
@@ -50,7 +50,7 @@ autoDeploy:
 # Ensure the tag matches with the tag created for Android runner
 # Android runner should have docker as executor.
 android-build:
-  image: javiersantos/android-ci:latest
+  image: android-ci:latest
   stage: androidbuild
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
@@ -66,7 +66,7 @@ android-build:
     
 # To run Android unit tests.   
 unitTests:
-  image: javiersantos/android-ci:latest
+  image: android-ci:latest
   stage: androidtest
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
