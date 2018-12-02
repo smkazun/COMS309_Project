@@ -14,9 +14,15 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.springframework.core.style.ToStringCreator;
 
+/**
+ * 
+ * @author Sebastian Kazun
+ *
+ */
 @Entity
 @Table(name = "Event")
 public class Events {
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
