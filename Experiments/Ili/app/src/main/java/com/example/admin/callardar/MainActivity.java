@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +25,7 @@ import com.example.admin.callardar.Classes.Algorithm;
 import com.example.admin.callardar.Classes.Event;
 import com.example.admin.callardar.Classes.User;
 import com.example.admin.callardar.Classes.callenDar;
+import com.example.admin.callardar.Classes.篝火;
 import com.example.admin.callardar.Connection.AppController;
 import com.example.admin.callardar.Connection.JsonRequestActivity;
 
@@ -38,15 +41,16 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-public class MainActivity extends AppCompatActivity {
-
-    protected static int X;
-    protected static int Y;
-
+public class MainActivity extends AppCompatActivity
+{
     private ConstraintLayout mainLayout;
 
     private Handler handler;
     private Handler handler_Message;
+
+    protected static int[][] 篝火;
+
+    private 篝火 kagaribi;
 
     private EditText account;
     private EditText password;
@@ -61,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView wrongMessage;
 
     protected static User user;
+    protected static boolean night = true;
 
     private Button LOGIN;
     protected static Thread TIME_CONTROL;
@@ -89,9 +94,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private boolean ifExist(final String account, final String passWord)
     {
-        X = mainLayout.getWidth();
-        Y = (int) (mainLayout.getHeight() * 0.9);
-
         if(account.equals("") && passWord.equals(""))
         {
             user = new User(100, "test","@");
@@ -274,7 +276,11 @@ System.out.println(id + "+ " + name);
         {
             mainLayout.removeView(transparent_CREATE_user);
             mainLayout.addView(transparent_CREATE_user);
-            transparent_CREATE_user.setVisibility(View.VISIBLE);
+
+            if( ! night)
+            {
+                transparent_CREATE_user.setVisibility(View.VISIBLE);
+            }
 
             mainLayout.removeView(CREATE_layout);
             mainLayout.addView(CREATE_layout);
@@ -300,7 +306,10 @@ System.out.println(id + "+ " + name);
                 {
                     if (ifExist(account.getText().toString(), password.getText().toString()))
                     {
-                        startActivity(new Intent(MainActivity.this, CalendarList.class));
+                        Intent intent = new Intent();
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setClass(MainActivity.this,CalendarList.class);
+                        startActivity(intent);
 
                         Message message = new Message();
                         message.what = 17;
@@ -335,6 +344,17 @@ System.out.println(id + "+ " + name);
             else if(msg.what == 17)
             {
                 UnStopped_Message_Thread();
+                kagaribi.close();
+            }
+            else if(msg.what == 18)
+            {
+                kagaribi = new 篝火(MainActivity.this, mainLayout, 篝火);
+
+                if(night)
+                {
+                    kagaribi.open();
+                    transparent_CREATE_user.setAlpha((float)0);
+                }
             }
         }
     }
@@ -483,11 +503,19 @@ System.out.println(id + "+ " + name);
         handler = new inLeakHandle();
 
         mainLayout = findViewById(R.id.JFrame_activity_main);
-        login = findViewById(R.id.LOGIN);
+        mainLayout.setBackgroundColor(Color.TRANSPARENT);
 
+        login = findViewById(R.id.LOGIN);
         LOGIN = findViewById(R.id.button_Login);
         account = findViewById(R.id.acc);
         password = findViewById(R.id.pass);
+
+        if(night)
+        {
+            mainLayout.setBackgroundColor(Color.BLACK);
+            account.setBackgroundColor(Color.GREEN);
+            password.setBackgroundColor(Color.GREEN);
+        }
 
         wrongMessage = findViewById(R.id.WrongMessage);
         wrongMessage.setVisibility(View.INVISIBLE);
@@ -541,7 +569,11 @@ System.out.println(id + "+ " + name);
                 mainLayout.addView(login);
 
                 user = new User(0, account.toString(),"@");
-                startActivity(new Intent(MainActivity.this,CalendarList.class));
+
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setClass(MainActivity.this,CalendarList.class);
+                startActivity(intent);
             }
         });
 
@@ -616,5 +648,48 @@ System.out.println(id + "+ " + name);
                 msg = null;
             }
         };
+
+        Bitmap kagaribi = BitmapFactory.decodeResource(getResources(), R.mipmap.test4);
+        篝火 = new int[kagaribi.getHeight()][kagaribi.getWidth()];
+
+        for(int i = 0 ; i < kagaribi.getHeight() ; i += 1)
+        {
+            for(int j = 0 ; j < kagaribi.getWidth() ; j += 1)
+            {
+                篝火[i][j] = kagaribi.getPixel(j, i);
+            }
+        }
+
+        Thread Loading = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    Thread.sleep(100000000);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+
+                try
+                {
+                    Thread.sleep(100);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+
+                Message message = new Message();
+                message.what = 18;
+                handler.sendMessage(message);
+            }
+        });
+
+        Loading.start();
+        Loading.interrupt();
     }
 }

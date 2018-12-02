@@ -29,7 +29,8 @@
         <activity android:name=".EventActivity" />
         <activity android:name=".EventAdd" />
         <activity android:name=".EventDetailActivity" />
-        <activity android:name=".Connection.EventDetailActivity"></activity>
+        <activity android:name=".Connection.EventDetailActivity" />
+        <activity android:name=".PeopleAddingCalendar"></activity>
     </application>
 
 </manifest>

@@ -1,14 +1,21 @@
 package com.example.admin.callardar.Classes;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.Image;
 import android.os.Handler;
 import android.os.Message;
+import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 //篝(かがり)火
 public class 篝火
@@ -16,81 +23,161 @@ public class 篝火
     private boolean isRunning = true;
 
     private Handler h;
-    private ImageView view;
     private int[][] pixels;
+    private Context context;
 
-    private final int width;
-    private final int height;
-    private final int[][][] object;
-    private ArrayList<Fire> fires;
+    private ArrayList<ImageView> views;
+    private ArrayList<Integer> speeds;
+    private ArrayList<Integer> speedCopy;
 
-    public 篝火(int[][][] fire, final Handler handler, final ImageView imageView)
+    private Thread Moving;
+
+    @SuppressLint("HandlerLeak")
+    public 篝火(Context classDOTthis, final ConstraintLayout layout, final int[][] pixels)
     {
-        h = handler;
-        view = imageView;
+        h = new Handler()
+        {
+            public void handleMessage(Message msg)
+            {
+                switch (msg.what)
+                {
+                    case 1:
+                        Package p = (Package) msg.obj;
+                        int x = p.a;
+                        int y = p.b;
+                        int length = p.c;
+                        int height = p.d;
+                        int speed = p.e;
+                        float visibility = p.f;
+                        Bitmap bitmap = p.bitmap;
 
-        width = imageView.getWidth();
-        height = imageView.getHeight();
-        object = fire;
-        fires = new ArrayList<Fire>();
+                        ImageView view = Algorithm.createJPanel(context, x, y, new RelativeLayout.LayoutParams(length, height), 8753, visibility);
+                        layout.addView(view);
+                        view.setImageBitmap(bitmap);
 
-        pixels = new int[height][width];
+                        Random r = new Random();
+                        float position = (float)(r.nextInt(30) + 70) / (float) 100;
+
+                        view.setZ(position);
+
+                        views.add(view);
+                        speeds.add(speed);
+                        speedCopy.add(speed);
+
+                        break;
+                    case -1:
+                        while(views.size() != 0)
+                        {
+                            layout.removeView(views.get(0));
+                            views.remove(0);
+                            speeds.remove(0);
+                        }
+
+                        break;
+                    case 7:
+                        view = (ImageView)msg.obj;
+                        view.setY(view.getY() - 3);
+
+                        r = new Random();
+                        int next = r.nextInt(5);
+
+                        if(next == 1)
+                        {
+                            view.setX(view.getX() - (float)1.5);
+                        }
+                        else if(next == 2)
+                        {
+                            view.setX(view.getX() + (float)1.5);
+                        }
+
+
+                       ((ImageView)msg.obj).setAlpha(((ImageView)msg.obj).getAlpha() - (float)0.005);
+
+                        break;
+                    case 8:
+                        p = (Package) msg.obj;
+
+                        p.imageView.setImageBitmap(p.bitmap);
+                }
+
+                if(msg.what >= 1000)
+                {
+                    try
+                    {
+                        layout.removeView(views.get(msg.what % 1000));
+                    }
+                    catch (IndexOutOfBoundsException e)
+                    {
+
+                    }
+
+                    ((Thread)msg.obj).interrupt();
+                }
+
+                msg = null;
+            }
+        };
+
+        context = classDOTthis;
+
+        views = new ArrayList<ImageView>();
+        speeds = new ArrayList<Integer>();
+        speedCopy = new ArrayList<Integer>();
+        this.pixels = pixels;
     }
 
     public void open()
     {
-        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(bitmap);
-        final Paint paint = new Paint();
-        paint.setStrokeWidth(5);
-
         new Thread(new Runnable()
         {
-            private long sysTime = System.currentTimeMillis();
-
             @Override
             public void run()
             {
                 while(isRunning)
                 {
-                    if(System.currentTimeMillis() - sysTime > 500)
+                    Bitmap bitmap = Bitmap.createBitmap(pixels[0].length, pixels.length, Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(bitmap);
+                    Paint paint = new Paint();
+
+                    for(int i = 0 ; i < pixels.length ; i += 1)
                     {
-                        for(int i = 0 ; i < height ; i += 1)
+                        for(int j = 0 ; j < pixels[0].length ; j += 1)
                         {
-                            for(int j = 0 ; j < width ; j += 1)
+                            int A = Color.alpha(pixels[i][j]);
+                            int R = Color.red(pixels[i][j]);
+                            int G = Color.green(pixels[i][j]);
+                            int B = Color.blue(pixels[i][j]);
+
+                            if(pixels[i][j] == -1)
                             {
-                                int A = Color.alpha(pixels[i][j]);
-                                int R = Color.red(pixels[i][j]);
-                                int G = Color.green(pixels[i][j]);
-                                int B = Color.blue(pixels[i][j]);
-
-                                paint.setARGB(A, R, G, B);
-                                canvas.drawPoint(j, i, paint);
+                                A = 0;
                             }
+
+                            paint.setARGB(A, R, G, B);
+                            paint.setStyle(Paint.Style.FILL);
+                            canvas.drawPoint(i, j, paint);
                         }
-
-                        Message message = new Message();
-                        message.obj = view;
-                        h.sendMessage(message);
-                        sysTime = System.currentTimeMillis();
                     }
-                }
-            }
-        }).start();
 
-        new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                while(isRunning)
-                {
-                    //toDO
-                    new Fire(object, 0, 0, 0);
+                    Random r = new Random();
+
+                    int x = r.nextInt(1280);
+                    int y = r.nextInt(1000) + 1000;
+                    int length = pixels[0].length;
+                    int height = pixels.length;
+                    float visibility = ((float)r.nextInt(3753) + (float)5000) / (float)10000;
+                    int speed = r.nextInt(10) + 5;
+
+                    Package p = new Package(x, y, bitmap, length, height, speed, visibility);
+
+                    Message message = new Message();
+                    message.obj = p;
+                    message.what = 1;
+                    h.sendMessage(message);
 
                     try
                     {
-                        Thread.sleep(2000);
+                        Thread.sleep(500);
                     }
                     catch (InterruptedException e)
                     {
@@ -100,129 +187,104 @@ public class 篝火
             }
         }).start();
 
-        new Thread(new Runnable()
+        Moving = new Thread(new Runnable()
         {
             @Override
             public void run()
             {
+                long sysTime = System.currentTimeMillis();
+
                 while(isRunning)
                 {
-                    for(int i = 0 ; i < fires.size() ; i += 1)
+                    for(int i = 0 ; i < views.size() ; i += 1)
                     {
-                        final int index = i;
-
-                        new Thread(new Runnable()
+                        try
                         {
-                            @Override
-                            public void run()
+                            for(int j = 0 ; j < views.size() ; j += 1)
                             {
-                                //toDO
-                                fires.get(index).next(0, 0);
+                                long curTime = System.currentTimeMillis();
+
+                                speeds.set(j, speeds.get(j) - (int)(curTime - sysTime));
                             }
-                        }).start();
+
+                            sysTime = System.currentTimeMillis();
+
+                            if(speeds.get(i) > 0)
+                            {
+                                continue;
+                            }
+
+                            final ImageView view = views.get(i);
+                            speeds.set(i, speedCopy.get(i));
+
+                            Message message = new Message();
+                            message.what = 7;
+                            message.obj = view;
+                            h.sendMessage(message);
+
+                            if(view.getY() + view.getHeight() <= 0 || view.getAlpha() <= 0)
+                            {
+                                message = new Message();
+                                message.obj = Moving;
+                                message.what = 1000 + i;
+                                h.sendMessage(message);
+
+                                try
+                                {
+                                    Thread.sleep(1000000);
+                                }
+                                catch (InterruptedException e)
+                                {
+
+                                }
+
+                                views.remove(i);
+                                speeds.remove(i);
+                                speedCopy.remove(i);
+
+                                i -= 1;
+                            }
+                        }
+                        catch (IndexOutOfBoundsException e)
+                        {
+
+                        }
                     }
                 }
             }
-        }).start();
+        });
+
+        Moving.start();
     }
 
     public void close()
     {
         isRunning = false;
-        h.removeCallbacksAndMessages(0);
         Message message = new Message();
         message.what = -1;
         h.sendMessage(message);
     }
 
-    private class Fire
+    private class Package
     {
-        private int x;
-        private int y;
-        private int speed;
-        private long sysTime;
-        private boolean operation;
-        //a r g b
-        private int[][][] matrix;
+        int a;
+        int b;
+        int c;
+        int d;
+        int e;
+        float f;
+        Bitmap bitmap;
+        ImageView imageView;
 
-        private Fire(int[][][] object, int x, int y, int speed)
+        public Package(int a, int b, Bitmap bitmap, int c, int d, int e, float f)
         {
-            this.x = x;
-            this.y = y;
-            this.speed = speed;
-            sysTime = System.currentTimeMillis();
-
-            matrix = new int[8][y][x];
-
-            for(int i = 0 ; i < 8 ; i += 1)
-            {
-                for(int j = 0 ; j < object[i].length ; j += 1)
-                {
-                    for(int k = 0 ; k < object[i][j].length ; k += 1)
-                    {
-                        matrix[i][j][k] = object[i][j][k];
-                    }
-                }
-            }
-
-            fires.add(this);
-        }
-
-        public void next(int x_TO, int y_TO)
-        {
-            if( ! operation && System.currentTimeMillis() - sysTime < speed)
-            {
-                return;
-            }
-
-            operation = true;
-
-            x = x_TO;
-            y = y_TO;
-
-            int[] copy = new int[y];
-
-            for(int i = 0 ; i < y ; i += 1)
-            {
-                copy[i] = matrix[0][i][0];
-            }
-
-            for(int i = 0 ; i < 8 - 1; i += 1)
-            {
-                for(int j = 0 ; j < matrix[i].length ; j += 1)
-                {
-                    for(int k = 0 ; k < matrix[i][j].length - 1; k += 1)
-                    {
-                        matrix[i][j][k] = matrix[i][j][k + 1];
-                    }
-
-                    matrix[i][j][matrix[i][j].length - 1] = matrix[i + 1][j][0];
-                }
-            }
-
-            for(int i = 0 ; i < matrix[7].length ; i += 1)
-            {
-                for(int j = 0 ; j < matrix[7][i].length - 1; j += 1)
-                {
-                    matrix[7][i][j] = matrix[7][i][j + 1];
-                }
-            }
-
-            for(int i = 0 ; i < copy.length ; i += 1)
-            {
-                matrix[7][i][matrix[7][i].length - 1] = copy[i];
-            }
-
-            for(int i = 0 ; i < matrix[0][i].length ; i += 1)
-            {
-                for(int j = 0 ; j < matrix[0][i].length ; j += 1)
-                {
-                    pixels[i + y][j + x] = Algorithm.setTransparent(Color.alpha(matrix[0][i][j]), matrix[0][i][j], pixels[i + y][j + x]);
-                }
-            }
-
-            sysTime = System.currentTimeMillis();
-            operation = false;
+            this.a = a;
+            this.b = b;
+            this.c = c;
+            this.d = d;
+            this.e = e;
+            this.f = f;
+            this.bitmap = bitmap;
         }
     }
 }

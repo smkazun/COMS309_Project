@@ -24,6 +24,7 @@ import com.example.admin.callardar.Classes.User;
 import com.example.admin.callardar.Classes.UserType;
 import com.example.admin.callardar.Classes.callenDar;
 import com.example.admin.callardar.Classes.シルヴァホルン;
+import com.example.admin.callardar.Classes.篝火;
 import com.example.admin.callardar.Connection.AppController;
 import com.example.admin.callardar.Connection.JsonRequestActivity;
 
@@ -63,7 +64,7 @@ public class CalendarList extends AppCompatActivity {
     private ImageView people_show_pre_leftArrow;
     private ImageView people_show_pre_rightArrow;
     private int curIndex;
-    private ImageView people_show_pre_SortingSystem;
+
     private シルヴァホルン she3;
 
     protected static int iem;
@@ -90,6 +91,9 @@ public class CalendarList extends AppCompatActivity {
     private ArrayList<View> views;
     private ArrayList<シルヴァホルン> she_ca;
     private ArrayList<シルヴァホルン> she_ca_going;
+
+    private 篝火 kagaribi;
+    private Handler kagaribi_h;
 
     /**
      *
@@ -153,6 +157,13 @@ public class CalendarList extends AppCompatActivity {
                                               mainLayout.addView(screen_CalenderCreator);
                                               screen_CalenderCreator.setVisibility(View.VISIBLE);
                                               trans.setVisibility(View.VISIBLE);
+
+                                              if(MainActivity.night)
+                                              {
+                                                  Message message = new Message();
+                                                  message.what = 17;
+                                                  kagaribi_h.sendMessage(message);
+                                              }
                                           }
 
                                           return false;
@@ -176,9 +187,11 @@ public class CalendarList extends AppCompatActivity {
     {
         calendar_PreView = findViewById(R.id.日历预览);calendar_PreView.setBackgroundColor(Color.BLUE);
         people_PreView = findViewById(R.id.成员预览);people_PreView.setBackgroundColor(Color.rgb(170,50,90));
-        people_show_pre_leftArrow = findViewById(R.id.成员预览_左箭头);Color.rgb(10,100,200);
-        people_show_pre_rightArrow = findViewById(R.id.成员预览_右箭头);Color.rgb(10,100,200);
-        people_show_pre_SortingSystem = findViewById(R.id.SortingSystem_PeopleShow_Pre);Color.rgb(30,10,150);
+        people_show_pre_leftArrow = findViewById(R.id.成员预览_左箭头);
+        people_show_pre_rightArrow = findViewById(R.id.成员预览_右箭头);
+        TextView mark = findViewById(R.id.成员预览_标识);
+        mark.setBackgroundColor(Color.BLACK);
+        mark.setTextColor(Color.WHITE);
 
         people_show_pre_leftArrow.setOnTouchListener(new View.OnTouchListener()
         {
@@ -191,6 +204,14 @@ public class CalendarList extends AppCompatActivity {
                 }
 
                 curIndex -= 10;
+
+                if(curIndex == 0)
+                {
+                    people_show_pre_leftArrow.setBackgroundColor(Color.RED);
+                }
+
+                people_show_pre_rightArrow.setBackgroundColor(Color.GREEN);
+
                 people_PreView.removeAllViews();
 
                 int[] zone = new int[]{0, people_PreView.getWidth(), 0, people_PreView.getHeight()};
@@ -211,6 +232,14 @@ public class CalendarList extends AppCompatActivity {
                 }
 
                 curIndex += 10;
+
+                if(curIndex + 10 >= MainActivity.user.getCalender()[iem].getCurrentUser().length)
+                {
+                    people_show_pre_rightArrow.setBackgroundColor(Color.RED);
+                }
+
+                people_show_pre_leftArrow.setBackgroundColor(Color.GREEN);
+
                 people_PreView.removeAllViews();
 
                 int[] zone = new int[]{0, people_PreView.getWidth(), 0, people_PreView.getHeight()};
@@ -307,7 +336,17 @@ public class CalendarList extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event)
             {
-                startActivity(new Intent(CalendarList.this, AccountSetting.class));
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setClass(CalendarList.this, AccountSetting.class);
+                startActivity(intent);
+
+                if(MainActivity.night)
+                {
+                    Message message = new Message();
+                    message.what = 17;
+                    kagaribi_h.sendMessage(message);
+                }
 
                 return false;
             }
@@ -318,7 +357,17 @@ public class CalendarList extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event)
             {
-                startActivity(new Intent(CalendarList.this, FriendList.class));
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setClass(CalendarList.this, FriendList.class);
+                startActivity(intent);
+
+                if(MainActivity.night)
+                {
+                    Message message = new Message();
+                    message.what = 17;
+                    kagaribi_h.sendMessage(message);
+                }
 
                 return false;
             }
@@ -386,6 +435,13 @@ public class CalendarList extends AppCompatActivity {
                         Message message = new Message();
                         message.what = 11;
                         handler.sendMessage(message);
+
+                        if(MainActivity.night)
+                        {
+                            message = new Message();
+                            message.what = 18;
+                            kagaribi_h.sendMessage(message);
+                        }
                     }
                 };
 
@@ -447,6 +503,13 @@ public class CalendarList extends AppCompatActivity {
                             Message message = new Message();
                             message.what = 1000 + iem;
                             handler.sendMessage(message);
+
+                            if(MainActivity.night)
+                            {
+                                message = new Message();
+                                message.what = 17;
+                                kagaribi_h.sendMessage(message);
+                            }
                         }
                     });
 
@@ -461,6 +524,13 @@ public class CalendarList extends AppCompatActivity {
                         Message message = new Message();
                         message.what = 1000 + iem;
                         handler.sendMessage(message);
+
+                        if(MainActivity.night)
+                        {
+                            message = new Message();
+                            message.what = 17;
+                            kagaribi_h.sendMessage(message);
+                        }
                     }
                 }
             }
@@ -510,7 +580,17 @@ public class CalendarList extends AppCompatActivity {
                                 }
                             }
 
-                            startActivity(new Intent(CalendarList.this, MainActivity_Calendar.class));
+                            Intent intent = new Intent();
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setClass(CalendarList.this, MainActivity_Calendar.class);
+                            startActivity(intent);
+
+                            if(MainActivity.night)
+                            {
+                                Message message = new Message();
+                                message.what = 17;
+                                kagaribi_h.sendMessage(message);
+                            }
                         }
                     });
 
@@ -670,6 +750,7 @@ public class CalendarList extends AppCompatActivity {
     {
         screen_CalenderCreator = findViewById(R.id.CalenderCreator);
         mainLayout = findViewById(R.id.JFrame_activity_calendar_list);
+        mainLayout.setBackgroundColor(Color.TRANSPARENT);
 
         mainLayout.setOnTouchListener(new WindowMovement());
         b = findViewById(R.id.closeShow);
@@ -683,6 +764,13 @@ public class CalendarList extends AppCompatActivity {
         trans.setBackgroundColor(Color.BLACK);
         trans.setAlpha((float)0.8);
         trans.setVisibility(View.INVISIBLE);
+
+        if(MainActivity.night)
+        {
+            trans.setAlpha((float)0);
+            mainLayout.setBackgroundColor(Color.BLACK);
+            goToaccountSetting.setBackgroundColor(Color.YELLOW);
+        }
 
         showFriendList = findViewById(R.id.show);
         showFriendList2 = findViewById(R.id.show2);
@@ -1122,6 +1210,13 @@ public class CalendarList extends AppCompatActivity {
                         screen_CalenderCreator.setVisibility(View.INVISIBLE);
                         trans.setVisibility(View.INVISIBLE);
                         she1.if_Usable = true;
+
+                        if(MainActivity.night)
+                        {
+                            Message message = new Message();
+                            message.what = 18;
+                            kagaribi_h.sendMessage(message);
+                        }
                     }
                 }
 
@@ -1205,7 +1300,21 @@ public class CalendarList extends AppCompatActivity {
             Initialize();
             people = null;
             admins = null;
-            startActivity(new Intent(CalendarList.this, MainActivity_Calendar.class));
+
+            Intent intent = new Intent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setClass(CalendarList.this, MainActivity_Calendar.class);
+            startActivity(intent);
+
+            iem = MainActivity.user.getCalender().length - 1;
+
+            if(MainActivity.night)
+            {
+                Message message = new Message();
+                message.what = 17;
+                kagaribi_h.sendMessage(message);
+            }
+
             return;
         }
 
@@ -1383,8 +1492,19 @@ public class CalendarList extends AppCompatActivity {
                 Message message = new Message();
                 message.what = 20;
                 handler.sendMessage(message);
-                System.out.println(id);
-                startActivity(new Intent(CalendarList.this, MainActivity_Calendar.class));
+
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setClass(CalendarList.this, MainActivity_Calendar.class);
+                startActivity(intent);
+
+                if(MainActivity.night)
+                {
+                    message = new Message();
+                    message.what = 17;
+                    kagaribi_h.sendMessage(message);
+                }
+
                 mainLayout.setOnTouchListener(new WindowMovement());
                 iem = MainActivity.user.getCalender().length - 1;
             }
@@ -1648,6 +1768,17 @@ public class CalendarList extends AppCompatActivity {
                         Algorithm.create_ImageAndTexts(CalendarList.this, people_PreView, zone, 2, 5, null, MainActivity.user.getCalender()[i].getCurrentUser(), Pic, Tex, 0);
                     }
 
+                    people_show_pre_leftArrow.setBackgroundColor(Color.RED);
+
+                    if(MainActivity.user.getCalender()[i].getCurrentUser().length >= 10)
+                    {
+                        people_show_pre_rightArrow.setBackgroundColor(Color.GREEN);
+                    }
+                    else
+                    {
+                        people_show_pre_rightArrow.setBackgroundColor(Color.RED);
+                    }
+
                     Algorithm.view_MOVE(new View[]{calendar_PreView}, mainLayout.getWidth() - people_PreView.getWidth(),0);
 
                     new Thread(new Runnable()
@@ -1673,12 +1804,67 @@ public class CalendarList extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("HandlerLeak")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_list);
 
         SetComponent();
         Initialize();
+
+        kagaribi_h = new Handler()
+        {
+            public void handleMessage(Message msg)
+            {
+                super.handleMessage(msg);
+
+                switch (msg.what)
+                {
+                    case 17:
+                        kagaribi.close();
+                        break;
+                    case 18:
+                        kagaribi = new 篝火(CalendarList.this, mainLayout, MainActivity.篝火);
+                        kagaribi.open();
+                }
+            }
+        };
+
+        Thread Loading = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    Thread.sleep(100000000);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+
+                try
+                {
+                    Thread.sleep(100);
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+
+                if(MainActivity.night)
+                {
+                    Message message = new Message();
+                    message.what = 18;
+                    kagaribi_h.sendMessage(message);
+                }
+            }
+        });
+
+        Loading.start();
+        Loading.interrupt();
     }
 }

@@ -128,7 +128,7 @@ public class User implements Comparable<User>
 
         User toCompare = (User) o;
 
-        return name.equals(toCompare.getName()) && Email.equals(toCompare.getEmail());
+        return name.equals(toCompare.getName()) && Email.equals(toCompare.getEmail()) && id == toCompare.id;
     }
 
     @Override

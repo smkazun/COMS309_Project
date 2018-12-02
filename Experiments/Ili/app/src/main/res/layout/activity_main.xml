@@ -54,14 +54,14 @@
             android:id="@+id/WrongMessage"
             android:layout_width="121dp"
             android:layout_height="24dp"
+            android:layout_marginBottom="144dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:text="Didn't match"
             android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="244dp" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/button_Login"

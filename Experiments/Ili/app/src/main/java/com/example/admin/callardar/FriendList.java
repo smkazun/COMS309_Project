@@ -2,6 +2,8 @@ package com.example.admin.callardar;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Handler;
@@ -70,6 +72,19 @@ public class FriendList extends AppCompatActivity {
     {
         process = findViewById(R.id.UI_adding_deleting_searching);
         mainLayout = findViewById(R.id.mainLayout_friend);
+
+        if(MainActivity.night)
+        {
+            mainLayout.setBackgroundColor(Color.BLACK);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.wafendes);
+            process.setImageBitmap(bitmap);
+        }
+        else
+        {
+            mainLayout.setBackgroundColor(Color.TRANSPARENT);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.wafentes);
+            process.setImageBitmap(bitmap);
+        }
 
         mainLayout.setOnTouchListener(new View.OnTouchListener()
         {
@@ -286,7 +301,10 @@ public class FriendList extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                startActivity(new Intent(FriendList.this, CalendarList.class));
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setClass(FriendList.this, CalendarList.class);
+                startActivity(intent);
             }
         });
 

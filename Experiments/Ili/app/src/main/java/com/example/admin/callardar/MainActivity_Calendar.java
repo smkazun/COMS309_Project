@@ -4,18 +4,13 @@ package com.example.admin.callardar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.admin.callardar.Classes.CalendarAdapter;
-
-import java.util.Date;
-import java.util.List;
 
 public class MainActivity_Calendar extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
@@ -23,6 +18,9 @@ public class MainActivity_Calendar extends AppCompatActivity implements AdapterV
     private Button prevButton, nextButton, Event_B,Chat;
     private CalendarAdapter mCalendarAdapter;
     private GridView calendarGridView;
+
+    private Button calendar_back;
+    private Button calendar_add;
 
 
     @Override
@@ -67,6 +65,33 @@ public class MainActivity_Calendar extends AppCompatActivity implements AdapterV
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity_Calendar.this, EventActivity.class);
                 startActivity(i);
+            }
+        });
+
+        calendar_add = findViewById(R.id.calendar_add);
+        calendar_back = findViewById(R.id.calendar_back);
+
+        calendar_add.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setClass(MainActivity_Calendar.this, PeopleAddingCalendar.class);
+                startActivity(intent);
+            }
+        });
+
+        calendar_back.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setClass(MainActivity_Calendar.this, CalendarList.class);
+                startActivity(intent);
             }
         });
 
