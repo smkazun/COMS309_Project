@@ -18,6 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * 
+ * @author Sebastian Kazun
+ *
+ */
 @ServerEndpoint("/websocket/{username}")
 @Component
 public class WebSocketServer {
@@ -28,6 +33,15 @@ public class WebSocketServer {
     
     private final Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
     
+    /**
+     * Creates a new session for users to join upon startup
+     * 
+     * @param session 
+     * the created session for users to join
+     * @param username 
+     * the name of the user joining the chat
+     * @throws IOException
+     */
     @OnOpen
     public void onOpen(
     	      Session session, 
@@ -43,7 +57,14 @@ public class WebSocketServer {
 		
     }
     
-    //sends message to all other connected chats or to a particular user
+    /**
+     * sends message to all other connected chats or to a particular user
+     * @param session
+     * the created session for users to join
+     * @param message
+     * the message that will be sent to other users
+     * @throws IOException
+     */
     @OnMessage
     public void onMessage(Session session, String message) throws IOException 
     {
@@ -62,7 +83,13 @@ public class WebSocketServer {
 	    	broadcast(username + ": " + message);
     	}
     }
- 
+    
+    /**
+     * Handles closing the connection of the chat
+     * @param session
+     * the created session for users to join
+     * @throws IOException
+     */
     @OnClose
     public void onClose(Session session) throws IOException
     {
@@ -75,7 +102,13 @@ public class WebSocketServer {
     	String message= username + " disconnected";
         broadcast(message);
     }
- 
+    
+    /**
+     * An error handler that alerts when an error has occured
+     * @param session
+     * the created session for users to join
+     * @param throwable
+     */
     @OnError
     public void onError(Session session, Throwable throwable) 
     {
@@ -83,7 +116,13 @@ public class WebSocketServer {
     	logger.info("Entered into Error");
     }
     
-    //handles sending of a message to a particular user
+    /**
+     * handles sending of a message to a particular user
+     * @param username
+     * the name of the user to send the message to
+     * @param message
+     * the message that will be sent to this particular user
+     */
 	private void sendMessageToPArticularUser(String username, String message) 
     {	
     	try {
@@ -94,6 +133,12 @@ public class WebSocketServer {
         }
     }
     
+	/**
+	 * Sends the message to ALL users that are connected to the chat session
+	 * @param message
+	 * the message that will be sent to all the other users
+	 * @throws IOException
+	 */
     private static void broadcast(String message) 
     	      throws IOException 
     {	  
