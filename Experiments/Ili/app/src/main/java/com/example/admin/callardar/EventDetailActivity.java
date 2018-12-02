@@ -63,7 +63,11 @@ public class EventDetailActivity extends AppCompatActivity {
                     a.makeJsonObjReq(URL, msg, C);
 
                    MainActivity.user.getCalender()[CalendarList.iem].deleteEvent(EventAdapter.position);
-                   startActivity(new Intent(EventDetailActivity.this, EventActivity.class));
+
+                    Intent intent = new Intent();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setClass(EventDetailActivity.this, EventActivity.class);
+                    startActivity(intent);
                 }
 
                 return true;

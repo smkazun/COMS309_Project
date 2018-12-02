@@ -104,6 +104,11 @@ public class User implements Comparable<User>
         calenders = new ArrayList<callenDar>();
     }
 
+    public void deleteCalendar(int index)
+    {
+        calenders.remove(index);
+    }
+
     public UserType getType(callenDar calender)
     {
         User[] arr = calender.getCurrentUser();

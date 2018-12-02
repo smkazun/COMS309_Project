@@ -374,6 +374,7 @@ System.out.println(id + "+ " + name);
                 while (true)
                 {
                     ArrayList<callenDar> calendar = new ArrayList<callenDar>();
+                    int[] bool = new int[user.getCalender().length];
 
                     String URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/" + user.getID();
                     ArrayList<JSONObject> JObj = new ArrayList<JSONObject>();
@@ -429,6 +430,8 @@ System.out.println(id + "+ " + name);
                             {
                                 if(calendar.get(i).equals(user.getCalender()[j]) == 0)
                                 {
+                                    bool[j] = 1;
+
                                     break;
                                 }
 
@@ -470,6 +473,21 @@ System.out.println(id + "+ " + name);
                                     handler.sendMessage(message);
                                     break;
                                 }
+                            }
+                        }
+
+                        for(int i = 0 ; i < bool.length ; i += 1)
+                        {
+                            if(bool[i] != 1)
+                            {
+                                Message message = new Message();
+                                message.what = 3;
+                                message.obj = user.getCalender()[i].toString();
+                                handler.sendMessage(message);
+
+                                user.deleteCalendar(i);
+
+                                break;
                             }
                         }
                     }
@@ -519,6 +537,15 @@ System.out.println(id + "+ " + name);
 
         wrongMessage = findViewById(R.id.WrongMessage);
         wrongMessage.setVisibility(View.INVISIBLE);
+
+        if(night)
+        {
+            wrongMessage.setTextColor(Color.WHITE);
+        }
+        else
+        {
+            wrongMessage.setTextColor(Color.BLACK);
+        }
 
         password.setTransformationMethod(PasswordTransformationMethod.getInstance());
         LOGIN.setOnClickListener(new OnClick());
@@ -633,6 +660,23 @@ System.out.println(id + "+ " + name);
                         notifybuider.setContentTitle("New Event has been added")
                                 .setSubText("In " + (String) msg.obj)
                                 .setTicker("New Event")
+                                .setWhen(System.currentTimeMillis())
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
+                                .setAutoCancel(true);
+
+                        notify = notifybuider.build();
+                        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        manager.notify(1,notify);
+
+                        break;
+
+                    case 3:
+                        notifybuider = new Notification.Builder(MainActivity.this);
+
+                        notifybuider.setContentTitle("Current Calendar has been deleted")
+                                .setSubText("Name : " + (String) msg.obj)
+                                .setTicker("Calendar been deleted")
                                 .setWhen(System.currentTimeMillis())
                                 .setSmallIcon(R.mipmap.ic_launcher)
                                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)

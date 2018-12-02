@@ -27,6 +27,9 @@ public class callenDar
         people = new ArrayList<User>();
         this.admins = new ArrayList<User>();
         events = new ArrayList<Event>();
+        this.holder = holder;
+
+        people.add(holder);
 
         for(int i = 0 ; i < toAdd.length ; i += 1)
         {

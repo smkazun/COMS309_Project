@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admin.callardar.DayActivity;
+import com.example.admin.callardar.EventActivity;
+import com.example.admin.callardar.EventAdd;
 import com.example.admin.callardar.EventDetailActivity;
 import com.example.admin.callardar.R;
 
@@ -109,6 +111,8 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.ViewHolder>
                 public void onClick(View v) {
                     position = getAdapterPosition();
                     Toast.makeText(mContext.getApplicationContext(),"Its "+ position, Toast.LENGTH_LONG).show();
+
+
                     mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
 //                    mContext.startActivity(new Intent(mContext, EventDetailActivity.class).putExtra("e", position));
 

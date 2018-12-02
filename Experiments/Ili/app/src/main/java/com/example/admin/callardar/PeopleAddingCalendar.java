@@ -50,6 +50,16 @@ public class PeopleAddingCalendar extends AppCompatActivity
     private void Initialize()
     {
         mainLayout = findViewById(R.id.people_adding_calendar_mainLayout);
+
+        if(MainActivity.night)
+        {
+            mainLayout.setBackgroundColor(Color.BLACK);
+        }
+        else
+        {
+            mainLayout.setBackgroundColor(Color.WHITE);
+        }
+
         container = findViewById(R.id.people_adding_calendar_Container);
 
         TextView back = findViewById(R.id.people_adding_calendar_Back);
@@ -197,8 +207,6 @@ public class PeopleAddingCalendar extends AppCompatActivity
                                     {
                                         chyet = -1;
 
-                                        int index = 0;
-
                                         String URL = "http://proj309-VC-03.misc.iastate.edu:8080/calendar/" + toAdd[0][i] + "/" + toAdd[0][i].getID();
                                         ArrayList<String> s = new ArrayList<String>();
                                         JsonRequestActivity a = new JsonRequestActivity(PeopleAddingCalendar.this);
@@ -237,6 +245,8 @@ public class PeopleAddingCalendar extends AppCompatActivity
                                         }
 
                                         toAdd[0] = refresh();
+                                        iem = 0;
+
                                         return false;
                                     }
 
