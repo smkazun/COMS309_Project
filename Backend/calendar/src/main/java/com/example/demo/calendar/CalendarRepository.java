@@ -9,9 +9,20 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.user.Users;
 
+/**
+ * 
+ * @author Sebastian Kazun
+ *
+ */
 @Repository
 public interface CalendarRepository extends CrudRepository<Calendar, Integer> {
-
+	
+	/**
+	 * Finds the Calendar by using its unique id
+	 * @param calendarid
+	 * @return
+	 * Returns the specified calendar
+	 */
 	public Optional<Calendar> findByCalendarid(Integer calendarid);
 	
 }

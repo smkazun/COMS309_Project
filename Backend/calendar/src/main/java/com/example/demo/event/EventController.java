@@ -51,7 +51,6 @@ public class EventController {
 	{
 		Calendar c = calendarRepository.findByCalendarid(id).get();
 		Events e = event;
-		
 		eventRepository.save(e);
 		
 		return "New event saved";
@@ -118,6 +117,7 @@ public class EventController {
 	 * Returns the events associated with a users id
 	 * @param userId
 	 * @return
+	 * Returns all the events for a particular user
 	 */
 	@GetMapping(path = "/user/{userId}")
 	@ResponseBody

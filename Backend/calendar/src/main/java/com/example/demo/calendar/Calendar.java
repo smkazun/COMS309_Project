@@ -29,6 +29,11 @@ import org.springframework.core.style.ToStringCreator;
 import com.example.demo.event.Events;
 import com.example.demo.user.*;
 
+/**
+ * 
+ * @author Sebastian Kazun
+ *
+ */
 @Entity
 @Table(name = "calendar")
 public class Calendar {
