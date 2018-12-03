@@ -1,7 +1,5 @@
 package com.example.admin.callardar.Classes;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 public class User implements Comparable<User>
@@ -106,11 +104,6 @@ public class User implements Comparable<User>
         calenders = new ArrayList<callenDar>();
     }
 
-    public void deleteCalendar(int index)
-    {
-        calenders.remove(index);
-    }
-
     public UserType getType(callenDar calender)
     {
         User[] arr = calender.getCurrentUser();
@@ -135,7 +128,7 @@ public class User implements Comparable<User>
 
         User toCompare = (User) o;
 
-        return name.equals(toCompare.getName()) && Email.equals(toCompare.getEmail()) && id == toCompare.id;
+        return name.equals(toCompare.getName()) && Email.equals(toCompare.getEmail());
     }
 
     @Override

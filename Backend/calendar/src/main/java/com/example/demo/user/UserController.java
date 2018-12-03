@@ -53,22 +53,11 @@ public class UserController {
 		return "New User " + user.getname() + " saved";
 	}
 	
-	//make new friends: adds id of user and friend
-	@RequestMapping(method = RequestMethod.POST, path = "/{Userid}/{friendid}")
-	public @ResponseBody String addfriendstotable(@PathVariable ("Userid") int uid, @PathVariable("friendid") int fid) 
-	{
-		Users users = userRepository.findByuserid(uid).get();
-		Users friend = userRepository.findByuserid(fid).get();
-		
-		users.getuserfriends().add(users);
-		friend.getuserfriends().add(friend);
-		
-		userRepository.save(users);
-		
-		return "users for  " + users.getname() + " saved";
-	}
-	
-	//return all user accounts
+	/**
+	 * Returns all user accounts
+	 * @return
+	 * Returns all user accounts
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/all")
 	@ResponseBody
 	public List<Users> getAllUsers(){
