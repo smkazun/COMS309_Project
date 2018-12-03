@@ -105,4 +105,18 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="       DELETO!" />
 
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="387dp"
+        android:layout_height="350dp"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        tools:context=".EventDetailActivity" />
+
+
+
 </android.support.constraint.ConstraintLayout>
