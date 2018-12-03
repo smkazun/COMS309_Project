@@ -12,7 +12,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,13 +19,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.admin.callardar.Classes.Algorithm;
-import com.example.admin.callardar.Classes.Event;
 import com.example.admin.callardar.Classes.Point;
+import com.example.admin.callardar.Classes.Shirubahorun;
 import com.example.admin.callardar.Classes.User;
 import com.example.admin.callardar.Classes.UserType;
 import com.example.admin.callardar.Classes.callenDar;
-import com.example.admin.callardar.Classes.シルヴァホルン;
-import com.example.admin.callardar.Classes.篝火;
+import com.example.admin.callardar.Classes.Kagaribi;
 import com.example.admin.callardar.Connection.AppController;
 import com.example.admin.callardar.Connection.JsonRequestActivity;
 
@@ -34,11 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.concurrent.TimeoutException;
-import java.util.jar.JarEntry;
 
 public class CalendarList extends AppCompatActivity {
 
@@ -67,7 +61,7 @@ public class CalendarList extends AppCompatActivity {
     private ImageView people_show_pre_rightArrow;
     private int curIndex;
 
-    private シルヴァホルン she3;
+    private Shirubahorun she3;
 
     protected static int iem;
 
@@ -79,22 +73,22 @@ public class CalendarList extends AppCompatActivity {
     private ImageView pic_of_the_User;
     private ImageView goToaccountSetting;
     private ImageView checkfriends;
-    private シルヴァホルン she2;
+    private Shirubahorun she2;
 
     private EditText tf;
 
     private ArrayList<User> people;
     private ArrayList<User> admins;
 
-    private シルヴァホルン she1;
+    private Shirubahorun she1;
     private Handler handler;
     private Thread t;
 
     private ArrayList<View> views;
-    private ArrayList<シルヴァホルン> she_ca;
-    private ArrayList<シルヴァホルン> she_ca_going;
+    private ArrayList<Shirubahorun> she_ca;
+    private ArrayList<Shirubahorun> she_ca_going;
 
-    private 篝火 kagaribi;
+    private Kagaribi kagaribi;
     private Handler kagaribi_h;
 
     /**
@@ -115,8 +109,8 @@ public class CalendarList extends AppCompatActivity {
         int length = 172;
 
         callenDar[] arr = MainActivity.user.getCalender();
-        she_ca = new ArrayList<シルヴァホルン>();
-        she_ca_going = new ArrayList<シルヴァホルン>();
+        she_ca = new ArrayList<Shirubahorun>();
+        she_ca_going = new ArrayList<Shirubahorun>();
         TextView tf = null;
         ImageView Jpanel0 = null;
 
@@ -135,8 +129,8 @@ public class CalendarList extends AppCompatActivity {
             views.add(Jpanel0);
             mainLayout.addView(Jpanel0);
 
-            she_ca.add(new シルヴァホルン(new Point[]{new Point(310, length), new Point(410, length), new Point(410, length + 110), new Point(310, length + 110)}));
-            she_ca_going.add(new シルヴァホルン(new Point[]{new Point(0,length), new Point(300,length),new Point(300,length + 110),new Point(0,length + 110)}));
+            she_ca.add(new Shirubahorun(new Point[]{new Point(310, length), new Point(410, length), new Point(410, length + 110), new Point(310, length + 110)}));
+            she_ca_going.add(new Shirubahorun(new Point[]{new Point(0,length), new Point(300,length),new Point(300,length + 110),new Point(0,length + 110)}));
 
             Jpanel0.setOnTouchListener(new CalendarListener());
             tf.setOnTouchListener(new gotoCalendarListener());
@@ -146,7 +140,7 @@ public class CalendarList extends AppCompatActivity {
 
         TextView Jpanel = Algorithm.createTextField(CalendarList.this,"Create new calendar", 0, length , new RelativeLayout.LayoutParams(300, 100), Color.rgb(150,100,15), (float)0.9);
 
-        she1 = new シルヴァホルン(new Point[]{new Point(0,length), new Point(300,length),new Point(300,length + 100),new Point(0,length + 100)});
+        she1 = new Shirubahorun(new Point[]{new Point(0,length), new Point(300,length),new Point(300,length + 100),new Point(0,length + 100)});
 
         Jpanel.setOnTouchListener(new View.OnTouchListener()
                                   {
@@ -291,7 +285,7 @@ public class CalendarList extends AppCompatActivity {
                 }
 
                 Algorithm.view_MOVE(new View[]{settingSolution}, 0, (int)settingSolution.getY());
-                she2 = new シルヴァホルン(new Point[]{new Point(0, (int)settingSolution.getY()), new Point((int)settingSolution.getWidth(), (int)settingSolution.getY()), new Point((int)settingSolution.getWidth(), mainLayout.getHeight()), new Point(0, mainLayout.getHeight())});
+                she2 = new Shirubahorun(new Point[]{new Point(0, (int)settingSolution.getY()), new Point((int)settingSolution.getWidth(), (int)settingSolution.getY()), new Point((int)settingSolution.getWidth(), mainLayout.getHeight()), new Point(0, mainLayout.getHeight())});
 
                 she1.if_Usable = false;
 
@@ -792,8 +786,8 @@ public class CalendarList extends AppCompatActivity {
         final ArrayList<ImageView> pic = new ArrayList<ImageView>();
         final ArrayList<TextView> return_Text = new ArrayList<TextView>();
         final ArrayList<ImageView> return_Pic = new ArrayList<ImageView>();
-        final ArrayList<シルヴァホルン> sheruns1 = new ArrayList<シルヴァホルン>();
-        final ArrayList<シルヴァホルン> sheruns2 = new ArrayList<シルヴァホルン>();
+        final ArrayList<Shirubahorun> sheruns1 = new ArrayList<Shirubahorun>();
+        final ArrayList<Shirubahorun> sheruns2 = new ArrayList<Shirubahorun>();
 
         final ArrayList<Integer> she1_f = new ArrayList<Integer>();
         final ArrayList<Integer> she2_f = new ArrayList<Integer>();
@@ -1745,7 +1739,7 @@ public class CalendarList extends AppCompatActivity {
                 default:
                     int i = msg.what % 1000;
 
-                    she3 = new シルヴァホルン(new Point[]{new Point(mainLayout.getWidth() - calendar_PreView.getWidth(), 0), new Point(mainLayout.getWidth(), 0), new Point(mainLayout.getWidth(), mainLayout.getHeight()), new Point(mainLayout.getWidth() - people_PreView.getWidth(), mainLayout.getHeight())});
+                    she3 = new Shirubahorun(new Point[]{new Point(mainLayout.getWidth() - calendar_PreView.getWidth(), 0), new Point(mainLayout.getWidth(), 0), new Point(mainLayout.getWidth(), mainLayout.getHeight()), new Point(mainLayout.getWidth() - people_PreView.getWidth(), mainLayout.getHeight())});
 
                     she1.if_Usable = false;
 
@@ -1830,7 +1824,7 @@ public class CalendarList extends AppCompatActivity {
                         kagaribi.close();
                         break;
                     case 18:
-                        kagaribi = new 篝火(CalendarList.this, mainLayout, MainActivity.篝火);
+                        kagaribi = new Kagaribi(CalendarList.this, mainLayout, MainActivity.篝火);
                         kagaribi.open();
                 }
             }

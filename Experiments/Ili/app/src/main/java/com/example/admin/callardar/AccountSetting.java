@@ -2,7 +2,6 @@ package com.example.admin.callardar;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
@@ -12,13 +11,9 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.admin.callardar.Classes.篝火;
-
-import java.util.Random;
+import com.example.admin.callardar.Classes.Kagaribi;
 
 public class AccountSetting extends AppCompatActivity
 {
@@ -30,7 +25,7 @@ public class AccountSetting extends AppCompatActivity
 
     private TextView mode;
 
-    private 篝火 kagaribi;
+    private Kagaribi kagaribi;
     private Handler kagaribi_h;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -160,7 +155,7 @@ public class AccountSetting extends AppCompatActivity
                         kagaribi.close();
                         break;
                     case 18:
-                        kagaribi = new 篝火(AccountSetting.this, mainLayout, MainActivity.篝火);
+                        kagaribi = new Kagaribi(AccountSetting.this, mainLayout, MainActivity.篝火);
 
                         if(MainActivity.night)
                         {

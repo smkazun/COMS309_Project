@@ -8,7 +8,6 @@ import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,15 +15,14 @@ import android.widget.TextView;
 
 import com.example.admin.callardar.Classes.Algorithm;
 import com.example.admin.callardar.Classes.Point;
+import com.example.admin.callardar.Classes.Shirubahorun;
 import com.example.admin.callardar.Classes.User;
 import com.example.admin.callardar.Classes.UserType;
-import com.example.admin.callardar.Classes.シルヴァホルン;
 import com.example.admin.callardar.Connection.AppController;
 import com.example.admin.callardar.Connection.JsonRequestActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -43,7 +41,7 @@ public class PeopleAddingCalendar extends AppCompatActivity
     private boolean add_type;
     private boolean adding;
 
-    private ArrayList<シルヴァホルン> sherun;
+    private ArrayList<Shirubahorun> sherun;
     private ArrayList<ImageView> pics;
     private ArrayList<TextView> texts;
 
@@ -278,7 +276,7 @@ public class PeopleAddingCalendar extends AppCompatActivity
         ArrayList<User> users = new ArrayList<User>();
         User[] cur = MainActivity.user.getCalender()[CalendarList.iem].getCurrentUser();
 
-        sherun = new ArrayList<シルヴァホルン>();
+        sherun = new ArrayList<Shirubahorun>();
         pics = new ArrayList<ImageView>();
         texts = new ArrayList<TextView>();
 

@@ -19,13 +19,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.admin.callardar.Classes.Algorithm;
 import com.example.admin.callardar.Classes.Event;
 import com.example.admin.callardar.Classes.User;
 import com.example.admin.callardar.Classes.callenDar;
-import com.example.admin.callardar.Classes.篝火;
+import com.example.admin.callardar.Classes.Kagaribi;
 import com.example.admin.callardar.Connection.AppController;
 import com.example.admin.callardar.Connection.JsonRequestActivity;
 
@@ -33,13 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -50,7 +42,7 @@ public class MainActivity extends AppCompatActivity
 
     protected static int[][] 篝火;
 
-    private 篝火 kagaribi;
+    private Kagaribi kagaribi;
 
     private EditText account;
     private EditText password;
@@ -368,7 +360,7 @@ public class MainActivity extends AppCompatActivity
             }
             else if(msg.what == 18)
             {
-                kagaribi = new 篝火(MainActivity.this, mainLayout, 篝火);
+                kagaribi = new Kagaribi(MainActivity.this, mainLayout, 篝火);
 
                 if(night)
                 {

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
@@ -19,8 +18,8 @@ import android.widget.TextView;
 
 import com.example.admin.callardar.Classes.Algorithm;
 import com.example.admin.callardar.Classes.Point;
+import com.example.admin.callardar.Classes.Shirubahorun;
 import com.example.admin.callardar.Classes.User;
-import com.example.admin.callardar.Classes.シルヴァホルン;
 import com.example.admin.callardar.Connection.AppController;
 import com.example.admin.callardar.Connection.JsonRequestActivity;
 
@@ -50,14 +49,14 @@ public class FriendList extends AppCompatActivity {
 
     private ImageView trans;
 
-    private シルヴァホルン she1;
-    private シルヴァホルン she11;
-    private シルヴァホルン she2;
-    private シルヴァホルン she21;
-    private ArrayList<シルヴァホルン> sheruns2;
+    private Shirubahorun she1;
+    private Shirubahorun she11;
+    private Shirubahorun she2;
+    private Shirubahorun she21;
+    private ArrayList<Shirubahorun> sheruns2;
     private boolean deleto;
 
-    private ArrayList<シルヴァホルン> sheruns1;
+    private ArrayList<Shirubahorun> sheruns1;
     private User arr[];
     private User sen;
     private ArrayList<ImageView> pics;
@@ -331,14 +330,14 @@ public class FriendList extends AppCompatActivity {
 
                     arr = new User[users.size()];
                     arr = users.toArray(arr);
-                    sheruns1 = new ArrayList<シルヴァホルン>();
+                    sheruns1 = new ArrayList<Shirubahorun>();
 
                     addingprocess.removeAllViews();
 
                     int zone[] = new int[]{0, addingprocess.getWidth(), 0, addingprocess.getHeight()};
 
                     Algorithm.create_ImageAndTexts(FriendList.this, addingprocess, zone, 4,3, null, arr, new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);
-                    Algorithm.memberAddingProcess(FriendList.this, addingprocess, zone, zone, 4, 3, arr, new ArrayList<User>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), sheruns1, new ArrayList<シルヴァホルン>(), 0, 0, false);
+                    Algorithm.memberAddingProcess(FriendList.this, addingprocess, zone, zone, 4, 3, arr, new ArrayList<User>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), sheruns1, new ArrayList<Shirubahorun>(), 0, 0, false);
 
                     return false;
                 }
@@ -410,7 +409,7 @@ public class FriendList extends AppCompatActivity {
 
                         arr = new User[users.size()];
                         arr = users.toArray(arr);
-                        sheruns1 = new ArrayList<シルヴァホルン>();
+                        sheruns1 = new ArrayList<Shirubahorun>();
 
                         Message message = new Message();
                         message.what = 15;
@@ -524,11 +523,11 @@ public class FriendList extends AppCompatActivity {
         trans.setBackgroundColor(Color.BLACK);
         trans.setVisibility(View.INVISIBLE);
 
-        she1 = new シルヴァホルン("4.9768066 1335.6328 30.025635 1347.6445 45.021973 1353.6797 76.03638 1368.6797 95.05371 1384.6758 122.08008 1393.6992 " +
+        she1 = new Shirubahorun("4.9768066 1335.6328 30.025635 1347.6445 45.021973 1353.6797 76.03638 1368.6797 95.05371 1384.6758 122.08008 1393.6992 " +
                 "156.12671 1415.6719 172.14478 1443.7383 218.18848 1470.75 240.20508 1492.7227 249.20288 1514.7539 283.2495 1538.7773 299.26758 1563.7969 " +
                 "317.26318 1597.7812 333.28125 1622.8008 333.28125 1644.832 348.31055 1647.8203 364.29565 1674.832 379.32495 1702.8398 388.32275 1727.8594 " +
                 "7.976074 1718.8359");
-        she2 = new シルヴァホルン("685.6128 1718.8359 691.6113 1702.8398 704.6301 1687.8398 713.6279 1665.8086 725.625 1644.832 738.6438 1622.8008 " +
+        she2 = new Shirubahorun("685.6128 1718.8359 691.6113 1702.8398 704.6301 1687.8398 713.6279 1665.8086 725.625 1644.832 738.6438 1622.8008 " +
                 "769.6582 1588.7578 793.6853 1551.7852 827.73193 1498.7578 861.7456 1470.75 896.781 1427.6836 939.82544 1393.6992 976.87134 1372.6641 " +
                 "1022.91504 1335.6328 1066.9482 1313.6602 1075.946 1313.6602 1078.9453 1724.8711");
 
@@ -579,9 +578,9 @@ public class FriendList extends AppCompatActivity {
             {
                 case 10:
                     int zone[] = new int[]{0, container.getWidth(), 0, container.getHeight()};
-                    she11 = new シルヴァホルン(new Point[]{new Point((int)addingprocess.getX(), (int)addingprocess.getY()), new Point((int)addingprocess.getX() + addingprocess.getWidth(), (int)addingprocess.getY()), new Point((int)addingprocess.getX() + addingprocess.getWidth(), (int)addingprocess.getY() + addingprocess.getHeight()), new Point((int)addingprocess.getX(), (int)addingprocess.getY() + addingprocess.getHeight())});
-                    she21 = new シルヴァホルン(new Point[]{new Point((int)friends.getX() + (int)container.getX(), (int)friends.getY() + (int)container.getY()), new Point((int)friends.getX() + (int)container.getX() + container.getWidth(), (int)friends.getY() + (int)container.getY()), new Point((int)friends.getX() + (int)container.getX() + container.getWidth(), (int)friends.getY() + (int)container.getY() + container.getHeight()), new Point((int)friends.getX() + (int)container.getX(), (int)friends.getY() + (int)container.getY() + container.getHeight())});
-                    sheruns2 = new ArrayList<シルヴァホルン>();
+                    she11 = new Shirubahorun(new Point[]{new Point((int)addingprocess.getX(), (int)addingprocess.getY()), new Point((int)addingprocess.getX() + addingprocess.getWidth(), (int)addingprocess.getY()), new Point((int)addingprocess.getX() + addingprocess.getWidth(), (int)addingprocess.getY() + addingprocess.getHeight()), new Point((int)addingprocess.getX(), (int)addingprocess.getY() + addingprocess.getHeight())});
+                    she21 = new Shirubahorun(new Point[]{new Point((int)friends.getX() + (int)container.getX(), (int)friends.getY() + (int)container.getY()), new Point((int)friends.getX() + (int)container.getX() + container.getWidth(), (int)friends.getY() + (int)container.getY()), new Point((int)friends.getX() + (int)container.getX() + container.getWidth(), (int)friends.getY() + (int)container.getY() + container.getHeight()), new Point((int)friends.getX() + (int)container.getX(), (int)friends.getY() + (int)container.getY() + container.getHeight())});
+                    sheruns2 = new ArrayList<Shirubahorun>();
 
                     pics.clear();
                     texts.clear();
@@ -599,7 +598,7 @@ public class FriendList extends AppCompatActivity {
                     zone= new int[]{0, addingprocess.getWidth(), 0, addingprocess.getHeight()};
 
                     Algorithm.create_ImageAndTexts(FriendList.this, addingprocess, zone, 4,3, null, arr, new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);
-                    Algorithm.memberAddingProcess(FriendList.this, addingprocess, zone, zone, 4, 3, arr, new ArrayList<User>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), sheruns1, new ArrayList<シルヴァホルン>(), 0, 0, false);
+                    Algorithm.memberAddingProcess(FriendList.this, addingprocess, zone, zone, 4, 3, arr, new ArrayList<User>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), sheruns1, new ArrayList<Shirubahorun>(), 0, 0, false);
 
                     if(arr.length == 0)
                     {

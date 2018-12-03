@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 //篝(かがり)火
-public class 篝火
+public class Kagaribi
 {
     private boolean isRunning = true;
 
@@ -33,7 +33,7 @@ public class 篝火
     private Thread Moving;
 
     @SuppressLint("HandlerLeak")
-    public 篝火(Context classDOTthis, final ConstraintLayout layout, final int[][] pixels)
+    public Kagaribi(Context classDOTthis, final ConstraintLayout layout, final int[][] pixels)
     {
         h = new Handler()
         {

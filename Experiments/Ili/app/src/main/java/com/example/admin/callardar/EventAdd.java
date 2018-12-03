@@ -1,7 +1,6 @@
 package com.example.admin.callardar;
 
 import android.annotation.SuppressLint;
-import android.app.AppComponentFactory;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,11 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.admin.callardar.Classes.篝火;
+import com.example.admin.callardar.Classes.Kagaribi;
 import com.example.admin.callardar.Connection.AppController;
 import com.example.admin.callardar.Connection.JsonRequestActivity;
-import com.example.admin.callardar.MainActivity;
-import com.example.admin.callardar.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,7 +35,7 @@ public class EventAdd extends AppCompatActivity implements OnMapReadyCallback {
     private Button select;
     private EditText title, date, time;
 
-    private 篝火 kagaribi;
+    private Kagaribi kagaribi;
     private Handler kagaribi_h;
 
     private GoogleMap mMap;
@@ -155,7 +152,7 @@ public class EventAdd extends AppCompatActivity implements OnMapReadyCallback {
                         kagaribi.close();
                         break;
                     case 18:
-                        kagaribi = new 篝火(EventAdd.this, mainLayout, MainActivity.篝火);
+                        kagaribi = new Kagaribi(EventAdd.this, mainLayout, MainActivity.篝火);
 
                         if(MainActivity.night)
                         {

@@ -2,7 +2,6 @@ package com.example.admin.callardar.Classes;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -317,7 +316,7 @@ public class Algorithm
         new view_MOVE(v, v[0].getX(), v[0].getY(), x_TO, y_TO);
     }
 
-    public static void create_ImageAndTexts_fillMode(Object classDOTthis, Object Layout, int x_ONE, int y_ONE, int x_Max, String[] addForView, User[] toAdd, ArrayList<ImageView> views_Pic, ArrayList<TextView> views_Tex, ArrayList<シルヴァホルン> sheruns1)
+    public static void create_ImageAndTexts_fillMode(Object classDOTthis, Object Layout, int x_ONE, int y_ONE, int x_Max, String[] addForView, User[] toAdd, ArrayList<ImageView> views_Pic, ArrayList<TextView> views_Tex, ArrayList<Shirubahorun> sheruns1)
     {
         ConstraintLayout layout = (ConstraintLayout) Layout;
         views_Pic.clear();
@@ -337,7 +336,7 @@ public class Algorithm
             Random r = new Random();
             ImageView v = Algorithm.createJPanel((Context) classDOTthis, x_Cur, y_Cur, new RelativeLayout.LayoutParams(x_ONE, y_ONE - 40), Color.rgb(r.nextInt(255), r.nextInt(255), r.nextInt(255)), 1);
             TextView v_text = Algorithm.createTextField((Context) classDOTthis, toAdd[i].getName(), x_Cur, y_Cur + y_ONE - 40, new RelativeLayout.LayoutParams(x_ONE, 40), Color.WHITE, 1);
-            sheruns1.add(new シルヴァホルン(new Point[]{p1, p2, p3, p4}));
+            sheruns1.add(new Shirubahorun(new Point[]{p1, p2, p3, p4}));
 
             views_Pic.add(v);
             views_Tex.add(v_text);
@@ -425,7 +424,7 @@ public class Algorithm
     public static void memberAddingProcess(final Object classDOTthis, Object Layout, final int[] Zone1, final int[] Zone2, final int X_number, final int Y_number,
                                            final User[] toAdd, final ArrayList<User> return_Value_toAdd, final ArrayList<ImageView> return_Value_Picture,
                                            final ArrayList<TextView> return_Value_Text, final ArrayList<ImageView> views_Pic, final ArrayList<TextView> views_Tex,
-                                           final ArrayList<シルヴァホルン> sheruns1, final ArrayList<シルヴァホルン> sheruns2, final int index1, final int index2,
+                                           final ArrayList<Shirubahorun> sheruns1, final ArrayList<Shirubahorun> sheruns2, final int index1, final int index2,
                                            boolean chyet)
     {
         final ConstraintLayout layout = (ConstraintLayout) Layout;
@@ -458,7 +457,7 @@ public class Algorithm
             Point p3 = new Point(left_X_start + (x_ONE + 10) + scale_X * (x_ONE + 10), up_Y_start + (y_ONE + 50) + scale_Y * (y_ONE + 50));
             Point p4 = new Point(left_X_start + scale_X * (x_ONE + 10), up_Y_start + (y_ONE + 50) + scale_Y * (y_ONE + 50));
 
-            sheruns1.add(new シルヴァホルン(new Point[]{p1, p2, p3, p4}));
+            sheruns1.add(new Shirubahorun(new Point[]{p1, p2, p3, p4}));
 
             if(i >= toAdd.length)
             {
@@ -486,7 +485,7 @@ public class Algorithm
             Point p3 = new Point(left_X_end + (x_ONE + 10) + scale_X * (x_ONE + 10), up_Y_end + (y_ONE + 50) + scale_Y * (y_ONE + 50));
             Point p4 = new Point(left_X_end + scale_X * (x_ONE + 10),up_Y_end + (y_ONE + 50) + scale_Y * (y_ONE + 50));
 
-            sheruns2.add(new シルヴァホルン(new Point[]{p1, p2, p3, p4}));
+            sheruns2.add(new Shirubahorun(new Point[]{p1, p2, p3, p4}));
 
             sheruns2.get(i).if_Usable = false;
         }
@@ -766,10 +765,10 @@ public class Algorithm
         public final ArrayList<TextView> texs;
         public final ArrayList<ImageView> returnPic;
         public final ArrayList<TextView> returnTex;
-        public final ArrayList<シルヴァホルン> sherun1;
-        public final ArrayList<シルヴァホルン> sherun2;
+        public final ArrayList<Shirubahorun> sherun1;
+        public final ArrayList<Shirubahorun> sherun2;
 
-        public Component(String Input, User[] users, ArrayList<ImageView> pics, ArrayList<TextView> texs, ArrayList<ImageView> returnPic, ArrayList<TextView> returnTex, ArrayList<シルヴァホルン> sherun1, ArrayList<シルヴァホルン> sherun2 )
+        public Component(String Input, User[] users, ArrayList<ImageView> pics, ArrayList<TextView> texs, ArrayList<ImageView> returnPic, ArrayList<TextView> returnTex, ArrayList<Shirubahorun> sherun1, ArrayList<Shirubahorun> sherun2 )
         {
             this.Input = Input;
             this.users = users;

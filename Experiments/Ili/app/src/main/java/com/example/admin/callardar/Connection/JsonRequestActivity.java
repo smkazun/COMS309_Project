@@ -44,7 +44,7 @@ public class JsonRequestActivity{
     {
 //        pDialog = new ProgressDialog(C);
 ///        pDialog.setCancelable(false);
- ///       pDialog.setMessage("aaaa");
+ ///       pDialog.setMessage("Shirubahorun");
     }
 
     public void makeJsonArryReq_TIME(final String URL, final AppController C, final ArrayList<String> s, final Thread Time_Control)
