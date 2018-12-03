@@ -1,6 +1,8 @@
 package com.example.admin.callardar;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -720,8 +722,10 @@ public class CalendarList extends AppCompatActivity {
                         String name = JArr.get(0).getJSONObject(i).getString("eventname");
                         String date = JArr.get(0).getJSONObject(i).getString("date");
                         String time = JArr.get(0).getJSONObject(i).getString("time");
+                        double x = JArr.get(0).getJSONObject(i).getDouble("x");
+                        double y = JArr.get(0).getJSONObject(i).getDouble("y");
 
-                        MainActivity.user.getCalender()[iem].Event(id, "", "", name);
+                        MainActivity.user.getCalender()[iem].Event(id, "", "", name, x, y);
                     }
                 }
                 catch (JSONException e)
@@ -1863,6 +1867,66 @@ public class CalendarList extends AppCompatActivity {
                 }
             }
         });
+
+        MainActivity.handler_Message = new Handler()
+        {
+            public void handleMessage(Message msg)
+            {
+                switch(msg.what)
+                {
+                    case 1:
+                        Notification.Builder notifybuider = new Notification.Builder(CalendarList.this);
+                        notifybuider.setContentTitle("New Calendar has been created")
+                                .setSubText((String)msg.obj)
+                                .setTicker("New calendar")
+                                .setWhen(System.currentTimeMillis())
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
+                                .setAutoCancel(true);
+
+                        Notification notify = notifybuider.build();
+                        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        manager.notify(1,notify);
+
+                        break;
+                    case 2:
+                        notifybuider = new Notification.Builder(CalendarList.this);
+
+                        notifybuider.setContentTitle("New Event has been added")
+                                .setSubText("In " + (String) msg.obj)
+                                .setTicker("New Event")
+                                .setWhen(System.currentTimeMillis())
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
+                                .setAutoCancel(true);
+
+                        notify = notifybuider.build();
+                        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        manager.notify(1,notify);
+
+                        break;
+
+                    case 3:
+                        notifybuider = new Notification.Builder(CalendarList.this);
+
+                        notifybuider.setContentTitle("Current Calendar has been deleted")
+                                .setSubText("Name : " + (String) msg.obj)
+                                .setTicker("Calendar been deleted")
+                                .setWhen(System.currentTimeMillis())
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
+                                .setAutoCancel(true);
+
+                        notify = notifybuider.build();
+                        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        manager.notify(1,notify);
+
+                        break;
+                }
+
+                msg = null;
+            }
+        };
 
         Loading.start();
         Loading.interrupt();

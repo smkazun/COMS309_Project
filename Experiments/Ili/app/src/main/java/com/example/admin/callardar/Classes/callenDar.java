@@ -113,6 +113,15 @@ public class callenDar
         }
     }
 
+    public void Event(String item_title, String item_desc, String item_date, double x, double y) {
+        events.add(new Event(item_title, item_desc, item_date, x, y));
+    }
+
+    public void Event(int id, String item_title, String item_desc, String item_date, double x, double y)
+    {
+        events.add(new Event(id, item_title, item_desc, item_date, x, y));
+    }
+
     public void Event(String item_title, String item_desc, String item_date) {
         events.add(new Event(item_title, item_desc, item_date));
     }

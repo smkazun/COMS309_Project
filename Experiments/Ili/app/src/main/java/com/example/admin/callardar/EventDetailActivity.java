@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -33,10 +34,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
 
-public class EventDetailActivity extends AppCompatActivity  {
+public class EventDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     private TextView title, date, time;
     private int i;
 
+    private GoogleMap mMap;
+    private LatLng location;
     ArrayList<Event> eventView;
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -83,53 +86,21 @@ public class EventDetailActivity extends AppCompatActivity  {
             }
         });
 
-//        Intent intent = getIntent();
-//        i = intent.getIntExtra("e",0);
-//
-//        eventView.add(MainActivity.user.getCalender()[CalendarList.iem].eventViewer()[i]);
-//
-
-
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);;
     }
 
-    abstract public class AppCompatActivity extends FragmentActivity implements OnMapReadyCallback  {
+    public void onMapReady(GoogleMap googleMap)
+    {
+        mMap = googleMap;
 
-        private GoogleMap mMap;
-        private LatLng location;
+        Event e = MainActivity.user.getCalender()[CalendarList.iem].eventViewer()[EventAdapter.position];
 
-        public void onMapReady(GoogleMap googleMap) {
-            mMap = googleMap;
-
-            // Add a marker in Sydney and move the camera
-            LatLng ISU = new LatLng(42.025797, -93.646472);
-            mMap.addMarker(new MarkerOptions().position(ISU).title("ISU"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(ISU));
-            CameraUpdate cUpdate = CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(42.025797, -93.646472), 16);
-            mMap.moveCamera(cUpdate);
-
-            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng tapLocation) {
-                    // tapされた位置の緯度経度
-                    location = new LatLng(tapLocation.latitude, tapLocation.longitude);
-                    String str = String.format(Locale.US, "%f, %f", tapLocation.latitude, tapLocation.longitude);
-                    mMap.addMarker(new MarkerOptions().position(location).title(str));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16));
-                }
-            });
-        }
-
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_event_detail);
-            // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-            mapFragment.getMapAsync(this);
-        }
-
-
+        // Add a marker in Sydney and move the camera
+        LatLng ISU = new LatLng(e.x, e.y);
+        mMap.addMarker(new MarkerOptions().position(ISU).title("ISU"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(ISU));
+        CameraUpdate cUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(42.025797, -93.646472), 16);
+        mMap.moveCamera(cUpdate);
     }
-
-
 }

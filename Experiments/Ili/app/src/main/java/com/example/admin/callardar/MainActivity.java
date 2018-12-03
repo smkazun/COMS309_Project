@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity
     private ConstraintLayout mainLayout;
 
     private Handler handler;
-    private Handler handler_Message;
+    protected static Handler handler_Message;
 
     protected static int[][] 篝火;
 
@@ -98,12 +98,14 @@ public class MainActivity extends AppCompatActivity
         {
             user = new User(100, "test","@");
 
-            User[] arr = new User[100];
+            User[] arr = new User[101];
 
             for(int i = 0 ; i < 100 ; i += 1)
             {
                 arr[i] = new User(i, "illiand" + i, "!");
             }
+
+            arr[100] = user;
 
             user.addFriends(arr);
             user.addCalender(new callenDar(10, "TestCalldar",user, arr, arr));

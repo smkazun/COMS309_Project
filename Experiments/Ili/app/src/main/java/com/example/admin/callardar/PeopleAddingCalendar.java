@@ -24,6 +24,7 @@ import com.example.admin.callardar.Connection.JsonRequestActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -51,13 +52,23 @@ public class PeopleAddingCalendar extends AppCompatActivity
     {
         mainLayout = findViewById(R.id.people_adding_calendar_mainLayout);
 
+        TextView hint = findViewById(R.id.people_adding_calendar_Hint);
+        TextView choose = findViewById(R.id.people_adding_calendar_choose);
+        TextView type = findViewById(R.id.people_adding_calendar_Typechoose);
+
         if(MainActivity.night)
         {
             mainLayout.setBackgroundColor(Color.BLACK);
+            hint.setTextColor(Color.WHITE);
+            choose.setTextColor(Color.WHITE);
+            type.setTextColor(Color.WHITE);
         }
         else
         {
             mainLayout.setBackgroundColor(Color.WHITE);
+            hint.setTextColor(Color.BLACK);
+            choose.setTextColor(Color.BLACK);
+            type.setTextColor(Color.BLACK);
         }
 
         container = findViewById(R.id.people_adding_calendar_Container);

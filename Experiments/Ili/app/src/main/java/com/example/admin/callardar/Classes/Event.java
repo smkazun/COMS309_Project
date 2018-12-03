@@ -9,12 +9,17 @@ public class Event {
     private int item_image;
     public final int id;
 
+    public final double x;
+    public final double y;
+
     public Event(String item_title, String item_desc, String item_date) {
         this.item_title = item_title;
         this.item_desc = item_desc;
         this.item_date = item_date;
 
         id = -1;
+        x = 0;
+        y = 0;
     }
 
     public Event(int id, String item_title, String item_desc, String item_date)
@@ -24,6 +29,30 @@ public class Event {
         this.item_date = item_date;
 
         this.id = id;
+        x = 0;
+        y = 0;
+    }
+
+    public Event(String item_title, String item_desc, String item_date, double x, double y)
+    {
+        this.item_title = item_title;
+        this.item_desc = item_desc;
+        this.item_date = item_date;
+
+        this.id = -1;
+        this.x = x;
+        this.y = y;
+    }
+
+    public Event(int id, String item_title, String item_desc, String item_date, double x, double y)
+    {
+        this.item_title = item_title;
+        this.item_desc = item_desc;
+        this.item_date = item_date;
+
+        this.id = id;
+        this.x = x;
+        this.y = y;
     }
 
     public String getItem_title() {

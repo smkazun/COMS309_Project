@@ -20,18 +20,29 @@ import com.example.admin.callardar.Connection.AppController;
 import com.example.admin.callardar.Connection.JsonRequestActivity;
 import com.example.admin.callardar.MainActivity;
 import com.example.admin.callardar.R;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
-public class EventAdd extends AppCompatActivity {
+public class EventAdd extends AppCompatActivity implements OnMapReadyCallback {
     private Button select;
     private EditText title, date, time;
 
     private 篝火 kagaribi;
     private Handler kagaribi_h;
+
+    private GoogleMap mMap;
+    private LatLng location;
 
     @SuppressLint({"ClickableViewAccessibility", "HandlerLeak"})
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +58,7 @@ public class EventAdd extends AppCompatActivity {
         {
             @Override
             public void onClick(View v) {
-                MainActivity.user.getCalender()[CalendarList.iem].Event(title.getText().toString(), date.getText().toString(), time.getText().toString());
+                MainActivity.user.getCalender()[CalendarList.iem].Event(title.getText().toString(), date.getText().toString(), time.getText().toString(), location.latitude, location.longitude);
 
                 String URL = "http://proj309-VC-03.misc.iastate.edu:8080/event/new/" + MainActivity.user.getCalender()[CalendarList.iem].getId();
                 ArrayList<String> s = new ArrayList<String>();
@@ -59,6 +70,8 @@ public class EventAdd extends AppCompatActivity {
                 try
                 {
                     msg.put("name", title.getText().toString());
+                    msg.put("x", location.latitude);
+                    msg.put("y", location.longitude);
                 }
                 catch (JSONException e)
                 {
@@ -103,6 +116,7 @@ public class EventAdd extends AppCompatActivity {
         TextView til = findViewById(R.id.event_add_Title);
         TextView tim = findViewById(R.id.event_add_Time);
         TextView dat = findViewById(R.id.event_add_Date);
+        TextView poi = findViewById(R.id.event_add_Position);
 
         if(MainActivity.night)
         {
@@ -114,6 +128,7 @@ public class EventAdd extends AppCompatActivity {
             til.setTextColor(Color.WHITE);
             tim.setTextColor(Color.WHITE);
             dat.setTextColor(Color.WHITE);
+            poi.setTextColor(Color.WHITE);
         }
         else
         {
@@ -125,6 +140,7 @@ public class EventAdd extends AppCompatActivity {
             til.setTextColor(Color.BLACK);
             tim.setTextColor(Color.BLACK);
             dat.setTextColor(Color.BLACK);
+            poi.setTextColor(Color.BLACK);
         }
 
         kagaribi_h = new Handler()
@@ -148,6 +164,9 @@ public class EventAdd extends AppCompatActivity {
                 }
             }
         };
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.event_add_Map);
+        mapFragment.getMapAsync(this);;
 
         Thread Loading = new Thread(new Runnable()
         {
@@ -180,6 +199,33 @@ public class EventAdd extends AppCompatActivity {
 
         Loading.start();
         Loading.interrupt();
+    }
+
+    public void onMapReady(GoogleMap googleMap)
+    {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng ISU = new LatLng(42.025797, -93.646472);
+        mMap.addMarker(new MarkerOptions().position(ISU).title("ISU"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(ISU));
+        CameraUpdate cUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(42.025797, -93.646472), 16);
+        mMap.moveCamera(cUpdate);
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
+        {
+            @Override
+            public void onMapClick(LatLng tapLocation)
+            {
+                mMap.clear();
+
+                // tapされた位置の緯度経度
+                location = new LatLng(tapLocation.latitude, tapLocation.longitude);
+                String str = String.format(Locale.US, "%f, %f", tapLocation.latitude, tapLocation.longitude);
+                mMap.addMarker(new MarkerOptions().position(location).title(str));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16));
+            }
+        });
     }
 }
 

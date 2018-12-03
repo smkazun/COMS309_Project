@@ -110,11 +110,8 @@ public class EventAdapter  extends RecyclerView.Adapter<EventAdapter.ViewHolder>
                 @Override
                 public void onClick(View v) {
                     position = getAdapterPosition();
-                    Toast.makeText(mContext.getApplicationContext(),"Its "+ position, Toast.LENGTH_LONG).show();
-
-
                     mContext.startActivity(new Intent(mContext, EventDetailActivity.class));
-//                    mContext.startActivity(new Intent(mContext, EventDetailActivity.class).putExtra("e", position));
+//                   mContext.startActivity(new Intent(mContext, EventDetailActivity.class).putExtra("e", position));
 
                 }
             });
