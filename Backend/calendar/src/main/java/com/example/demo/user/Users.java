@@ -47,53 +47,45 @@ public class Users {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "users")
 	private Set<Calendar> calendars = new HashSet<>();
     
-	public Integer getuserid() {
-		return userid;
-	}	
-
-	public void setuserid(Integer id) {
-		this.userid = id;
-	}
-
-	public String getname() {
-		return name;
-	}
-
-	public void setname(String name) {
-		this.name = name;
-	}
-
-	public String getemail() {
-		return this.email;
-	}
-
-	public void setemail(String email) {
-		this.email = email;
-	}
-
-	public String getusertype() {
-		return this.usertype;
-	}
-
-	public void setusertype(String userType) {
-		this.usertype = userType;
-	}
+    	public Integer getuserid() {
+			return userid;
+		}	
 	
-	public Set<Calendar> getcalendars(){
-		return calendars;
-	}
+		public void setuserid(Integer id) {
+			this.userid = id;
+		}
 	
-	public void setcalendars(Set<Calendar> calendars) {
-		this.calendars = calendars;
-	}				
+		public String getname() {
+			return name;
+		}
 	
-	public Set<Users> getuserfriends(){
-		return userfriends;
-	}
+		public void setname(String name) {
+			this.name = name;
+		}
 	
-	public void setuserfriends(Set<Users> friend) {
-		this.userfriends = friend;
-	}
+		public String getemail() {
+			return this.email;
+		}
 	
+		public void setemail(String email) {
+			this.email = email;
+		}
+	
+		public String getusertype() {
+			return this.usertype;
+		}
+	
+		public void setusertype(String userType) {
+			this.usertype = userType;
+		}
+		
+		public Set<Calendar> getcalendars(){
+			return calendars;
+		}
+		
+		public void setcalendars(Set<Calendar> calendars) {
+			this.calendars = calendars;
+		}				
+		
 }
 	

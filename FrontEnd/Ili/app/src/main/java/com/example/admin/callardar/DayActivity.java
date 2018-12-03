@@ -16,7 +16,7 @@ public class DayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_day);
         date = findViewById(R.id.Date);
         Intent intent = getIntent();
-        currentDate = intent.getStringExtra("d");
+        currentDate = intent.getStringExtra("b");
         date.setText(currentDate);
 
 

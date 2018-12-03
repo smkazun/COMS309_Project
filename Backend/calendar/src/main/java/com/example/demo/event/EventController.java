@@ -22,7 +22,11 @@ import com.example.demo.calendar.CalendarRepository;
 import com.example.demo.event.EventRepository;
 
 
-
+/**
+ * 
+ * @author Sebastian Kazun
+ *
+ */
 @RestController
 @RequestMapping(path = "/event")
 public class EventController {
@@ -85,7 +89,11 @@ public class EventController {
 		return "Event " + eventId +" has been deleted";
 	}
 	
-	//gets all the users
+	/**
+	 * Gets all the users that are associated with any events
+	 * @return
+	 * Returns a list of all the users that have an event
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/all")
 	@ResponseBody
 	public List<Events> getAllUsers(){

@@ -1,8 +1,6 @@
 package com.example.admin.callardar;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -75,29 +73,25 @@ public class EventActivity extends AppCompatActivity {
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
 //                Toast.makeText(getApplicationContext(),"Don't Touch me", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent();
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setClass(EventActivity.this, MainActivity_Calendar.class);
-                startActivity(intent);
+                Intent i = new Intent(EventActivity.this, MainActivity_Calendar.class);
+                startActivity(i);
             }
         });
 
-        fab1.setOnClickListener(new View.OnClickListener()
-        {
+        fab1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent();
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setClass(EventActivity.this, EventAdd.class);
-                startActivity(intent);
+            public void onClick(View view) {
+                Intent i = new Intent(EventActivity.this, EventAdd.class);
+                startActivity(i);
+//                Toast.makeText(getApplicationContext(),"Don't Touch me", Toast.LENGTH_LONG).show();
             }
         });
 
-        CoordinatorLayout mainLayout = findViewById(R.id.event_Mainlayout);
+//                Toast.makeText(getApplicationContext(),"Don't Touch me", Toast.LENGTH_LONG).show();
+
+
     }
 
 }
