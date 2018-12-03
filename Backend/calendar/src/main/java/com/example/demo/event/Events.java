@@ -32,6 +32,10 @@ public class Events {
 	
 	private String time;
 	
+	private int xcord;
+	
+	private int ycord;
+	
 //	@ManyToOne(fetch = FetchType.LAZY)		TODO: Where is this supposed to go?
 //	@JoinColumn(name = "calendarid")
 	
@@ -55,6 +59,14 @@ public class Events {
 		return time;
 	}
 	
+	public int getxcord() {
+		return xcord;
+	}
+	
+	public int getycord() {
+		return ycord;
+	}
+	
 	public void seteventname(String name) {
 		this.eventname = name;
 	}
@@ -73,6 +85,14 @@ public class Events {
 	
 	public void setcalendarid(Integer Id) {
 		this.calendarid = Id;
+	}
+	
+	public void setxcord(int x) {
+		this.xcord = x;
+	}
+	
+	public void setycord(int y) {
+		this.ycord = y;
 	}
 	
 }
