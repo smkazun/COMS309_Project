@@ -1,21 +1,24 @@
 package com.example.admin.callardar;
 
 
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.admin.callardar.Classes.CalendarAdapter;
-
-import java.util.Date;
-import java.util.List;
+import com.example.admin.callardar.Classes.UserType;
 
 public class MainActivity_Calendar extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
@@ -24,7 +27,12 @@ public class MainActivity_Calendar extends AppCompatActivity implements AdapterV
     private CalendarAdapter mCalendarAdapter;
     private GridView calendarGridView;
 
+    private Button calendar_back;
+    private Button calendar_add;
 
+    private Handler h;
+
+    @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,17 +64,50 @@ public class MainActivity_Calendar extends AppCompatActivity implements AdapterV
 
         Chat.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity_Calendar.this, ChatActivity.class);
-                startActivity(i);
+            public void onClick(View v)
+            {
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setClass(MainActivity_Calendar.this, ChatActivity.class);
+                startActivity(intent);
             }
         });
 
         Event_B.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity_Calendar.this, EventActivity.class);
-                startActivity(i);
+            public void onClick(View v)
+            {
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setClass(MainActivity_Calendar.this, EventActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        calendar_add = findViewById(R.id.calendar_add);
+        calendar_back = findViewById(R.id.calendar_back);
+
+        calendar_add.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setClass(MainActivity_Calendar.this, PeopleAddingCalendar.class);
+                startActivity(intent);
+            }
+        });
+
+        calendar_back.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setClass(MainActivity_Calendar.this, CalendarList.class);
+                startActivity(intent);
             }
         });
 
@@ -85,6 +126,181 @@ public class MainActivity_Calendar extends AppCompatActivity implements AdapterV
 //            }
 //        });
         calendarGridView.setOnItemClickListener(this);
+
+        LinearLayout mainLayout = findViewById(R.id.calendar_Mainlayout);
+        TextView mon = findViewById(R.id.calendar_Mon);
+        TextView tue = findViewById(R.id.calendar_Tue);
+        TextView wed = findViewById(R.id.calendar_Wed);
+        TextView thu = findViewById(R.id.calendar_Thu);
+        TextView fri = findViewById(R.id.calendar_Fri);
+
+
+//        if(MainActivity.night)
+//        {
+//            calendar_back.setTextColor(Color.BLACK);
+//            mainLayout.setBackgroundColor(Color.BLACK);
+//            titleText.setBackgroundColor(Color.BLACK);
+//            titleText.setTextColor(Color.WHITE);
+//            mon.setTextColor(Color.WHITE);
+//            thu.setTextColor(Color.WHITE);
+//            tue.setTextColor(Color.WHITE);
+//            fri.setTextColor(Color.WHITE);
+//            wed.setTextColor(Color.WHITE);
+//        }
+//        else
+//        {
+//            calendar_back.setTextColor(Color.BLACK);
+//            mainLayout.setBackgroundColor(Color.WHITE);
+//            titleText.setBackgroundColor(Color.WHITE);
+//            titleText.setTextColor(Color.BLACK);
+//            mon.setTextColor(Color.BLACK);
+//            thu.setTextColor(Color.BLACK);
+//            tue.setTextColor(Color.BLACK);
+//            fri.setTextColor(Color.BLACK);
+//            wed.setTextColor(Color.BLACK);
+//        }
+
+        final Button delete = findViewById(R.id.calendar_Delete);
+        delete.setBackgroundColor(Color.BLUE);
+
+        if(MainActivity.user.getType(MainActivity.user.getCalender()[CalendarList.iem]) == UserType.Normal)
+        {
+            calendar_add.setVisibility(View.INVISIBLE);
+            delete.setVisibility(View.INVISIBLE);
+        }
+
+        h = new Handler()
+        {
+            public void handleMessage(Message msg)
+            {
+                delete.setBackgroundColor(Color.BLUE);
+            }
+        };
+
+        delete.setOnClickListener(new View.OnClickListener()
+        {
+            private long sysTime = System.currentTimeMillis();
+            private int count = -1;
+
+            @Override
+            public void onClick(View v)
+            {
+
+                new Thread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        while(true)
+                        {
+                            if(System.currentTimeMillis() - sysTime >= 200)
+                            {
+                                h.sendMessage(new Message());
+                                count = -1;
+
+                                break;
+                            }
+                        }
+                    }
+                }).start();
+
+                if(System.currentTimeMillis() - sysTime < 200)
+                {
+                    count += 1;
+                    sysTime = System.currentTimeMillis();
+
+                    switch (count)
+                    {
+                        case 0:
+                            delete.setBackgroundColor(Color.GREEN);
+                            break;
+                        case 1:
+                            delete.setBackgroundColor(Color.YELLOW);
+                            break;
+                        case 2:
+                            delete.setBackgroundColor(Color.RED);
+                            break;
+                        case 3:
+                            MainActivity.user.deleteCalendar(CalendarList.iem);
+
+                            Intent intent = new Intent();
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setClass(MainActivity_Calendar.this, CalendarList.class);
+                            startActivity(intent);
+
+                            break;
+                    }
+
+                    return;
+                }
+
+                count = 0;
+                sysTime = System.currentTimeMillis();
+
+                delete.setBackgroundColor(Color.GREEN);
+            }
+        });
+
+        MainActivity.handler_Message = new Handler()
+        {
+            public void handleMessage(Message msg)
+            {
+                switch(msg.what)
+                {
+                    case 1:
+                        Notification.Builder notifybuider = new Notification.Builder(MainActivity_Calendar.this);
+                        notifybuider.setContentTitle("New Calendar has been created")
+                                .setSubText((String)msg.obj)
+                                .setTicker("New calendar")
+                                .setWhen(System.currentTimeMillis())
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
+                                .setAutoCancel(true);
+
+                        Notification notify = notifybuider.build();
+                        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        manager.notify(1,notify);
+
+                        break;
+                    case 2:
+                        notifybuider = new Notification.Builder(MainActivity_Calendar.this);
+
+                        notifybuider.setContentTitle("New Event has been added")
+                                .setSubText("In " + (String) msg.obj)
+                                .setTicker("New Event")
+                                .setWhen(System.currentTimeMillis())
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
+                                .setAutoCancel(true);
+
+                        notify = notifybuider.build();
+                        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        manager.notify(1,notify);
+
+                        break;
+
+                    case 3:
+                        notifybuider = new Notification.Builder(MainActivity_Calendar.this);
+
+                        notifybuider.setContentTitle("Current Calendar has been deleted")
+                                .setSubText("Name : " + (String) msg.obj)
+                                .setTicker("Calendar been deleted")
+                                .setWhen(System.currentTimeMillis())
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
+                                .setAutoCancel(true);
+
+                        notify = notifybuider.build();
+                        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                        manager.notify(1,notify);
+
+                        break;
+                }
+
+                msg = null;
+            }
+        };
+
     }
 
     @Override
