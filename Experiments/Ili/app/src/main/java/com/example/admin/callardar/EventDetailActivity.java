@@ -98,9 +98,9 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
         // Add a marker in Sydney and move the camera
         LatLng ISU = new LatLng(e.x, e.y);
-        mMap.addMarker(new MarkerOptions().position(ISU).title("ISU"));
+        mMap.addMarker(new MarkerOptions().position(ISU).title(e.getItem_title()));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ISU));
-        CameraUpdate cUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(42.025797, -93.646472), 16);
+        CameraUpdate cUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(e.x, e.y), 16);
         mMap.moveCamera(cUpdate);
     }
 }
