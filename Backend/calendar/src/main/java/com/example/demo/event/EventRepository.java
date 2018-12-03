@@ -18,6 +18,7 @@ public interface EventRepository extends CrudRepository<Events, Integer> {
 	/**
 	 * 
 	 * @param calendarid
+	 * The unique id of the calendar
 	 * @return 
 	 * Returns the calendar associated with the given calendar id
 	 */

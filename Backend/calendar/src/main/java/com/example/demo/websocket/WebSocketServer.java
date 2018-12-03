@@ -40,7 +40,8 @@ public class WebSocketServer {
      * the created session for users to join
      * @param username 
      * the name of the user joining the chat
-     * @throws IOException
+     * @throws IOException 
+     * .
      */
     @OnOpen
     public void onOpen(
@@ -64,6 +65,7 @@ public class WebSocketServer {
      * @param message
      * the message that will be sent to other users
      * @throws IOException
+     * .
      */
     @OnMessage
     public void onMessage(Session session, String message) throws IOException 
@@ -89,6 +91,7 @@ public class WebSocketServer {
      * @param session
      * the created session for users to join
      * @throws IOException
+     * .
      */
     @OnClose
     public void onClose(Session session) throws IOException
@@ -108,6 +111,7 @@ public class WebSocketServer {
      * @param session
      * the created session for users to join
      * @param throwable
+     * .
      */
     @OnError
     public void onError(Session session, Throwable throwable) 
@@ -138,6 +142,7 @@ public class WebSocketServer {
 	 * @param message
 	 * the message that will be sent to all the other users
 	 * @throws IOException
+	 * .
 	 */
     private static void broadcast(String message) 
     	      throws IOException 

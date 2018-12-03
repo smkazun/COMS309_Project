@@ -22,7 +22,11 @@ import com.example.demo.calendar.CalendarRepository;
 import com.example.demo.event.EventRepository;
 
 
-
+/**
+ * 
+ * @author Sebastian Kazun
+ *
+ */
 @RestController
 @RequestMapping(path = "/event")
 public class EventController {
@@ -34,33 +38,34 @@ public class EventController {
 	
 	private final Logger logger = LoggerFactory.getLogger(EventController.class);
 	
-	//save new event
+	
+	/**
+	 * Saves a new event
+	 * @param event
+	 * The event to be created
+	 * @param id
+	 * The unique id of the calendar
+	 * @return
+	 * Returns a string indicating that a new event has been saved to the repository
+	 */
 	@RequestMapping(method = RequestMethod.POST, path = "/new/{Calendarid}")
 	public @ResponseBody String saveEvent(@RequestBody Events event, @PathVariable("Calendarid") int id) 
 	{
 		Calendar c = calendarRepository.findByCalendarid(id).get();
 		Events e = event;
-		
 		eventRepository.save(e);
 		
 		return "New event saved";
 	}
 	
 	
-	/*
-	//different save event implementation
-	@RequestMapping(method = RequestMethod.POST, path = "/new2") //fix mapping TODO
-	public @ResponseBody String saveEvent(@RequestParam Integer eventId, @RequestParam Integer calanderId, @RequestParam Integer Time) {
-		Events event = new Events();
-		event.setCalanderId(calanderId);  //fix calendar spelling TODO
-		event.setEventId(eventId);
-		event.setTime(Time);
-		eventRepository.save(event);
-		return "New event saved";
-	}
-	*/
-	
-	//get all info about one event
+	/**
+	 * Gets all the info about one event
+	 * @param event
+	 * The event to get info from
+	 * @return
+	 * Returns the calendarId, eventId, and event time as a string
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/eventInfo")
 	@ResponseBody
 	public String getAllEventInfo(@RequestBody Events event)
@@ -68,7 +73,13 @@ public class EventController {
 		return "calendarId: " + event.getcalendarid() + "\neventId: " + event.geteventid() + "\ntime: " + event.gettime(); //TODO add date
 	}
 	
-	//removes an event
+	/**
+	 * Removes an event
+	 * @param event
+	 * The event to delete
+	 * @return
+	 * Returns a string indicating that the event has been deleted
+	 */
 	@RequestMapping(method = RequestMethod.DELETE, path = "/remove") //TODO
 	@ResponseBody
 	public String removeEvent(Events event)
@@ -78,7 +89,11 @@ public class EventController {
 		return "Event " + eventId +" has been deleted";
 	}
 	
-	//gets all the users
+	/**
+	 * Gets all the users that are associated with any events
+	 * @return
+	 * Returns a list of all the users that have an event
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/all")
 	@ResponseBody
 	public List<Events> getAllUsers(){
@@ -88,7 +103,13 @@ public class EventController {
 		return results;
 	}
 
-	//gets an event by its associated id
+	/**
+	 * Gets an event by its associated id
+	 * @param EventId
+	 * The unique id of the event
+	 * @return
+	 * Returns the event
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/{eventId}")
 	@ResponseBody
 	public Optional<Events> findEventById(@PathVariable("eventId") int EventId){
@@ -97,7 +118,13 @@ public class EventController {
 		return results;
 	}
 
-	//returns the events associated with a users id
+	/**
+	 * Returns the events associated with a users id
+	 * @param userId
+	 * The unique id of the user
+	 * @return
+	 * Returns all the events for a particular user
+	 */
 	@GetMapping(path = "/user/{userId}")
 	@ResponseBody
 	public Optional<Events> findEventByUserId(@PathVariable("userId") int userId)

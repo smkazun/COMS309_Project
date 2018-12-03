@@ -5,15 +5,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,18 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.user.Users;
 import com.example.demo.calendar.CalendarRepository;
 import com.example.demo.calendar.Calendar;
-import com.example.demo.event.Events;
 import com.example.demo.user.UserRepository;
 
-
+/**
+ * 
+ * @author Sebastian Kazun
+ *
+ */
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
-	
-	
-	enum UserType {
-		ADMIN, USER
-	}
 	
 	
 	@Autowired
@@ -42,49 +37,27 @@ public class UserController {
 	@Autowired
 	private CalendarRepository calendarRepository;
 	
-	/*
-	@RequestMapping(method = RequestMethod.POST, path="/add") // Map ONLY GET Requests
-	public @ResponseBody String addNewUser (@RequestBody Users user) {
-		// @ResponseBody means the returned String is the response, not a view name
-		// @RequestParam means it is a parameter from the GET or POST request
-
-		Users n = new Users();
-		n.setName(user.getName());
-		n.setEmail(user.getEmail());
-		n.setUserType(user.getUserType());
-		userRepository.save(n);
-		return "Saved";
-	}
-	
-	*/
-	
-
-	
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
-	//creates a new user
+	
+	/**
+	 * Creates a new user
+	 * @param user
+	 * The user to be saved
+	 * @return
+	 * Returns a string indicating the user saved
+	 */
 	@RequestMapping(method = RequestMethod.POST, path = "/new")
 	public @ResponseBody String saveUser(@RequestBody Users user) {
 		userRepository.save(user);
 		return "New User " + user.getname() + " saved";
 	}
 	
-	//make new friends: adds id of user and friend
-	@RequestMapping(method = RequestMethod.POST, path = "/{Userid}/{friendid}")
-	public @ResponseBody String addfriendstotable(@PathVariable ("Userid") int uid, @PathVariable("friendid") int fid) 
-	{
-		Users users = userRepository.findByuserid(uid).get();
-		Users friend = userRepository.findByuserid(fid).get();
-		
-		users.getuserfriends().add(users);
-		friend.getuserfriends().add(friend);
-		
-		userRepository.save(users);
-		
-		return "users for  " + users.getname() + " saved";
-	}
-	
-	//return all user accounts
+	/**
+	 * Returns all user accounts
+	 * @return
+	 * Returns all user accounts
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/all")
 	@ResponseBody
 	public List<Users> getAllUsers(){
@@ -94,7 +67,13 @@ public class UserController {
 		return results;
 	}
 	
-	//finds a user based on their id
+	/**
+	 * Finds a user based on their id
+	 * @param id
+	 * The unique id of the user
+	 * @return
+	 * Returns the user
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/{userId}")
 	@ResponseBody
 	public Optional<Users> findUserById(@PathVariable("userId") int id){
@@ -117,7 +96,13 @@ public class UserController {
 	*/
 	
 	//TODO RequestParam or PathVariable? currently not working (i know how to implement with path variable but no other way currently -sk)
-	//removes a user
+	/**
+	 * Removes a user
+	 * @param user
+	 * The user to be deleted
+	 * @return
+	 * Returns string indicating the user deleted
+	 */
 	@RequestMapping(method = RequestMethod.DELETE, path = "/remove") //TODO NOTE: This actually deletes by id
 	@ResponseBody
 	public String removeUser(@RequestBody Users user) 
@@ -128,7 +113,13 @@ public class UserController {
 		return deletedUsersName +" has been deleted";
 	}
 	
-	//gets all calendars that are associated with a particular user
+	/**
+	 * Gets all calendars that are associated with a particular user
+	 * @param Userid
+	 * The unique id of the user
+	 * @return
+	 * Returns the calendars
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/calendars/{Userid}")
 	@ResponseBody
 	Set<Map<String,Object>> getCalendarsForUser(@PathVariable Integer Userid)
@@ -148,50 +139,57 @@ public class UserController {
 	
 	
 	//returns the userType
-		@GetMapping(path = "/userType/{id}")
-		@ResponseBody
-		public String getUserTypeById(@PathVariable("id") int id)
-		{
-			logger.info("entered usertype");
-			Optional<Users> user = userRepository.findById(id);
-			String userType = user.get().getusertype();
-			
-			return userType;
-		}
+	/**
+	 * Returns the userType
+	 * @param id
+	 * The unique id of the user
+	 * @return
+	 * Returns the type of the user. i.e. Admin
+	 */
+	@GetMapping(path = "/userType/{id}")
+	@ResponseBody
+	public String getUserTypeById(@PathVariable("id") int id)
+	{
+		logger.info("entered usertype");
+		Optional<Users> user = userRepository.findById(id);
+		String userType = user.get().getusertype();
+		
+		return userType;
+	}
 		
 	
+	
+	//methods for FriendsList --where to implement?
+	/*
+	//returns all friends of a particular user
+	@GetMapping(path = "/friendslist")
+	public Optional<Friends> getFriendsList(@PathVariable int id)
+	{
+		logger.info("Entered FriendsController. Method: getFriendsList()");
 		
-		//methods for FriendsList --where to implement?
-		/*
-		//returns all friends of a particular user
-		@GetMapping(path = "/friendslist")
-		public Optional<Friends> getFriendsList(@PathVariable int id)
-		{
-			logger.info("Entered FriendsController. Method: getFriendsList()");
-			
-			Optional<Friends> list = friendsRepository.findById(id);
-			return list;
-		}
+		Optional<Friends> list = friendsRepository.findById(id);
+		return list;
+	}
+	
+	//adds new friend to friendlist
+	@PostMapping(path = "/add")
+	public @ResponseBody String addFriend(@RequestBody Friends friend)
+	{
+		friendsRepository.save(friend);
+		return "New Friend has been added";
 		
-		//adds new friend to friendlist
-		@PostMapping(path = "/add")
-		public @ResponseBody String addFriend(@RequestBody Friends friend)
-		{
-			friendsRepository.save(friend);
-			return "New Friend has been added";
-			
-		}
-		
-		@RequestMapping(method = RequestMethod.DELETE, path = "/remove") //TODO NOTE: This actually deletes by id
-		@ResponseBody
-		public String removeFriend(@RequestBody Friends user) 
-		{
-			logger.info("delete friend method");
-			friendsRepository.delete(user);
-			return " has been deleted";
-		}
-		
-		*/
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, path = "/remove") //TODO NOTE: This actually deletes by id
+	@ResponseBody
+	public String removeFriend(@RequestBody Friends user) 
+	{
+		logger.info("delete friend method");
+		friendsRepository.delete(user);
+		return " has been deleted";
+	}
+	
+	*/
 	
 	
 }

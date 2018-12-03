@@ -29,6 +29,11 @@ import com.example.demo.event.Events;
 import com.example.demo.calendar.Calendar;
 import com.example.demo.user.*;
 
+/**
+ * 
+ * @author Sebastian Kazun
+ *
+ */
 @RestController
 @RequestMapping(path = "/calendar")
 public class CalendarController {
@@ -42,7 +47,15 @@ public class CalendarController {
 	
 	private final Logger logger = LoggerFactory.getLogger(CalendarController.class);
 	
-	//make new calendar: names that calendar and adds the users
+	/**
+	 * makes a new calendar: names that calendar and adds the users
+	 * @param calendar
+	 * The calendar to be created
+	 * @param id
+	 * The id of the user creating this calendar
+	 * @return
+	 * Returns string confirming creation of calendar
+	 */
 	@RequestMapping(method = RequestMethod.POST, path = "/new/{Userid}")
 	public @ResponseBody String createNewCalendar(@RequestBody Calendar calendar, @PathVariable("Userid") int id) 
 	{
@@ -58,12 +71,20 @@ public class CalendarController {
 		return "New Calendar " + calendar.getcalendarname() + " saved";
 	}
 	
-	//add users to an existing calendar
+	/**
+	 * Adds users to an existing calendar
+	 * @param calendarid
+	 * The unique id of the calendar
+	 * @param userid
+	 * The unique id of the user
+	 * @return
+	 * Returns string confirming addition of users
+	 */
 	@RequestMapping(method = RequestMethod.POST, path = "/{calendarid}/{Userid}")
-	public @ResponseBody String addUsersToExistingCalendar(@PathVariable ("calendarid") int cid, @PathVariable("Userid") int uid) 
+	public @ResponseBody String addUsersToExistingCalendar(@PathVariable ("calendarid") int calendarid, @PathVariable("Userid") int userid) 
 	{
-		Users users = userRepository.findByuserid(uid).get();
-		Calendar c = calendarRepository.findByCalendarid(cid).get();
+		Users users = userRepository.findByuserid(userid).get();
+		Calendar c = calendarRepository.findByCalendarid(calendarid).get();
 		
 		users.getcalendars().add(c);
 		c.getusers().add(users);
@@ -73,7 +94,14 @@ public class CalendarController {
 		return "users for  " + c.getcalendarname() + " saved";
 	}
 	
-	//gets a calendar by using its associated id
+	
+	/**
+	 * gets a calendar by using its associated id
+	 * @param calendarId
+	 * The unique id of the calendar
+	 * @return
+	 * Returns the calendar
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/{calendarId}") //TODO is this how we want to implement this?
 	public Calendar getCalendarByCalendarId(@PathVariable("calendarId") int calendarId)
 	{
@@ -83,7 +111,12 @@ public class CalendarController {
 		return results;		
 	}
 	
-	//gets all calendars
+
+	/**
+	 * Gets all calendars
+	 * @return
+	 * Returns all calendars in database
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/all")
 	@ResponseBody	
 	public List<Calendar> getAllCalendars() 
@@ -94,14 +127,26 @@ public class CalendarController {
 		return results;
 	}
 	
-	//get all events to a calendar
+	/**
+	 * get all events to a calendar
+	 * @param calendarid
+	 * The unique id of the calendar
+	 * @return
+	 * Returns a list of all the events for this calendar
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/events/{calendarid}")
-	public List<Events> getAllEvents(@PathVariable Integer calendarid){ //TODO we want method to return as List
-		List<Events> results = eventRepository.findBycalendarid(calendarid); //TODO we want this to be a List
+	public List<Events> getAllEvents(@PathVariable Integer calendarid){
+		List<Events> results = eventRepository.findBycalendarid(calendarid); 
 		return results;
 	}
 		
-	//get all users in a calendar
+	/**
+	 * Get all users in a calendar
+	 * @param calendarid
+	 * The unique id of the calendar
+	 * @return
+	 * Returns a set of all the users for this calendar
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/users/{calendarid}")
 	@ResponseBody
 	public Set <Users> getAllusers(@PathVariable Integer calendarid){
@@ -121,7 +166,13 @@ public class CalendarController {
 		return a;
 	}
 	
-	//returns the calendarId of the most recently created calendar for a particular user
+	/**
+	 * Gets the most recently created calendar for a particular user
+	 * @param userId
+	 * The unique id of the user
+	 * @return
+	 * Returns the calendarId of the most recently created calendar for a particular user
+	 */
 	@GetMapping(path = "/recent/{userId}")
 	public @ResponseBody List<Calendar> returnMostRecentCalendarByUserId(@PathVariable Integer userId)
 	{

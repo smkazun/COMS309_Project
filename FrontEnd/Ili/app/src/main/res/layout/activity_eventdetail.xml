@@ -37,17 +37,17 @@
         android:id="@+id/Detail"
         android:layout_width="364dp"
         android:layout_height="340dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Detail"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.741"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.74"
+        app:layout_constraintVertical_bias="0.743"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -91,32 +91,5 @@
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/Date"
         app:layout_constraintVertical_bias="0.13" />
-
-    <TextView
-        android:id="@+id/event_Deleto"
-        android:layout_width="102dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="176dp"
-        android:contentDescription="       DELETO!"
-        android:text="       DELETO!"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.078"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="       DELETO!" />
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="387dp"
-        android:layout_height="350dp"
-        map:layout_constraintBottom_toBottomOf="parent"
-        map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintStart_toStartOf="parent"
-        tools:context=".EventDetailActivity" />
-
-
 
 </android.support.constraint.ConstraintLayout>
