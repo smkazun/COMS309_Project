@@ -88,5 +88,13 @@ public class Users {
 		this.calendars = calendars;
 	}				
 	
+	public Set<Users> getuserfriends(){
+		return userfriends;
+	}
+	
+	public void setuserfriends(Set<Users> friend) {
+		this.userfriends = friend;
+	}
+	
 }
 	
