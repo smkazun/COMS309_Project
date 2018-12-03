@@ -44,7 +44,7 @@ public class JsonRequestActivity{
     {
 //        pDialog = new ProgressDialog(C);
 ///        pDialog.setCancelable(false);
- ///       pDialog.setMessage("aaaa");
+ ///       pDialog.setMessage("Shirubahorun");
     }
 
     public void makeJsonArryReq_TIME(final String URL, final AppController C, final ArrayList<String> s, final Thread Time_Control)
@@ -69,6 +69,47 @@ public class JsonRequestActivity{
                 makeJsonArryReq_object(URL, C, s, Time_Control);
             }
         }).start();
+    }
+
+    public void makeJsonObjReq__TIME(final String URL, final JSONObject A, final ArrayList<String> if_TRUE, final AppController C, final Thread thread)
+    {
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                makeJsonObjReq_WAIT(URL, A, if_TRUE, C, thread);
+            }
+        }).start();
+    }
+
+    public void makeJsonObjReq_GET_TIME(String URL, JSONObject A, final ArrayList<JSONObject> JObj, AppController C, final Thread thread)
+    {
+//        pDialog.show();
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.GET,
+                URL, A,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        System.out.println("正确！");
+                        JObj.add(response);
+                        thread.interrupt();
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                System.out.println("错误！");
+                thread.interrupt();
+            };
+        });
+
+        C.addToRequestQueue(jsonObjReq,
+                tag_json_obj);
     }
 
     /**
@@ -110,6 +151,35 @@ public class JsonRequestActivity{
                 tag_json_obj);
     }
 
+    private void makeJsonObjReq_WAIT(String URL, JSONObject A, final ArrayList<String> if_TRUE, AppController C, final Thread thread)
+    {
+//        pDialog.show();
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Method.POST,
+                URL, A,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        System.out.println("正确！");
+                        if_TRUE.add(response.toString());
+                        thread.interrupt();
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                System.out.println("错误！");
+                thread.interrupt();
+            };
+        });
+
+        C.addToRequestQueue(jsonObjReq,
+                tag_json_obj);
+    }
+
     /**
      *
      * @param URL
@@ -134,7 +204,7 @@ public class JsonRequestActivity{
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Log.e("ERROR : ", error.getMessage(), error);
+                Log.e("ERROR : ", error.getMessage(), error);
 //                byte[] htmlBodyBytes = error.networkResponse.data;
 //                Log.e("ERROR : ", new String(htmlBodyBytes), error);
                 System.out.println("错误！");
@@ -168,6 +238,7 @@ public class JsonRequestActivity{
             @Override
             public void onErrorResponse(VolleyError error)
             {
+                Log.e("ERROR : ", error.getMessage(), error);
                 System.out.println("错误！");
                 Time_Control.interrupt();
             }

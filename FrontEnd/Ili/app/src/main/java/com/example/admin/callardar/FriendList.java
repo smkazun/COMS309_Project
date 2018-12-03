@@ -1,8 +1,10 @@
 package com.example.admin.callardar;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
@@ -16,8 +18,13 @@ import android.widget.TextView;
 
 import com.example.admin.callardar.Classes.Algorithm;
 import com.example.admin.callardar.Classes.Point;
+import com.example.admin.callardar.Classes.Shirubahorun;
 import com.example.admin.callardar.Classes.User;
-import com.example.admin.callardar.Classes.シルヴァホルン;
+import com.example.admin.callardar.Connection.AppController;
+import com.example.admin.callardar.Connection.JsonRequestActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -32,6 +39,7 @@ public class FriendList extends AppCompatActivity {
     private EditText addingprocessEnter;
     private TextView addingprocessText;
     private ImageView addingprocess_Sure;
+    private TextView addingprocess_Nomatch;
 
     private ConstraintLayout makesure;
     private ConstraintLayout makesure_peopleshow;
@@ -41,14 +49,14 @@ public class FriendList extends AppCompatActivity {
 
     private ImageView trans;
 
-    private シルヴァホルン she1;
-    private シルヴァホルン she11;
-    private シルヴァホルン she2;
-    private シルヴァホルン she21;
-    private ArrayList<シルヴァホルン> sheruns2;
+    private Shirubahorun she1;
+    private Shirubahorun she11;
+    private Shirubahorun she2;
+    private Shirubahorun she21;
+    private ArrayList<Shirubahorun> sheruns2;
     private boolean deleto;
 
-    private ArrayList<シルヴァホルン> sheruns1;
+    private ArrayList<Shirubahorun> sheruns1;
     private User arr[];
     private User sen;
     private ArrayList<ImageView> pics;
@@ -63,6 +71,19 @@ public class FriendList extends AppCompatActivity {
     {
         process = findViewById(R.id.UI_adding_deleting_searching);
         mainLayout = findViewById(R.id.mainLayout_friend);
+
+        if(MainActivity.night)
+        {
+            mainLayout.setBackgroundColor(Color.BLACK);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.wafendes);
+            process.setImageBitmap(bitmap);
+        }
+        else
+        {
+            mainLayout.setBackgroundColor(Color.TRANSPARENT);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.wafentes);
+            process.setImageBitmap(bitmap);
+        }
 
         mainLayout.setOnTouchListener(new View.OnTouchListener()
         {
@@ -88,15 +109,54 @@ public class FriendList extends AppCompatActivity {
 
                 float newX = v.getX() + event.getX();
 
+                final int xMax = Math.max(4, (int)(MainActivity.user.getFriends().length / (float)(container.getHeight() / 200)) + 1);
+
+                final int xOne = 160;
+
                 for(int i = 0 ; newX != oldX && i < pics.size() ; i += 1)
                 {
-                    pics.get(i).setX(iniXs[i] - (newX - oldX));
-                    texts.get(i).setX(iniXs[i] - (newX - oldX));
+                    int min = (i % xMax) * xOne - (xMax * xOne - container.getWidth());
+                    int max = (i % xMax) * xOne;
+
+                    if(xOne * xMax < container.getWidth())
+                    {
+
+                    }
+                    else if(iniXs[i] - (newX - oldX) < min)
+                    {
+                        pics.get(i).setX(min);
+                        texts.get(i).setX(min);
+                    }
+                    else if(iniXs[i] - (newX - oldX) > max)
+                    {
+                        pics.get(i).setX(max);
+                        texts.get(i).setX(max);
+                    }
+                    else
+                    {
+                        pics.get(i).setX(iniXs[i] - (newX - oldX));
+                        texts.get(i).setX(iniXs[i] - (newX - oldX));
+                    }
                 }
 
                 if(event.getAction() == MotionEvent.ACTION_UP)
                 {
-                    iem += (oldX - newX);
+                    if(xOne * xMax < container.getWidth())
+                    {
+
+                    }
+                    else if(iem > 0)
+                    {
+                        iem = 0;
+                    }
+                    else if(iem < -(xMax * xOne - container.getWidth()))
+                    {
+                        iem = -(xMax * xOne - container.getWidth());
+                    }
+                    else
+                    {
+                        iem += (oldX - newX);
+                    }
                 }
 
                 if(event.getAction() == MotionEvent.ACTION_UP && newX == oldX)
@@ -111,10 +171,15 @@ public class FriendList extends AppCompatActivity {
                         addingprocess.addView(addingprocessEnter);
                         addingprocess.addView(addingprocess_Sure);
                         addingprocess.addView(addingprocessText);
+                        addingprocessEnter.setText("");
 
                         trans.setVisibility(View.INVISIBLE);
 
-                        sheruns1.clear();
+                        if(sheruns1 != null)
+                        {
+                            sheruns1.clear();
+                        }
+
                         she1.if_Usable = true;
                         she2.if_Usable = true;
                         she11.if_Usable = false;
@@ -225,40 +290,134 @@ public class FriendList extends AppCompatActivity {
         addingprocessText = findViewById(R.id.adding_process_view);
         addingprocess_Sure = findViewById(R.id.adding_process_enter_sure);
         addingprocess_Sure.setBackgroundColor(Color.GREEN);
+        addingprocess_Nomatch = findViewById(R.id.adding_process_nomatch);
+        addingprocess_Nomatch.setVisibility(View.INVISIBLE);
+
+        TextView back = findViewById(R.id.FriendList_back);
+        back.setBackgroundColor(Color.GREEN);
+        back.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setClass(FriendList.this, CalendarList.class);
+                startActivity(intent);
+            }
+        });
 
         addingprocess_Sure.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
             public boolean onTouch(View v, MotionEvent event)
             {
-                String enter = addingprocessEnter.getText().toString();
+                final String enter = addingprocessEnter.getText().toString();
 
-                //todo
-                ArrayList<User> users = null;
-
-                if(MainActivity.user.getName().equals("test"))
-                {
-                    users = new ArrayList<User>();
-
-                    users.add(new User(255, enter + "1", ""));
-                    users.add(new User(256, enter + "2", ""));
-                }
-
-                if(users != null && users.size() == 0)
+                if(enter.equals(""))
                 {
                     return false;
                 }
 
-                arr = new User[users.size()];
-                arr = users.toArray(arr);
-                sheruns1 = new ArrayList<シルヴァホルン>();
+                if(MainActivity.user.getName().equals("test"))
+                {
+                    addingprocessEnter.setText("");
 
-                addingprocess.removeAllViews();
+                    ArrayList<User> users = new ArrayList<User>();
 
-                int zone[] = new int[]{0, addingprocess.getWidth(), 0, addingprocess.getHeight()};
+                    users.add(new User(255, enter + "1", ""));
+                    users.add(new User(256, enter + "2", ""));
 
-                Algorithm.create_ImageAndTexts(FriendList.this, addingprocess, zone, 4,3, null, arr, new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);
-                Algorithm.memberAddingProcess(FriendList.this, addingprocess, zone, zone, 4, 3, arr, new ArrayList<User>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), sheruns1, new ArrayList<シルヴァホルン>(), 0, 0, false);
+                    arr = new User[users.size()];
+                    arr = users.toArray(arr);
+                    sheruns1 = new ArrayList<Shirubahorun>();
+
+                    addingprocess.removeAllViews();
+
+                    int zone[] = new int[]{0, addingprocess.getWidth(), 0, addingprocess.getHeight()};
+
+                    Algorithm.create_ImageAndTexts(FriendList.this, addingprocess, zone, 4,3, null, arr, new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);
+                    Algorithm.memberAddingProcess(FriendList.this, addingprocess, zone, zone, 4, 3, arr, new ArrayList<User>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), sheruns1, new ArrayList<Shirubahorun>(), 0, 0, false);
+
+                    return false;
+                }
+
+                MainActivity.TIME_CONTROL = new Thread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        String URL = "http://proj309-VC-03.misc.iastate.edu:8080/users/all";
+                        ArrayList<JSONArray> JArr = new ArrayList<JSONArray>();
+
+                        JsonRequestActivity a = new JsonRequestActivity(FriendList.this);
+                        AppController C = new AppController(FriendList.this);
+                        a.makeJsonArryReq_object_TIME(URL, C, JArr, MainActivity.TIME_CONTROL);
+
+                        try
+                        {
+                            Thread.sleep(2000);
+                        }
+                        catch (InterruptedException e)
+                        {
+
+                        }
+
+                        try
+                        {
+                            JArr.get(0);
+                        }
+                        catch (IndexOutOfBoundsException e)
+                        {
+                            return;
+                        }
+
+                        ArrayList<User> users = new ArrayList<User>();
+
+                        try
+                        {
+                            for(int i = 0 ; i < JArr.get(0).length() ; i += 1)
+                            {
+                                String name = JArr.get(0).getJSONObject(i).getString("name");
+
+                                if(enter.length() > name.length())
+                                {
+                                    continue;
+                                }
+
+                                for(int j = 0 ; j < enter.length() ; j += 1)
+                                {
+                                    if(enter.charAt(j) != name.charAt(j))
+                                    {
+                                        break;
+                                    }
+
+                                    if(j + 1 == enter.length())
+                                    {
+                                        int id = JArr.get(0).getJSONObject(i).getInt("userid");
+                                        String email = JArr.get(0).getJSONObject(i).getString("email");
+
+                                        users.add(new User(id, name, email));
+                                    }
+                                }
+                            }
+                        }
+                        catch(JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                        arr = new User[users.size()];
+                        arr = users.toArray(arr);
+                        sheruns1 = new ArrayList<Shirubahorun>();
+
+                        Message message = new Message();
+                        message.what = 15;
+                        h.sendMessage(message);
+                    }
+                });
+
+                MainActivity.TIME_CONTROL.start();
 
                 return false;
             }
@@ -364,11 +523,11 @@ public class FriendList extends AppCompatActivity {
         trans.setBackgroundColor(Color.BLACK);
         trans.setVisibility(View.INVISIBLE);
 
-        she1 = new シルヴァホルン("4.9768066 1335.6328 30.025635 1347.6445 45.021973 1353.6797 76.03638 1368.6797 95.05371 1384.6758 122.08008 1393.6992 " +
+        she1 = new Shirubahorun("4.9768066 1335.6328 30.025635 1347.6445 45.021973 1353.6797 76.03638 1368.6797 95.05371 1384.6758 122.08008 1393.6992 " +
                 "156.12671 1415.6719 172.14478 1443.7383 218.18848 1470.75 240.20508 1492.7227 249.20288 1514.7539 283.2495 1538.7773 299.26758 1563.7969 " +
                 "317.26318 1597.7812 333.28125 1622.8008 333.28125 1644.832 348.31055 1647.8203 364.29565 1674.832 379.32495 1702.8398 388.32275 1727.8594 " +
                 "7.976074 1718.8359");
-        she2 = new シルヴァホルン("685.6128 1718.8359 691.6113 1702.8398 704.6301 1687.8398 713.6279 1665.8086 725.625 1644.832 738.6438 1622.8008 " +
+        she2 = new Shirubahorun("685.6128 1718.8359 691.6113 1702.8398 704.6301 1687.8398 713.6279 1665.8086 725.625 1644.832 738.6438 1622.8008 " +
                 "769.6582 1588.7578 793.6853 1551.7852 827.73193 1498.7578 861.7456 1470.75 896.781 1427.6836 939.82544 1393.6992 976.87134 1372.6641 " +
                 "1022.91504 1335.6328 1066.9482 1313.6602 1075.946 1313.6602 1078.9453 1724.8711");
 
@@ -419,15 +578,35 @@ public class FriendList extends AppCompatActivity {
             {
                 case 10:
                     int zone[] = new int[]{0, container.getWidth(), 0, container.getHeight()};
-                    she11 = new シルヴァホルン(new Point[]{new Point((int)addingprocess.getX(), (int)addingprocess.getY()), new Point((int)addingprocess.getX() + addingprocess.getWidth(), (int)addingprocess.getY()), new Point((int)addingprocess.getX() + addingprocess.getWidth(), (int)addingprocess.getY() + addingprocess.getHeight()), new Point((int)addingprocess.getX(), (int)addingprocess.getY() + addingprocess.getHeight())});
-                    she21 = new シルヴァホルン(new Point[]{new Point((int)friends.getX() + (int)container.getX(), (int)friends.getY() + (int)container.getY()), new Point((int)friends.getX() + (int)container.getX() + container.getWidth(), (int)friends.getY() + (int)container.getY()), new Point((int)friends.getX() + (int)container.getX() + container.getWidth(), (int)friends.getY() + (int)container.getY() + container.getHeight()), new Point((int)friends.getX() + (int)container.getX(), (int)friends.getY() + (int)container.getY() + container.getHeight())});
-                    sheruns2 = new ArrayList<シルヴァホルン>();
+                    she11 = new Shirubahorun(new Point[]{new Point((int)addingprocess.getX(), (int)addingprocess.getY()), new Point((int)addingprocess.getX() + addingprocess.getWidth(), (int)addingprocess.getY()), new Point((int)addingprocess.getX() + addingprocess.getWidth(), (int)addingprocess.getY() + addingprocess.getHeight()), new Point((int)addingprocess.getX(), (int)addingprocess.getY() + addingprocess.getHeight())});
+                    she21 = new Shirubahorun(new Point[]{new Point((int)friends.getX() + (int)container.getX(), (int)friends.getY() + (int)container.getY()), new Point((int)friends.getX() + (int)container.getX() + container.getWidth(), (int)friends.getY() + (int)container.getY()), new Point((int)friends.getX() + (int)container.getX() + container.getWidth(), (int)friends.getY() + (int)container.getY() + container.getHeight()), new Point((int)friends.getX() + (int)container.getX(), (int)friends.getY() + (int)container.getY() + container.getHeight())});
+                    sheruns2 = new ArrayList<Shirubahorun>();
 
                     pics.clear();
                     texts.clear();
 
-                    int x_Max = (int)(MainActivity.user.getFriends().length / (float)(container.getHeight() / 200)) + 1;
+                    int x_Max = Math.max(4, (int)(MainActivity.user.getFriends().length / (float)(container.getHeight() / 200)) + 1);
+
+                    iem = 0;
                     Algorithm.create_ImageAndTexts_fillMode(FriendList.this, container, 150, 200, x_Max, null, MainActivity.user.getFriends(), pics, texts, sheruns2);
+
+                    break;
+                case 15:
+                    addingprocess.removeAllViews();
+                    addingprocessEnter.setText("");
+
+                    zone= new int[]{0, addingprocess.getWidth(), 0, addingprocess.getHeight()};
+
+                    Algorithm.create_ImageAndTexts(FriendList.this, addingprocess, zone, 4,3, null, arr, new ArrayList<ImageView>(), new ArrayList<TextView>(), 0);
+                    Algorithm.memberAddingProcess(FriendList.this, addingprocess, zone, zone, 4, 3, arr, new ArrayList<User>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), new ArrayList<ImageView>(), new ArrayList<TextView>(), sheruns1, new ArrayList<Shirubahorun>(), 0, 0, false);
+
+                    if(arr.length == 0)
+                    {
+                        addingprocess.addView(addingprocess_Nomatch);
+                        addingprocess_Nomatch.setVisibility(View.VISIBLE);
+                    }
+
+                    break;
             }
 
             msg = null;

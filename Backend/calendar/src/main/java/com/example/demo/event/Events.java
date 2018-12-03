@@ -1,6 +1,5 @@
 package com.example.demo.event;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,9 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.springframework.core.style.ToStringCreator;
 
 /**
  * 
@@ -36,8 +32,12 @@ public class Events {
 	
 	private String time;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "calendarid")
+	private int xcord;
+	
+	private int ycord;
+	
+//	@ManyToOne(fetch = FetchType.LAZY)		TODO: Where is this supposed to go?
+//	@JoinColumn(name = "calendarid")
 	
 	public Integer geteventid() {
 		return eventid;
@@ -59,6 +59,14 @@ public class Events {
 		return time;
 	}
 	
+	public int getxcord() {
+		return xcord;
+	}
+	
+	public int getycord() {
+		return ycord;
+	}
+	
 	public void seteventname(String name) {
 		this.eventname = name;
 	}
@@ -77,6 +85,14 @@ public class Events {
 	
 	public void setcalendarid(Integer Id) {
 		this.calendarid = Id;
+	}
+	
+	public void setxcord(int x) {
+		this.xcord = x;
+	}
+	
+	public void setycord(int y) {
+		this.ycord = y;
 	}
 	
 }

@@ -1,11 +1,11 @@
 package com.example.admin.callardar;
 
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
 
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,9 +32,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        b1=(Button)findViewById(R.id.bt1);
         b2=(Button)findViewById(R.id.bt2);
-        e1=(EditText)findViewById(R.id.et1);
         e2=(EditText)findViewById(R.id.et2);
         t1=(TextView)findViewById(R.id.tx1);
 
@@ -45,6 +43,7 @@ public class ChatActivity extends AppCompatActivity {
             public void handleMessage(Message meg)
             {
                 t1.setText(s[0]);
+                meg = null;
             }
         };
 
@@ -57,7 +56,7 @@ public class ChatActivity extends AppCompatActivity {
             {
                 while (true)
                 {
-                    if(s[0] != "" && ! s[0].equals(now))
+                    if( ! s[0].equals("") && ! s[0].equals(now))
                     {
                         Message message = new Message();
                         message.what = 10;
@@ -68,73 +67,80 @@ public class ChatActivity extends AppCompatActivity {
             }
         }).start();
 
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Draft[] drafts = {new Draft_6455()};
+        Draft[] drafts = {new Draft_6455()};
+        String w = "ws://proj309-vc-03.misc.iastate.edu:8080/websocket/" + MainActivity.user.getName();
 
-                /**
-                 * If running this on an android device, make sure it is on the same network as your
-                 * computer, and change the ip address to that of your computer.
-                 * If running on the emulator, you can use localhost.
-                 */
-                String w = "ws://proj309-vc-03.misc.iastate.edu:8080/websocket/"+e1.getText().toString();
+        try {
+            Log.d("Socket:", "Trying socket");
+            cc = new WebSocketClient(new URI(w),(Draft) drafts[0]) {
+                @Override
+                public void onMessage(String message)
+                {
+                    Log.d("", "run() returned: " + message);
 
-                try {
-                    Log.d("Socket:", "Trying socket");
-                    cc = new WebSocketClient(new URI(w),(Draft) drafts[0]) {
-                        @Override
-                        public void onMessage(String message) {
-                            Log.d("", "run() returned: " + message);
-                            //String s=t1.getText().toString();
-                            //t1.setText("hello world");
-                            //Log.d("first", "run() returned: " + s);
-                            //s=t1.getText().toString();
-                            //Log.d("second", "run() returned: " + s);
-                            //t1.setText(s+" Server:"+message);
+                    if(s[0].length() >= 170)
+                    {
+                        s[0] = "";
+                    }
 
-                            s[0] += message.toString() + "\n";
+                    s[0] += message.toString() + "\n";
 
-                        }
-
-                        @Override
-                        public void onOpen(ServerHandshake handshake) {
-                            Log.d("OPEN", "run() returned: " + "is connecting");
-                        }
-
-                        @Override
-                        public void onClose(int code, String reason, boolean remote) {
-                            Log.d("CLOSE", "onClose() returned: " + reason);
-                        }
-
-                        @Override
-                        public void onError(Exception e)
-                        {
-                            Log.d("Exception:", e.toString());
-                        }
-                    };
                 }
-                catch (URISyntaxException e) {
-                    Log.d("Exception:", e.getMessage().toString());
-                    e.printStackTrace();
+
+                @Override
+                public void onOpen(ServerHandshake handshake)
+                {
+                    Log.d("OPEN", "run() returned: " + "is connecting");
                 }
-                cc.connect();
 
-            }
-        });
+                @Override
+                public void onClose(int code, String reason, boolean remote)
+                {
+                    Log.d("CLOSE", "onClose() returned: " + reason);
+                }
 
-        b2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onError(Exception e)
+                {
+                    Log.d("Exception:", e.toString());
+                }
+            };
+        }
+        catch (URISyntaxException e) {
+            Log.d("Exception:", e.getMessage().toString());
+            e.printStackTrace();
+        }
+
+        cc.connect();
+
+        b2.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                try {
+            public void onClick(View v)
+            {
+                try
+                {
                     cc.send(e2.getText().toString());
+
+                    for(int i = 0 ; i < MainActivity.user.getCalender()[CalendarList.iem].getCurrentUser().length ; i += 1)
+                    {
+                        String name = MainActivity.user.getCalender()[CalendarList.iem].getCurrentUser()[i].getName();
+
+                        if(MainActivity.user.getName().equals(name))
+                        {
+                            continue;
+                        }
+
+                        cc.send("@" + name + " " + e2.getText().toString());
+                    }
                 }
                 catch (Exception e)
                 {
-                    Log.d("ExceptionSendMessage:", e.getMessage().toString());
+
                 }
             }
         });
     }
 }
+
 

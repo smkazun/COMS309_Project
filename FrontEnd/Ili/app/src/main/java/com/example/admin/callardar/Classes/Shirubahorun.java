@@ -17,7 +17,7 @@ import java.util.Scanner;
  *
  *  注意: p1 -> p2 -> p3 -> p4 can NOT be intersect
  *
- *	シルヴァホルン sh = new シルヴァホルン(pArr);
+ *	Shirubahorun sh = new Shirubahorun(pArr);
  *
  *	if(sh.if_Exist(new Point(arg0.getX(),arg0.getY())))
  *	{
@@ -29,12 +29,12 @@ import java.util.Scanner;
  *
  **/
 
-public class シルヴァホルン
+public class Shirubahorun
 {
     private final Point[] pArr;
     public boolean if_Usable;
 
-    public シルヴァホルン(Point[] pArr)
+    public Shirubahorun(Point[] pArr)
     {
         this.pArr = pArr;
         if_Usable = true;
@@ -47,7 +47,7 @@ public class シルヴァホルン
         pArr[pArr.length - 1].revise_Next_Point(pArr[0]);
     }
 
-    public シルヴァホルン(String s)
+    public Shirubahorun(String s)
     {
         Scanner scanner = new Scanner(s);
         ArrayList<Point> pArr = new ArrayList<Point>();

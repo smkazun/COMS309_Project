@@ -43,7 +43,7 @@ public class Calendar {
 			inverseJoinColumns = { @JoinColumn(name = "userid") })
 	private Set<Users> users = new HashSet<>();
 	
-	private Set<Events> events;
+	//private Set<Events> events;   //TODO this is causing an error in spring. It prevents the entire backend from running. (needs mapping?)
 	
 	public Integer getcalendarid() {
 		return calendarid;
@@ -70,11 +70,11 @@ public class Calendar {
 	}
 	
 	public Set<Events> getEvents() {
-        return events;
+        return null; //events  //TODO commented out until resolved above
     }
 	
 	public void setEvent(Set<Events> events) {
-		this.events = events;
+		//this.events = events;  //TODO commented out until resolved above
 	}
 	
 	public Map<String, Object> toDTO(int it)

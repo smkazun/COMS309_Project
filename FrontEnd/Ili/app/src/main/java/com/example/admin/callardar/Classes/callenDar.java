@@ -1,11 +1,14 @@
 package com.example.admin.callardar.Classes;
 
+import com.example.admin.callardar.CalendarList;
+
 import java.util.ArrayList;
 
 public class callenDar
 {
     private int id;
     private String name;
+    private User holder;
 
     private ArrayList<User> people;
     private ArrayList<User> admins;
@@ -15,14 +18,18 @@ public class callenDar
     {
         this.id = id;
         name = Name;
+        events = new ArrayList<Event>();
     }
 
-    public callenDar(String Name, User[] admins, User[] toAdd)
+    public callenDar(String Name, User holder, User[] admins, User[] toAdd)
     {
         name = Name;
         people = new ArrayList<User>();
         this.admins = new ArrayList<User>();
         events = new ArrayList<Event>();
+        this.holder = holder;
+
+        //people.add(holder);
 
         for(int i = 0 ; i < toAdd.length ; i += 1)
         {
@@ -37,9 +44,9 @@ public class callenDar
         id = -1;
     }
 
-    public callenDar(int id, String Name, User[] admins, User[] toAdd)
+    public callenDar(int id, String Name, User holder, User[] admins, User[] toAdd)
     {
-        this(Name, admins, toAdd);
+        this(Name, holder, admins, toAdd);
         this.id = id;
     }
 
@@ -51,6 +58,11 @@ public class callenDar
     public String toString()
     {
         return name;
+    }
+
+    public User getHolder()
+    {
+        return holder;
     }
 
     public User[] getCurrentUser()
@@ -87,34 +99,46 @@ public class callenDar
         return arr;
     }
 
-    /**
-     *  create a event in current callendar
-     * @param startDate
-     *  should be format like 7 11 2018
-     *                        15 35
-     * @param endDate
-     * @param content
-     * @param toAdd
-     */
+    public void addUser(User toAdd, UserType type)
+    {
+        if(type == UserType.Normal)
+        {
+            people.add(toAdd);
+        }
+
+        if(type == UserType.Admin)
+        {
+            people.add(toAdd);
+            admins.add(toAdd);
+        }
+    }
+
+    public void Event(String item_title, String item_desc, String item_date, double x, double y) {
+        events.add(new Event(item_title, item_desc, item_date, x, y));
+    }
+
+    public void Event(int id, String item_title, String item_desc, String item_date, double x, double y)
+    {
+        events.add(new Event(id, item_title, item_desc, item_date, x, y));
+    }
 
     public void Event(String item_title, String item_desc, String item_date) {
         events.add(new Event(item_title, item_desc, item_date));
     }
 
-
-//    public void eventCreator(int id, String name, String startDate, String endDate, String content, User admin, User[] toAdd)
-//    {
-//        events.add(new Event(id, name, startDate, endDate, content, admin, toAdd));
-//
-//        eventItem.add(new Event(names[i], places[i], prices[i]));
-//        //toDo
-//        //draw the UI on real callendar
-//    }
+    public void Event(int id, String item_title, String item_desc, String item_date)
+    {
+        events.add(new Event(id, item_title, item_desc, item_date));
+    }
 
     public Event[] eventViewer()
     {
-        Event[] arr = new Event[events.size()];
+        if(events == null)
+        {
+            return new Event[]{};
+        }
 
+        Event[] arr = new Event[events.size()];
         arr = events.toArray(arr);
 
         return arr;
@@ -122,9 +146,29 @@ public class callenDar
 
     public void deleteEvent(int index)
     {
-
         events.remove(index);
     }
 
+    public int equals(callenDar obj)
+    {
+        if( id != obj.id || ! name.equals(obj.name))
+        {
+            return 1;
+        }
 
+        for(int i = 0 ; i < events.size() ; i += 1)
+        {
+            if(events.size() != obj.events.size())
+            {
+                return 2;
+            }
+
+            if( ! events.contains(obj.events.get(i)))
+            {
+                return 2;
+            }
+        }
+
+        return 0;
+    }
 }
