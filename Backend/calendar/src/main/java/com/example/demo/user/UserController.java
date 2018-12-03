@@ -82,20 +82,7 @@ public class UserController {
 		return results;
 	}
 	
-	/*
-	//find user by name
-	@RequestMapping(method = RequestMethod.GET, path = "/{userName}")
-	@ResponseBody
-	public Optional<Users> findUserByName(@PathVariable("userName") String name)
-	{
-		logger.info("entered in findUserByName method");
-		//Optional<Users> results = userRepository. //TODO
-		return null;
-		
-	}
-	*/
 	
-	//TODO RequestParam or PathVariable? currently not working (i know how to implement with path variable but no other way currently -sk)
 	/**
 	 * Removes a user
 	 * @param user
@@ -103,7 +90,7 @@ public class UserController {
 	 * @return
 	 * Returns string indicating the user deleted
 	 */
-	@RequestMapping(method = RequestMethod.DELETE, path = "/remove") //TODO NOTE: This actually deletes by id
+	@RequestMapping(method = RequestMethod.DELETE, path = "/remove") 
 	@ResponseBody
 	public String removeUser(@RequestBody Users user) 
 	{
@@ -137,8 +124,6 @@ public class UserController {
 		return users;
 	}
 	
-	
-	//returns the userType
 	/**
 	 * Returns the userType
 	 * @param id
@@ -159,7 +144,7 @@ public class UserController {
 		
 	
 	
-	//methods for FriendsList --where to implement?
+	//methods for FriendsList
 	/*
 	//returns all friends of a particular user
 	@GetMapping(path = "/friendslist")
