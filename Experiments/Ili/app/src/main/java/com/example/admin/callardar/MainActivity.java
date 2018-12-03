@@ -139,19 +139,28 @@ public class MainActivity extends AppCompatActivity
                 {
                     if(i + 1 == JArr.get(0).length())
                     {
+                        Message message = new Message();
+                        message.what = 10;
+                        message.obj = "Did Not Match";
+                        handler.sendMessage(message);
+
                         return false;
                     }
 
                     continue;
                 }
-System.out.println(id + "+ " + name);
+
                 user = new User(id, name, email);
                 break;
             }
         }
         catch (IndexOutOfBoundsException | JSONException e)
         {
-            System.out.println("Time Out in log in");
+            Message message = new Message();
+            message.what = 10;
+            message.obj = "Time Out";
+            handler.sendMessage(message);
+
             return false;
         }
 
@@ -177,7 +186,11 @@ System.out.println(id + "+ " + name);
         }
         catch (IndexOutOfBoundsException e)
         {
-            System.out.println("Time Out in adding friend list");
+            Message message = new Message();
+            message.what = 10;
+            message.obj = "Time Out";
+            handler.sendMessage(message);
+
             return false;
         }
 
@@ -222,7 +235,11 @@ System.out.println(id + "+ " + name);
         }
         catch (IndexOutOfBoundsException e)
         {
-            System.out.println("Time Out in adding calendar");
+            Message message = new Message();
+            message.what = 10;
+            message.obj = "Time Out";
+            handler.sendMessage(message);
+
             return false;
         }
 
@@ -338,6 +355,7 @@ System.out.println(id + "+ " + name);
             if(msg .what == 10)
             {
                 wrongMessage.setVisibility(View.VISIBLE);
+                wrongMessage.setText((String) msg.obj);
                 password.setText(new char[]{}, 0, 0);
                 handler.removeCallbacksAndMessages(null);
             }
@@ -409,17 +427,21 @@ System.out.println(id + "+ " + name);
                         {
                             int cid = arr.getJSONObject(i).getInt("calendarid");
                             String cname = arr.getJSONObject(i).getString("calendarname");
-                            JSONArray events = arr.getJSONObject(i).getJSONArray("events");
 
                             callenDar cal = new callenDar(cid, cname);
 
-                            for(int j = 0 ; j < events.length() ; j += 1)
-                            {
-                                int eid = events.getJSONObject(j).getInt("id");
-                                String ename = events.getJSONObject(j).getString("name");
-
-                                cal.Event(eid, ename,"N/A", "N/A");
-                            }
+//                            if(arr.getJSONObject(i).getJSONArray("events") != null)
+//                            {
+//                                JSONArray events = arr.getJSONObject(i).getJSONArray("events");
+//
+//                                for(int j = 0 ; j < events.length() ; j += 1)
+//                                {
+//                                    int eid = events.getJSONObject(j).getInt("id");
+//                                    String ename = events.getJSONObject(j).getString("name");
+//
+//                                    cal.Event(eid, ename,"N/A", "N/A");
+//                                }
+//                            }
 
                             calendar.add(cal);
                         }

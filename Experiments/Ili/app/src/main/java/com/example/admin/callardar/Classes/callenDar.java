@@ -29,7 +29,7 @@ public class callenDar
         events = new ArrayList<Event>();
         this.holder = holder;
 
-        people.add(holder);
+        //people.add(holder);
 
         for(int i = 0 ; i < toAdd.length ; i += 1)
         {

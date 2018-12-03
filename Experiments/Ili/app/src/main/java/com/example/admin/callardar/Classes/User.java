@@ -1,5 +1,7 @@
 package com.example.admin.callardar.Classes;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class User implements Comparable<User>

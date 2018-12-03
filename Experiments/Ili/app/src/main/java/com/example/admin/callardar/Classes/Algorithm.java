@@ -931,10 +931,22 @@ public class Algorithm
         }
     }
 
+    /**
+     *
+     * Stop the Thread until it get the value
+     *
+     */
     public static class Stop implements Callable<Integer>
     {
         private long WAIT;
 
+        /**
+         *
+         * Initialize
+         *
+         * @param WAIT
+         *  The Time to wait
+         */
         public Stop(int WAIT)
         {
             this.WAIT = WAIT;
