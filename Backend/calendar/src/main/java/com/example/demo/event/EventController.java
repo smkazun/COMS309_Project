@@ -42,7 +42,9 @@ public class EventController {
 	/**
 	 * Saves a new event
 	 * @param event
+	 * The event to be created
 	 * @param id
+	 * The unique id of the calendar
 	 * @return
 	 * Returns a string indicating that a new event has been saved to the repository
 	 */
@@ -60,6 +62,7 @@ public class EventController {
 	/**
 	 * Gets all the info about one event
 	 * @param event
+	 * The event to get info from
 	 * @return
 	 * Returns the calendarId, eventId, and event time as a string
 	 */
@@ -73,6 +76,7 @@ public class EventController {
 	/**
 	 * Removes an event
 	 * @param event
+	 * The event to delete
 	 * @return
 	 * Returns a string indicating that the event has been deleted
 	 */
@@ -102,6 +106,7 @@ public class EventController {
 	/**
 	 * Gets an event by its associated id
 	 * @param EventId
+	 * The unique id of the event
 	 * @return
 	 * Returns the event
 	 */
@@ -116,6 +121,7 @@ public class EventController {
 	/**
 	 * Returns the events associated with a users id
 	 * @param userId
+	 * The unique id of the user
 	 * @return
 	 * Returns all the events for a particular user
 	 */

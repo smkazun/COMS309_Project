@@ -50,7 +50,9 @@ public class CalendarController {
 	/**
 	 * makes a new calendar: names that calendar and adds the users
 	 * @param calendar
+	 * The calendar to be created
 	 * @param id
+	 * The id of the user creating this calendar
 	 * @return
 	 * Returns string confirming creation of calendar
 	 */
@@ -71,16 +73,18 @@ public class CalendarController {
 	
 	/**
 	 * Adds users to an existing calendar
-	 * @param cid
-	 * @param uid
+	 * @param calendarid
+	 * The unique id of the calendar
+	 * @param userid
+	 * The unique id of the user
 	 * @return
 	 * Returns string confirming addition of users
 	 */
 	@RequestMapping(method = RequestMethod.POST, path = "/{calendarid}/{Userid}")
-	public @ResponseBody String addUsersToExistingCalendar(@PathVariable ("calendarid") int cid, @PathVariable("Userid") int uid) 
+	public @ResponseBody String addUsersToExistingCalendar(@PathVariable ("calendarid") int calendarid, @PathVariable("Userid") int userid) 
 	{
-		Users users = userRepository.findByuserid(uid).get();
-		Calendar c = calendarRepository.findByCalendarid(cid).get();
+		Users users = userRepository.findByuserid(userid).get();
+		Calendar c = calendarRepository.findByCalendarid(calendarid).get();
 		
 		users.getcalendars().add(c);
 		c.getusers().add(users);
@@ -94,6 +98,7 @@ public class CalendarController {
 	/**
 	 * gets a calendar by using its associated id
 	 * @param calendarId
+	 * The unique id of the calendar
 	 * @return
 	 * Returns the calendar
 	 */
@@ -125,6 +130,7 @@ public class CalendarController {
 	/**
 	 * get all events to a calendar
 	 * @param calendarid
+	 * The unique id of the calendar
 	 * @return
 	 * Returns a list of all the events for this calendar
 	 */
@@ -137,6 +143,7 @@ public class CalendarController {
 	/**
 	 * Get all users in a calendar
 	 * @param calendarid
+	 * The unique id of the calendar
 	 * @return
 	 * Returns a set of all the users for this calendar
 	 */
@@ -162,6 +169,7 @@ public class CalendarController {
 	/**
 	 * Gets the most recently created calendar for a particular user
 	 * @param userId
+	 * The unique id of the user
 	 * @return
 	 * Returns the calendarId of the most recently created calendar for a particular user
 	 */

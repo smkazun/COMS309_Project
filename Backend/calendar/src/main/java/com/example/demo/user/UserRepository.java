@@ -22,6 +22,7 @@ public interface UserRepository extends CrudRepository<Users, Integer>{
 	/**
 	 * Finds a user by their unique id
 	 * @param Userid
+	 * The unique id of the user
 	 * @return
 	 * returns the user
 	 */

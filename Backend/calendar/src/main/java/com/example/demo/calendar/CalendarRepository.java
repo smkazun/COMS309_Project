@@ -20,6 +20,7 @@ public interface CalendarRepository extends CrudRepository<Calendar, Integer> {
 	/**
 	 * Finds the Calendar by using its unique id
 	 * @param calendarid
+	 * The unique id of the calendar
 	 * @return
 	 * Returns the specified calendar
 	 */

@@ -5,15 +5,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.user.Users;
 import com.example.demo.calendar.CalendarRepository;
 import com.example.demo.calendar.Calendar;
-import com.example.demo.event.Events;
 import com.example.demo.user.UserRepository;
 
 /**
@@ -47,6 +43,7 @@ public class UserController {
 	/**
 	 * Creates a new user
 	 * @param user
+	 * The user to be saved
 	 * @return
 	 * Returns a string indicating the user saved
 	 */
@@ -73,6 +70,7 @@ public class UserController {
 	/**
 	 * Finds a user based on their id
 	 * @param id
+	 * The unique id of the user
 	 * @return
 	 * Returns the user
 	 */
@@ -101,6 +99,7 @@ public class UserController {
 	/**
 	 * Removes a user
 	 * @param user
+	 * The user to be deleted
 	 * @return
 	 * Returns string indicating the user deleted
 	 */
@@ -117,6 +116,7 @@ public class UserController {
 	/**
 	 * Gets all calendars that are associated with a particular user
 	 * @param Userid
+	 * The unique id of the user
 	 * @return
 	 * Returns the calendars
 	 */
@@ -142,6 +142,7 @@ public class UserController {
 	/**
 	 * Returns the userType
 	 * @param id
+	 * The unique id of the user
 	 * @return
 	 * Returns the type of the user. i.e. Admin
 	 */
