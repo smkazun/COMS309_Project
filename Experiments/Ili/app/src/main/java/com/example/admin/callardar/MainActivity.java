@@ -424,6 +424,19 @@ System.out.println(id + "+ " + name);
                             calendar.add(cal);
                         }
 
+                        if(user.getCalender().length == 0)
+                        {
+                            for(int i = 0 ; i < calendar.size() ; i += 1)
+                            {
+                                user.addCalender(calendar.get(i));
+                            }
+
+                            Message message = new Message();
+                            message.what = 1;
+                            message.obj = "Calendar ...";
+                            handler.sendMessage(message);
+                        }
+
                         for(int i = 0 ; i < calendar.size() ; i += 1)
                         {
                             for(int j = 0 ; j < user.getCalender().length ; j += 1)
@@ -593,7 +606,7 @@ System.out.println(id + "+ " + name);
 
                 transparent_CREATE_user.setVisibility(View.INVISIBLE);
                 mainLayout.removeView(CREATE_layout);
-                mainLayout.addView(login);
+                mainLayout.addView(CREATE_layout);
 
                 user = new User(0, account.toString(),"@");
 

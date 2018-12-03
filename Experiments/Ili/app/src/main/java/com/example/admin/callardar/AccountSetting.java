@@ -83,11 +83,21 @@ public class AccountSetting extends AppCompatActivity
         {
             mode.setBackgroundColor(Color.BLACK);
             mode.setTextColor(Color.WHITE);
+            mainLayout.setBackgroundColor(Color.BLACK);
+
+            accountName.setTextColor(Color.WHITE);
+            id.setTextColor(Color.WHITE);
+            email.setTextColor(Color.WHITE);
         }
         else
         {
             mode.setBackgroundColor(Color.WHITE);
             mode.setTextColor(Color.BLACK);
+            mainLayout.setBackgroundColor(Color.WHITE);
+
+            accountName.setTextColor(Color.BLACK);
+            id.setTextColor(Color.BLACK);
+            email.setTextColor(Color.BLACK);
         }
 
         mode.setOnTouchListener(new View.OnTouchListener()
