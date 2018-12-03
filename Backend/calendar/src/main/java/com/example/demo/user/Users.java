@@ -1,9 +1,7 @@
 package com.example.demo.user;
 
-import javax.persistence.Column;
 import java.util.HashSet;
 import java.util.Set;
-
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -17,11 +15,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.example.demo.calendar.Calendar;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.springframework.core.style.ToStringCreator;
 
+/**
+ * 
+ * @author Sebastian Kazun
+ *
+ */
 @Entity
 @Table(name = "users")
 public class Users {

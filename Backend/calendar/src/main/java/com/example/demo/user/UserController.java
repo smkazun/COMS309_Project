@@ -26,15 +26,14 @@ import com.example.demo.calendar.Calendar;
 import com.example.demo.event.Events;
 import com.example.demo.user.UserRepository;
 
-
+/**
+ * 
+ * @author Sebastian Kazun
+ *
+ */
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
-	
-	
-	enum UserType {
-		ADMIN, USER
-	}
 	
 	
 	@Autowired
@@ -42,34 +41,26 @@ public class UserController {
 	@Autowired
 	private CalendarRepository calendarRepository;
 	
-	/*
-	@RequestMapping(method = RequestMethod.POST, path="/add") // Map ONLY GET Requests
-	public @ResponseBody String addNewUser (@RequestBody Users user) {
-		// @ResponseBody means the returned String is the response, not a view name
-		// @RequestParam means it is a parameter from the GET or POST request
-
-		Users n = new Users();
-		n.setName(user.getName());
-		n.setEmail(user.getEmail());
-		n.setUserType(user.getUserType());
-		userRepository.save(n);
-		return "Saved";
-	}
-	
-	*/
-	
-
-	
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
-	//creates a new user
+	
+	/**
+	 * Creates a new user
+	 * @param user
+	 * @return
+	 * Returns a string indicating the user saved
+	 */
 	@RequestMapping(method = RequestMethod.POST, path = "/new")
 	public @ResponseBody String saveUser(@RequestBody Users user) {
 		userRepository.save(user);
 		return "New User " + user.getname() + " saved";
 	}
 	
-	//return all user accounts
+	/**
+	 * Returns all user accounts
+	 * @return
+	 * Returns all user accounts
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/all")
 	@ResponseBody
 	public List<Users> getAllUsers(){
@@ -79,7 +70,12 @@ public class UserController {
 		return results;
 	}
 	
-	//finds a user based on their id
+	/**
+	 * Finds a user based on their id
+	 * @param id
+	 * @return
+	 * Returns the user
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/{userId}")
 	@ResponseBody
 	public Optional<Users> findUserById(@PathVariable("userId") int id){
@@ -102,7 +98,12 @@ public class UserController {
 	*/
 	
 	//TODO RequestParam or PathVariable? currently not working (i know how to implement with path variable but no other way currently -sk)
-	//removes a user
+	/**
+	 * Removes a user
+	 * @param user
+	 * @return
+	 * Returns string indicating the user deleted
+	 */
 	@RequestMapping(method = RequestMethod.DELETE, path = "/remove") //TODO NOTE: This actually deletes by id
 	@ResponseBody
 	public String removeUser(@RequestBody Users user) 
@@ -113,7 +114,12 @@ public class UserController {
 		return deletedUsersName +" has been deleted";
 	}
 	
-	//gets all calendars that are associated with a particular user
+	/**
+	 * Gets all calendars that are associated with a particular user
+	 * @param Userid
+	 * @return
+	 * Returns the calendars
+	 */
 	@RequestMapping(method = RequestMethod.GET, path = "/calendars/{Userid}")
 	@ResponseBody
 	Set<Map<String,Object>> getCalendarsForUser(@PathVariable Integer Userid)
@@ -133,50 +139,56 @@ public class UserController {
 	
 	
 	//returns the userType
-		@GetMapping(path = "/userType/{id}")
-		@ResponseBody
-		public String getUserTypeById(@PathVariable("id") int id)
-		{
-			logger.info("entered usertype");
-			Optional<Users> user = userRepository.findById(id);
-			String userType = user.get().getusertype();
-			
-			return userType;
-		}
+	/**
+	 * Returns the userType
+	 * @param id
+	 * @return
+	 * Returns the type of the user. i.e. Admin
+	 */
+	@GetMapping(path = "/userType/{id}")
+	@ResponseBody
+	public String getUserTypeById(@PathVariable("id") int id)
+	{
+		logger.info("entered usertype");
+		Optional<Users> user = userRepository.findById(id);
+		String userType = user.get().getusertype();
+		
+		return userType;
+	}
 		
 	
+	
+	//methods for FriendsList --where to implement?
+	/*
+	//returns all friends of a particular user
+	@GetMapping(path = "/friendslist")
+	public Optional<Friends> getFriendsList(@PathVariable int id)
+	{
+		logger.info("Entered FriendsController. Method: getFriendsList()");
 		
-		//methods for FriendsList --where to implement?
-		/*
-		//returns all friends of a particular user
-		@GetMapping(path = "/friendslist")
-		public Optional<Friends> getFriendsList(@PathVariable int id)
-		{
-			logger.info("Entered FriendsController. Method: getFriendsList()");
-			
-			Optional<Friends> list = friendsRepository.findById(id);
-			return list;
-		}
+		Optional<Friends> list = friendsRepository.findById(id);
+		return list;
+	}
+	
+	//adds new friend to friendlist
+	@PostMapping(path = "/add")
+	public @ResponseBody String addFriend(@RequestBody Friends friend)
+	{
+		friendsRepository.save(friend);
+		return "New Friend has been added";
 		
-		//adds new friend to friendlist
-		@PostMapping(path = "/add")
-		public @ResponseBody String addFriend(@RequestBody Friends friend)
-		{
-			friendsRepository.save(friend);
-			return "New Friend has been added";
-			
-		}
-		
-		@RequestMapping(method = RequestMethod.DELETE, path = "/remove") //TODO NOTE: This actually deletes by id
-		@ResponseBody
-		public String removeFriend(@RequestBody Friends user) 
-		{
-			logger.info("delete friend method");
-			friendsRepository.delete(user);
-			return " has been deleted";
-		}
-		
-		*/
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, path = "/remove") //TODO NOTE: This actually deletes by id
+	@ResponseBody
+	public String removeFriend(@RequestBody Friends user) 
+	{
+		logger.info("delete friend method");
+		friendsRepository.delete(user);
+		return " has been deleted";
+	}
+	
+	*/
 	
 	
 }

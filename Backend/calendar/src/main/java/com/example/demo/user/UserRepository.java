@@ -10,10 +10,21 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.user.Users;
 
+/**
+ * 
+ * @author Sebastian Kazun
+ *
+ */
 @Repository
 public interface UserRepository extends CrudRepository<Users, Integer>{
 	
-	//finds user
+	
+	/**
+	 * Finds a user by their unique id
+	 * @param Userid
+	 * @return
+	 * returns the user
+	 */
 	public Optional<Users> findByuserid(Integer Userid);
 	
 	
